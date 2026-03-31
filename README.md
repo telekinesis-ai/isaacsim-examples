@@ -127,7 +127,7 @@ To be able to run the examples, follow the below steps:
     ```bash
     ...
     ...
-    Joint positions: [[1.5 1.5 1.5 0.  0.5 0.5]]
+    Joint positions: [[1.5 1.5 1.5 0.0 0.5 0.5]]
     ```
 
     **Robot and Gripper Assembly Example**
