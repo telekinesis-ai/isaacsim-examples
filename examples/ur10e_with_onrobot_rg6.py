@@ -25,6 +25,8 @@ Workflow:
 """
 
 import pathlib
+import numpy as np
+from loguru import logger
 
 # Launch the SimulationApp
 from isaacsim import SimulationApp
@@ -184,20 +186,36 @@ simulation_app.update()
 # Articulation
 art = Articulation(ur10e_prim_path)
 art.initialize()
-wrist_3_joint_index = art.get_dof_index("wrist_3_joint")
-wrist_2_joint_index = art.get_dof_index("wrist_2_joint")
-
-print("Articulation path:", ur10e_prim_path)
-print("DOF names:", art.dof_names)
+finger_idx = art.get_dof_index("finger_joint")
 
 # Wait for manual Play in the Isaac Sim UI; do not auto-start.
 timeline = omni.timeline.get_timeline_interface()
+
+TRIAL_IDX = 0
 
 # Main simulation loop
 while simulation_app.is_running():
     simulation_app.update()
 
     if not timeline.is_playing():
+        continue
+
+    # Initialization control is performed only once when the device first enters
+    # Play mode, avoiding repeated resets every frame.
+    if TRIAL_IDX == 0:
+
+        # Set the finger joints to close.
+        positions = np.array([[0.5]])
+        art.set_joint_positions(
+            positions,
+            joint_indices=np.array([finger_idx])
+        )
+
+        # Get all joint positions.
+        joint_positions = art.get_joint_positions()
+        logger.info("Joint positions: {}", joint_positions)
+
+        TRIAL_IDX = 1
         continue
 
     simulation_context.step(render=True)
