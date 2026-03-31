@@ -1,3 +1,45 @@
+<div align="center">
+  <p>
+    <a align="center" href="" target="_blank">
+      <img
+        width="100%"
+        src="https://telekinesis-public-assets.s3.us-east-1.amazonaws.com/Telekinesis+Banner.png"
+      >
+    </a>
+  </p>
+
+  <p align="center">
+    <a href="https://pypi.org/project/telekinesis-ai/">
+      <img src="https://img.shields.io/pypi/v/telekinesis-ai" />
+    </a>
+    <a href="https://pypi.org/project/telekinesis-ai/">
+      <img src="https://img.shields.io/pypi/pyversions/telekinesis-ai" />
+    </a>
+    <a href="https://pypi.org/project/telekinesis-ai/">
+      <img src="https://img.shields.io/pypi/l/telekinesis-ai" />
+    </a>
+    <a href="https://docs.telekinesis.ai">
+      <img src="https://img.shields.io/badge/docs-telekinesis.ai-blue" />
+    </a>
+  </p>
+
+  <h2>Any robot. Any task. One Physical AI platform.</h2>
+
+  <p>
+    <a href="https://docs.telekinesis.ai/">Telekinesis Docs</a>
+    &nbsp;•&nbsp;
+    <a href="https://discord.gg/S5v8bYAnc6">Discord</a>
+    &nbsp;•&nbsp;
+    <a href="https://www.linkedin.com/company/telekinesis-ai/">LinkedIn</a>
+    &nbsp;•&nbsp;
+    <a href="https://x.com/telekinesis_ai">X</a>
+    &nbsp;•&nbsp;
+    <a href="https://telekinesis.ai/">Website</a>
+
+</p>
+</div>
+
+
 # isaacsim-examples
 
 isaacsim-examples provides Isaac Sim examples for loading and controlling the robot, including set/get robot state demos and robot/end-effector model assets.
@@ -45,7 +87,7 @@ conda activate isaacsim-examples
 
 3. On Windows, it may be necessary to enable long path support to avoid installation errors due to OS limitations：
 
-    You can also copy this code to a file which can set this for you, or use the PowerShell command from a terminal window with elevated privileges:.reg
+    You can also copy this code to a file which can set this for you, or use the PowerShell command as administrator from a terminal window with elevated privileges:.reg
 
     ```bash
     # PowerShell
@@ -84,7 +126,7 @@ To be able to run the examples, follow the below steps:
     ...
     Joint positions: [[1.5 1.5 1.5 0.  0.5 0.5]]
     ```
-    Note: The first time isaacsim is imported, a prompt asks you to accept the EULA at runtime. After the EULA is accepted, you will not see it again. If the EULA is not accepted, the execution will be terminated.
+    Note: The first time Isaac Sim is imported, a prompt will ask you to accept the EULA at runtime. After the EULA is accepted, you will not see it again. If the EULA is not accepted, the execution will be terminated. The first run may also take longer to load.
     
 
 ## Support
