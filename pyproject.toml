@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isaacsim-examples"
+version = "0.1.0"
+description = "Telekinesis simulator for robot."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
+
+authors = [
+  { name = "Telekinesis", email = "support@telekinesis.ai" }
+]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "loguru",
+]
+
+
+[project.urls]
+Homepage = "https://telekinesis.ai"
+Documentation = "https://docs.telekinesis.ai"

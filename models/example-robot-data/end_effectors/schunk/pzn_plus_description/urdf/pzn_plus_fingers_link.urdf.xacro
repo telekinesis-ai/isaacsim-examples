@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<robot name="pzn_plus_fingers_link" xmlns:xacro="http://www.ros.org/wiki/xacro">
+   <xacro:include filename="$(find pzn_plus_description)/urdf/pzn_plus_fingers_link.xacro" />
+   <!-- xacro:pzn_plus_fingers_link prefix="" meshType="dae" / -->
+</robot>

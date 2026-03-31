@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">   
+ 
+  <xacro:macro name="pzn_plus_transmission" params="prefix">
+    <transmission name="trans_prismatic_joint_translational_1_effort">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${prefix}prismatic_1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="prismatic_joint_translational_1_motor_effort">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <gazebo>
+      <plugin name="translational_2" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+        <joint>${prefix}prismatic_1</joint>
+        <mimicJoint>${prefix}prismatic_2</mimicJoint>
+        <multiplier>1</multiplier>
+        <offset>0</offset>
+      </plugin>
+    </gazebo>
+ 
+     <gazebo>
+      <plugin name="translational_3" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+        <joint>${prefix}prismatic_1</joint>
+        <mimicJoint>${prefix}prismatic_3</mimicJoint>
+        <multiplier>1</multiplier>
+        <offset>0</offset>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

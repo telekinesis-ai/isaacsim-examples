@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<robot name="egu_50" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find egu_description)/urdf/egu_50.xacro" />
+  <xacro:egu_50 prefix_1="egu_50" prefix_2="egu_50" meshType="dae" />
+</robot>

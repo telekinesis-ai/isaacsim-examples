@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:macro name="egp_fingers_link" params="prefix meshType">
+    <!-- links -->
+    <link
+      name="${prefix}finger_1">
+      <inertial>
+        <origin
+          xyz="9.074E-06 -0.011739 0.03368"
+          rpy="0 0 0" />
+        <mass
+          value="0.0098228" />
+        <inertia
+          ixx="2.9703E-06"
+          ixy="-1.6622E-10"
+          ixz="3.1061E-09"
+          iyy="2.7246E-06"
+          iyz="2.3497E-07"
+          izz="4.7539E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0.0013 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0.0013 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}finger_2">
+      <inertial>
+        <origin
+          xyz="9.074E-06 -0.011739 0.03368"
+          rpy="0 0 0" />
+        <mass
+          value="0.0098228" />
+        <inertia
+          ixx="2.9703E-06"
+          ixy="-1.6622E-10"
+          ixz="3.1061E-09"
+          iyy="2.7246E-06"
+          iyz="2.3497E-07"
+          izz="4.7539E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0.0002 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0.0002 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}finger_3">
+      <inertial>
+        <origin
+          xyz="9.074E-06 -0.011739 0.03368"
+          rpy="0 0 0" />
+        <mass
+          value="0.0098228" />
+        <inertia
+          ixx="2.9703E-06"
+          ixy="-1.6622E-10"
+          ixz="3.1061E-09"
+          iyy="2.7246E-06"
+          iyz="2.3497E-07"
+          izz="4.7539E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0013 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0013 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}finger_4">
+      <inertial>
+        <origin
+          xyz="9.074E-06 -0.011739 0.03368"
+          rpy="0 0 0" />
+        <mass
+          value="0.0098228" />
+        <inertia
+          ixx="2.9703E-06"
+          ixy="-1.6622E-10"
+          ixz="3.1061E-09"
+          iyy="2.7246E-06"
+          iyz="2.3497E-07"
+          izz="4.7539E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0002 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0002 -0.0187 0.00645"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://urdf_pzv_64/meshes/pvz_finger.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+</robot>

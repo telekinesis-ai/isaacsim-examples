@@ -1,0 +1,27 @@
+<launch>
+  <arg name="model" />
+
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="xacro_file_path" default="$(find egp_description)/urdf/egp.urdf.xacro"/>
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+
+
+
+  <!-- Convert xacro to URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro $(arg xacro_file_path)"/>
+
+
+
+
+
+  <node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher" output="screen">
+    <param name="rate" value="30" />
+  </node>
+  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find egp_description)/config/robot_model.rviz" />
+</launch>

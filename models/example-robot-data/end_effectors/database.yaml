@@ -1,0 +1,24 @@
+Hakko FU500:
+  company: hakko
+  model: fu500
+  eoat_type: eoat
+On Robot RG6:
+  company: onrobot
+  model: rg6
+  eoat_type: eoat
+Piab PICobot RS485:
+  company: piab
+  model: picobotrs485
+  eoat_type: eoat
+Robotiq2 F85:
+  company: robotiq
+  model: 2f85
+  eoat_type: eoat
+Schunk EGU60 MBMB:
+  company: schunk
+  model: egu60mbmb
+  eoat_type: eoat
+Visualization Server:
+  company: simeoat
+  model: visualizationserver
+  eoat_type: eoat

@@ -1,0 +1,4 @@
+<launch>
+    <arg name="xacro_file_path" default="$(find egu_description)/urdf/egu_50.urdf.xacro"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(arg xacro_file_path)"/>
+</launch>

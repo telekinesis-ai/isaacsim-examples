@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--degrees to radians-->
+
+    <xacro:macro name="pzn_plus" params="prefix_1 prefix_2 meshType">
+
+        <!-- imports -->
+        <xacro:include filename="$(find pzn_plus_description)/urdf/pzn_plus_base_link.urdf.xacro" />
+        <xacro:include filename="$(find pzn_plus_description)/urdf/pzn_plus_fingers_link.urdf.xacro" />
+
+        <!--xacro:include filename="$(find pzn_plus_description)/urdf/pzn_plus.gazebo.xacro" /-->
+        <xacro:include filename="$(find pzn_plus_description)/urdf/pzn_plus.transmission.urdf.xacro" />
+
+        <xacro:pzn_plus_base_link prefix="${prefix_1}_" meshType="${meshType}" />
+        <xacro:pzn_plus_fingers_link prefix="${prefix_2}_" meshType="${meshType}" />
+        <xacro:pzn_plus_transmission prefix="${prefix_2}_" />
+        <!-- links -->
+        <!--link name="world" /-->
+<!--
+        <joint name="fixed" type="fixed">
+            <parent link="world" />
+            <child link="${prefix}base_link" />
+        </joint>
+-->
+
+        <joint name="${prefix_1}_finger_1" type="fixed">
+          <origin xyz="-0.00147 0.0005 0.0050134"  rpy="0 0 0" />
+          <parent link="${prefix_1}_trans_1" />
+          <child  link="${prefix_2}_finger_1" />
+          <axis    xyz="0 0 0" />
+        </joint>
+
+        <joint name="${prefix_1}_finger_2" type="fixed">
+          <origin  xyz="-0.00147 0.0005 0.00501343290293372"  rpy="0 0 0" />
+          <parent  link="${prefix_1}_trans_2" />
+          <child  link="${prefix_2}_finger_2" />
+          <axis  xyz="0 0 0" />
+        </joint>
+
+        <joint  name="${prefix_1}_finger_3"  type="fixed">
+          <origin  xyz="-0.00147 0.0005 0.00501343290293372"  rpy="0 0 0" />
+          <parent  link="${prefix_1}_trans_3" />
+          <child  link="${prefix_2}_finger_3" />
+          <axis  xyz="0 0 0" />
+        </joint>
+
+    </xacro:macro>
+</robot>

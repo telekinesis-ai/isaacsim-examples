@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:macro name="egp_base_link" params="prefix meshType">
+    <!-- links -->
+    <link
+      name="${prefix}base_link">
+      <inertial>
+        <origin
+          xyz="-1.3649E-05 0.00020804 0.053268"
+          rpy="0 0 0" />
+        <mass
+          value="0.23519" />
+        <inertia
+          ixx="0.0003045"
+          ixy="1.4187E-09"
+          ixz="6.5932E-08"
+          iyy="0.00024967"
+          iyz="7.767E-07"
+          izz="0.00010458" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://egp_description/meshes/egp_base.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://egp_description/meshes/egp_base.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}trans_1">
+      <inertial>
+        <origin
+          xyz="0.0016208 0.02782 0.004811"
+          rpy="0 0 0" />
+        <mass
+          value="0.011095" />
+        <inertia
+          ixx="3.553E-06"
+          ixy="2.3867E-07"
+          ixz="-1.9314E-07"
+          iyy="1.0926E-06"
+          iyz="7.2782E-07"
+          izz="2.863E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.016 0.027 -0.00893"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://egp_description/meshes/egp_trans_1.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.016 0.027 -0.00893"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://egp_description/meshes/egp_trans_1.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}trans_2">
+      <inertial>
+        <origin
+          xyz="0.0016549 -0.037399 0.0049123"
+          rpy="0 0 0" />
+        <mass
+          value="0.010866" />
+        <inertia
+          ixx="3.5456E-06"
+          ixy="2.3867E-07"
+          ixz="-1.9314E-07"
+          iyy="1.0919E-06"
+          iyz="7.2782E-07"
+          izz="2.8556E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.016 -0.037 -0.00893"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://egp_description/meshes/egp_trans_2.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.016 -0.037 -0.00893"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://egp_description/meshes/egp_trans_2.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint
+      name="${prefix}prismatic_1"
+      type="prismatic">
+      <origin
+        xyz="-0.059 -0.016075 0.10975"
+        rpy="0 0 -1.570796" />
+      <parent
+        link="${prefix}base_link" />
+      <child
+        link="${prefix}trans_1" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-0.03"
+        upper="0.02"
+        effort="300"
+        velocity="1" />
+      <dynamics damping="0.3" friction="0.2"  />
+    </joint>
+    <joint
+      name="${prefix}prismatic_2"
+      type="prismatic">
+      <origin
+        xyz="0.069 -0.016075 0.10975"
+        rpy="0 0 -1.570796" />
+      <parent
+        link="${prefix}base_link" />
+      <child
+        link="${prefix}trans_2" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-0.02"
+        upper="0.03"
+        effort="300"
+        velocity="1" />
+      <mimic joint="${prefix}prismatic_1" multiplier="-1" offset="0" /> 
+      <dynamics damping="0.3" friction="0.2"  />
+    </joint>
+  </xacro:macro>
+</robot>

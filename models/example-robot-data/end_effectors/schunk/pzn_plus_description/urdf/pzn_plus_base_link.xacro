@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:macro name="pzn_plus_base_link" params="prefix meshType">
+    <!-- links -->
+    <link name="${prefix}base_link">
+      <inertial>
+        <origin
+          xyz="-3.72573931268341E-05 0.000318338201142255 0.0127328982984143"
+          rpy="0 0 0" />
+        <mass
+          value="0.0307377335375316" />
+        <inertia
+          ixx="4.77894957339341E-06"
+          ixy="-1.95335252616781E-09"
+          ixz="1.69640432077875E-09"
+          iyy="4.85993064937264E-06"
+          iyz="-1.81146687762425E-08"
+          izz="7.49495167832347E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_base.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.517647058823529 0.517647058823529 0 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_base.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}trans_1">
+      <inertial>
+        <origin
+          xyz="-3.57849226535115E-10 0.0108765381400886 -0.000315367044710781"
+          rpy="0 0 0" />
+        <mass
+          value="0.00162889478244803" />
+        <inertia
+          ixx="7.49822342198456E-08"
+          ixy="-1.27842770643375E-16"
+          ixz="-2.44691269921564E-15"
+          iyy="2.23913080422873E-08"
+          iyz="1.44435754323217E-09"
+          izz="7.75810628622913E-08" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0016 0.022 -0.0045"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_trans.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.180392156862745 0.180392156862745 0.180392156862745 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0016 0.022 -0.0045"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_trans.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}trans_2">
+      <inertial>
+        <origin
+          xyz="-3.58109043287202E-10 0.0108765388192112 -0.00031536704443285"
+          rpy="0 0 0" />
+        <mass
+          value="0.00162889478115007" />
+        <inertia
+          ixx="7.498223362452E-08"
+          ixy="-1.83887864245355E-16"
+          ixz="-2.4469784777142E-15"
+          iyy="2.23913080100562E-08"
+          iyz="1.44435775103784E-09"
+          izz="7.75810622404117E-08" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0016 0.022 -0.0045"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_trans.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.180392156862745 0.180392156862745 0.180392156862745 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0016 0.022 -0.0045"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_trans.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}trans_3">
+      <inertial>
+        <origin
+          xyz="-3.58109044154564E-10 0.0108765388192112 -0.00031536704443285"
+          rpy="0 0 0" />
+        <mass
+          value="0.00162889478115007" />
+        <inertia
+          ixx="7.49822336245201E-08"
+          ixy="-1.83887845220201E-16"
+          ixz="-2.446978477921E-15"
+          iyy="2.23913080100562E-08"
+          iyz="1.44435775103783E-09"
+          izz="7.75810622404117E-08" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0016 0.022 -0.0045"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_trans.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.180392156862745 0.180392156862745 0.180392156862745 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0016 0.022 -0.0045"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_trans.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+
+
+    <joint
+      name="${prefix}prismatic_1"
+      type="prismatic">
+      <origin
+        xyz="-0.01124 -0.0227105829743 0.022187"
+        rpy="0 0 -0.523598775598" />
+      <parent
+        link="${prefix}base_link" />
+      <child
+        link="${prefix}trans_1" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-0.015"
+        upper="0"
+        effort="300"
+        velocity="1" />
+    </joint>
+    <joint
+      name="${prefix}prismatic_2"
+      type="prismatic">
+      <origin
+        xyz="0.0252 0.00157 0.022187"
+        rpy="0 0 1.5708012244" />
+      <parent
+        link="${prefix}base_link" />
+      <child
+        link="${prefix}trans_2" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-0.015"
+        upper="0"
+        effort="300"
+        velocity="1" />
+      <mimic joint="${prefix}prismatic_1" multiplier="1" offset="0" /> 
+    </joint>
+    <joint
+      name="${prefix}prismatic_3"
+      type="prismatic">
+      <origin
+        xyz="-0.01397735 0.021 0.0221865670970663"
+        rpy="0 0 -2.617921602390" />
+      <parent
+        link="${prefix}base_link" />
+      <child
+        link="${prefix}trans_3" />
+      <axis
+        xyz="0 1 0" />
+      <limit
+        lower="-0.015"
+        upper="0"
+        effort="300"
+        velocity="1" />
+      <mimic joint="${prefix}prismatic_1" multiplier="1" offset="0" /> 
+    </joint>
+  </xacro:macro>
+</robot>

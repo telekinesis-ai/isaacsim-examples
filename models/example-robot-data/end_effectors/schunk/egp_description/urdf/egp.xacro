@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--degrees to radians-->
+
+    <xacro:macro name="egp" params="prefix_1 prefix_2 meshType">
+
+        <!-- imports -->
+        <xacro:include filename="$(find egp_description)/urdf/egp_base_link.urdf.xacro" />
+        <!-- <xacro:include filename="$(find egp_description)/urdf/egp_fingers_link.urdf.xacro" /> -->
+
+        <!--xacro:include filename="$(find pzv_64_description)/urdf/pzv_64.gazebo.xacro" /-->
+        <xacro:include filename="$(find egp_description)/urdf/egp.transmission.urdf.xacro" />
+
+        <xacro:egp_base_link prefix="${prefix_1}_" meshType="${meshType}" />
+        <xacro:egp_transmission prefix="${prefix_2}_" />
+        <!-- links -->
+        <!--link name="world" /-->
+<!--
+        <joint name="fixed" type="fixed">
+            <parent link="world" />
+            <child link="${prefix}base_link" />
+        </joint>
+-->
+
+
+    </xacro:macro>
+</robot>

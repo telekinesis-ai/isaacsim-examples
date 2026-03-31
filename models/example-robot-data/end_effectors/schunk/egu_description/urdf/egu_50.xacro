@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--degrees to radians-->
+
+    <xacro:macro name="egu_50" params="prefix_1 prefix_2 meshType">
+
+        <!-- imports -->
+        <xacro:include filename="$(find egu_description)/urdf/egu_50_base_link.urdf.xacro" />
+        <xacro:include filename="$(find egu_description)/urdf/egu_50_fingers_link.urdf.xacro" />
+        <xacro:include filename="$(find egu_description)/urdf/egu_50_fingers_version2_link.urdf.xacro" />
+        <!--xacro:include filename="$(find egu_description)/urdf/egu_50.gazebo.xacro" /-->
+        <xacro:include filename="$(find egu_description)/urdf/egu_50.transmission.xacro" />
+
+        <xacro:egu_50_base_link prefix="${prefix_1}_" meshType="${meshType}" />
+        <!--xacro:egu_50_fingers_link prefix="${prefix_2}_" meshType="${meshType}" /-->
+        <xacro:egu_50_fingers_link prefix="${prefix_2}_" meshType="${meshType}" />
+        <xacro:egu_50_transmission prefix="${prefix_2}_" />
+        <!-- links -->
+        <!--link name="world" /-->
+<!--
+        <joint name="fixed" type="fixed">
+            <parent link="world" />
+            <child link="${prefix}base_link" />
+        </joint>
+-->
+
+        <!-- <joint name="fixed_joint_gripper_base_link_right" type="fixed">
+          <origin xyz="0.018 0 0.01" rpy="1.5708 0 -1.5708" />
+          <parent link="${prefix_1}_translational_right" />
+          <child link="${prefix_2}_base_link_right" />
+          <axis xyz="0 0 0" />
+        </joint>
+
+        <joint name="fixed_joint_gripper_base_link_left" type="fixed">
+          <origin xyz="-0.018 0 0.01" rpy="1.5708 0 1.5708" />
+          <parent link="${prefix_1}_translational_left" />
+          <child link="${prefix_2}_base_link_left" />
+          <axis xyz="0 0 0" />
+        </joint> -->
+
+
+        <joint name="fixed_joint_gripper_base_link_right" type="fixed">
+          <origin xyz="0.018 0 0.01" rpy="0 0 0" />
+          <parent link="${prefix_1}_translational_right" />
+          <child link="${prefix_2}_base_link_right" />
+          <axis xyz="0 0 0" />
+        </joint>
+
+        <joint name="fixed_joint_gripper_base_link_left" type="fixed">
+          <origin xyz="-0.018 0 0.01" rpy="0 0 0" />
+          <parent link="${prefix_1}_translational_left" />
+          <child link="${prefix_2}_base_link_left" />
+          <axis xyz="0 0 0" />
+        </joint>
+
+
+    </xacro:macro>
+</robot>

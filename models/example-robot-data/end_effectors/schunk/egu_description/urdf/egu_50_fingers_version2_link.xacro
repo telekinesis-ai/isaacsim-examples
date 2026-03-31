@@ -1,0 +1,548 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  
+ <xacro:macro name="egu_50_fingers_version2_link" params="prefix meshType">  
+  <link
+    name="${prefix}base_link_left">
+    <inertial>
+      <origin
+        xyz="-0.0047644 -0.0049679 -0.022233"
+        rpy="0 0 0" />
+      <mass
+        value="0.011212" />
+      <inertia
+        ixx="1.0648E-06"
+        ixy="1.0154E-09"
+        ixz="-2.7782E-07"
+        iyy="1.2766E-06"
+        iyz="2.0857E-09"
+        izz="3.0857E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/fingers_base_link_left.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/fingers_base_link_left.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}link_left">
+    <inertial>
+      <origin
+        xyz="-0.0015151 -1.9843E-05 0.034448"
+        rpy="0 0 0" />
+      <mass
+        value="0.052556" />
+      <inertia
+        ixx="1.0291E-05"
+        ixy="3.8718E-10"
+        ixz="1.1148E-07"
+        iyy="1.2102E-05"
+        iyz="-1.3876E-08"
+        izz="2.588E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/finger_link_left.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/finger_link_left.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}base_link_right">
+    <inertial>
+      <origin
+        xyz="-0.0047644 -0.0049679 -0.022233"
+        rpy="0 0 0" />
+      <mass
+        value="0.011212" />
+      <inertia
+        ixx="1.0648E-06"
+        ixy="1.0154E-09"
+        ixz="-2.7782E-07"
+        iyy="1.2766E-06"
+        iyz="2.0857E-09"
+        izz="3.0857E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/fingers_base_link_right.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/fingers_base_link_right.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}link_right">
+    <inertial>
+      <origin
+        xyz="-0.0015151 -1.9843E-05 0.034448"
+        rpy="0 0 0" />
+      <mass
+        value="0.052556" />
+      <inertia
+        ixx="1.0291E-05"
+        ixy="3.8718E-10"
+        ixz="1.1148E-07"
+        iyy="1.2102E-05"
+        iyz="-1.3876E-08"
+        izz="2.588E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/finger_link_right.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/finger_link_right.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}screw_1">
+    <inertial>
+      <origin
+        xyz="0.0040161 -7.7603E-20 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00059389" />
+      <inertia
+        ixx="1.3113E-09"
+        ixy="1.3329E-25"
+        ixz="2.3522E-25"
+        iyy="1.2809E-08"
+        iyz="-1.4099E-26"
+        izz="1.2809E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_1.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.68627 0.68627 0.68627 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_1.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}screw_2">
+    <inertial>
+      <origin
+        xyz="0.0040161 -7.7603E-20 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00059389" />
+      <inertia
+        ixx="1.3113E-09"
+        ixy="1.3329E-25"
+        ixz="2.3522E-25"
+        iyy="1.2809E-08"
+        iyz="-1.4099E-26"
+        izz="1.2809E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_2.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.68627 0.68627 0.68627 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_2.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}screw_3">
+    <inertial>
+      <origin
+        xyz="0.0040161 -7.7603E-20 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00059389" />
+      <inertia
+        ixx="1.3113E-09"
+        ixy="1.3329E-25"
+        ixz="2.3362E-25"
+        iyy="1.2809E-08"
+        iyz="-1.4099E-26"
+        izz="1.2809E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_3.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.68627 0.68627 0.68627 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_3.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}screw_4">
+    <inertial>
+      <origin
+        xyz="0.0040161 -7.7603E-20 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.00059389" />
+      <inertia
+        ixx="1.3113E-09"
+        ixy="1.3709E-25"
+        ixz="2.3167E-25"
+        iyy="1.2809E-08"
+        iyz="-1.4296E-26"
+        izz="1.2809E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_4.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.68627 0.68627 0.68627 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/screw_4.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}symbol_2_left">
+    <inertial>
+      <origin
+        xyz="-3.5571E-05 4.593E-08 0.00014622"
+        rpy="0 0 0" />
+      <mass
+        value="5E-05" />
+      <inertia
+        ixx="7.8343E-11"
+        ixy="6.746E-14"
+        ixz="1.2575E-13"
+        iyy="5.8113E-10"
+        iyz="-1.6238E-16"
+        izz="6.5907E-10" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/symbol_2_left.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/symbol_2_left.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="${prefix}symbol_2_right">
+    <inertial>
+      <origin
+        xyz="-3.5571E-05 4.593E-08 0.00014622"
+        rpy="0 0 0" />
+      <mass
+        value="5E-05" />
+      <inertia
+        ixx="7.8343E-11"
+        ixy="6.746E-14"
+        ixz="1.2575E-13"
+        iyy="5.8113E-10"
+        iyz="-1.6238E-16"
+        izz="6.5907E-10" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/symbol_2_right.${meshType}" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://egu_description/meshes/symbol_2_right.${meshType}" />
+      </geometry>
+    </collision>
+  </link>
+
+
+
+
+  <joint
+    name="${prefix}link_left_fixed"
+    type="fixed">
+    <origin
+      xyz="0.00800000000000001 0 0.013"
+      rpy="3.14159265358979 1.5707963267949 0" />
+    <parent
+      link="${prefix}screw_1" />
+    <child
+      link="${prefix}link_left" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}link_right"
+    type="fixed">
+    <origin
+      xyz="0.00800000000000001 0 0.013"
+      rpy="3.14159265358979 1.5707963267949 0" />
+    <parent
+      link="${prefix}screw_4" />
+    <child
+      link="${prefix}link_right" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}screw_1_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.01258 0.00800000000000001 -0.038"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="${prefix}base_link_left" />
+    <child
+      link="${prefix}screw_1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}screw_2_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.01258 0.00800000000000001 -0.025"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="${prefix}base_link_left" />
+    <child
+      link="${prefix}screw_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}screw_3_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.01258 0.00800000000000001 -0.025"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="${prefix}base_link_right" />
+    <child
+      link="${prefix}screw_3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}screw_4_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.01258 0.00800000000000001 -0.038"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="${prefix}base_link_right" />
+    <child
+      link="${prefix}screw_4" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}symbol_2_left_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.000693375672974006 0.00575 0.005"
+      rpy="-1.5707963267949 0 0" />
+    <parent
+      link="${prefix}link_left" />
+    <child
+      link="${prefix}symbol_2_left" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="${prefix}symbol_2_right_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.000693375672974006 0.00575 0.005"
+      rpy="-1.5707963267949 0 0" />
+    <parent
+      link="${prefix}link_right" />
+    <child
+      link="${prefix}symbol_2_right" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+  <gazebo reference="${prefix}finger_left">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu>0.35</mu>
+    <mu2>0.35</mu2>
+  </gazebo>
+  <gazebo reference="${prefix}finger_right">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu>0.35</mu>
+    <mu2>0.35</mu2>
+  </gazebo>
+
+
+
+ </xacro:macro>
+</robot>

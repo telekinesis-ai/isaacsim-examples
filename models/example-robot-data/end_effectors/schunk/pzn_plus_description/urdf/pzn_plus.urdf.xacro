@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<robot name="pzn_plus" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find pzn_plus_description)/urdf/pzn_plus.xacro" />
+  <xacro:pzn_plus prefix_1="pzn_plus" prefix_2="pzn_plus" meshType="dae" />
+</robot>

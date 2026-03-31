@@ -1,0 +1,40 @@
+<launch>
+
+  <!-- Declare arguments -->
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="xacro_file_path" default="$(find egp_description)/urdf/egp.urdf.xacro"/>
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+
+
+
+  <!-- Convert xacro to URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro $(arg xacro_file_path)"/>
+
+
+
+
+
+  <!-- Launch Gazebo with the necessary plugins -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="false" />
+    <arg name="use_sim_time" value="true" />
+  </include>
+
+  <!-- Robot state publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+  </node>
+
+  <!-- Joint state publisher -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" output="screen">
+  </node>
+
+  <!-- Spawn the robot into Gazebo -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x $(arg x) -y $(arg y) -z $(arg z) -urdf -model robot -param robot_description" respawn="false" output="screen" />
+
+</launch>

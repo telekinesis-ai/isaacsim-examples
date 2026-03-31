@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:macro name="pzn_plus_fingers_link" params="prefix meshType">
+    <!-- links -->
+    <link
+      name="${prefix}finger_1">
+      <inertial>
+        <origin
+          xyz="-1.7793206712053E-05 0.0105466571996601 0.0138490825923717"
+          rpy="0 0 0" />
+        <mass
+          value="0.00453123049399013" />
+        <inertia
+          ixx="6.19390061820821E-07"
+          ixy="7.11229380477195E-11"
+          ixz="-1.27115655316891E-09"
+          iyy="5.04845770684435E-07"
+          iyz="6.06988981710161E-08"
+          izz="2.014102697996E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0001 0.0243 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_finger_1.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0001 0.0243 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_finger_1.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}finger_2">
+      <inertial>
+        <origin
+          xyz="-1.77932067122978E-05 0.0105466571996597 0.0138490825923717"
+          rpy="0 0 0" />
+        <mass
+          value="0.00453123049399013" />
+        <inertia
+          ixx="6.19390061820822E-07"
+          ixy="7.11229380476237E-11"
+          ixz="-1.27115655316891E-09"
+          iyy="5.04845770684436E-07"
+          iyz="6.06988981710159E-08"
+          izz="2.014102697996E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0001 0.0243 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_finger_1.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0001 0.0243 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_finger_1.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="${prefix}finger_3">
+      <inertial>
+        <origin
+          xyz="-1.77932067118042E-05 0.0105466571996597 0.0138490825923717"
+          rpy="0 0 0" />
+        <mass
+          value="0.00453123049399013" />
+        <inertia
+          ixx="6.19390061820822E-07"
+          ixy="7.11229380478619E-11"
+          ixz="-1.27115655316895E-09"
+          iyy="5.04845770684436E-07"
+          iyz="6.06988981710161E-08"
+          izz="2.014102697996E-07" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="-0.0001 0.0243 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_finger_1.${meshType}" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="-0.0001 0.0243 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://pzn_plus_description/meshes/pzn_plus_finger_1.${meshType}" />
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+</robot>
