@@ -39,8 +39,10 @@ import omni.timeline
 import omni.usd
 from pxr import Gf, PhysicsSchemaTools, Sdf, UsdLux
 
+
 # ----------------------------- Setup stage -----------------------------
-# Get stage handle
+
+
 stage = omni.usd.get_context().get_stage()
 
 # Add a ground plane
@@ -52,7 +54,9 @@ PhysicsSchemaTools.addGroundPlane(
 distantLight = UsdLux.DistantLight.Define(stage, Sdf.Path("/DistantLight"))
 distantLight.CreateIntensityAttr(1000)
 
+
 # ----------------------------- Setup robot -----------------------------
+
 
 root_dir = pathlib.Path(__file__).resolve().parent.parent
 model_dir = root_dir / "models"
@@ -83,6 +87,7 @@ status, ur10e_prim_path = omni.kit.commands.execute(
 
 
 # ----------------------------- simulation -----------------------------
+
 
 # Update the simulation to ensure the robot is fully imported before we try to
 # interact with it.
@@ -121,7 +126,7 @@ while simulation_app.is_running():
         # values.
         velocities = np.array([[0.1, 0.2, 0.3, 0.4, 0.5, 0.6]])
         art.set_joint_velocities(velocities)
-        
+
         # Set only the two joints : wrist_3_joint and wrist_2_joint to 0.7.
         velocities = np.array([[0.7, 0.7]])
         art.set_joint_velocities(

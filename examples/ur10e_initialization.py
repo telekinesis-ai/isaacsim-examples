@@ -31,7 +31,6 @@ Overview:
 """
 
 import pathlib
-import sys
 import numpy as np
 from loguru import logger
 
@@ -49,7 +48,10 @@ import omni.timeline
 import omni.usd
 from pxr import Gf, PhysicsSchemaTools, Sdf, UsdLux
 
+
 # ----------------------------- Setup stage -----------------------------
+
+
 # Get stage handle
 stage = omni.usd.get_context().get_stage()
 
@@ -62,7 +64,9 @@ PhysicsSchemaTools.addGroundPlane(
 distantLight = UsdLux.DistantLight.Define(stage, Sdf.Path("/DistantLight"))
 distantLight.CreateIntensityAttr(1000)
 
+
 # ----------------------------- Setup robot -----------------------------
+
 
 root_dir = pathlib.Path(__file__).resolve().parent.parent
 model_dir = root_dir / "models"
@@ -93,6 +97,7 @@ status, ur10e_prim_path = omni.kit.commands.execute(
 
 
 # ----------------------------- simulation -----------------------------
+
 
 # Update the simulation to ensure the robot is fully imported before we try to
 # interact with it.

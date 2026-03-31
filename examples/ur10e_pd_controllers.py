@@ -41,7 +41,10 @@ import omni.timeline
 import omni.usd
 from pxr import Gf, PhysicsSchemaTools, Sdf, UsdLux
 
+
 # ----------------------------- Setup stage -----------------------------
+
+
 # Get stage handle
 stage = omni.usd.get_context().get_stage()
 
@@ -54,7 +57,9 @@ PhysicsSchemaTools.addGroundPlane(
 distantLight = UsdLux.DistantLight.Define(stage, Sdf.Path("/DistantLight"))
 distantLight.CreateIntensityAttr(1000)
 
+
 # ----------------------------- Setup robot -----------------------------
+
 
 root_dir = pathlib.Path(__file__).resolve().parent.parent
 model_dir = root_dir / "models"
@@ -85,6 +90,7 @@ status, ur10e_prim_path = omni.kit.commands.execute(
 
 
 # ----------------------------- simulation -----------------------------
+
 
 # Update the simulation to ensure the robot is fully imported before we try to
 # interact with it.
@@ -146,7 +152,7 @@ while simulation_app.is_running():
         joint_positions = art.get_joint_positions()
         # Get all joint velocities.
         joint_velocities = art.get_joint_velocities()
-        
+
         logger.info("Joint positions: {}", joint_positions)
         logger.info("Joint velocities: {}", joint_velocities)
 
