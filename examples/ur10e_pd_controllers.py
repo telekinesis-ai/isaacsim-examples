@@ -113,8 +113,8 @@ while simulation_app.is_running():
 
     if not timeline.is_playing():
         continue
-    
-    if TRIAL_IDX < 50:
+
+    if TRIAL_IDX < 100:
 
         # Set the joint position targets for the implicit Proportional-
         # Derivative (PD) controllers.
@@ -146,7 +146,7 @@ while simulation_app.is_running():
         joint_positions = art.get_joint_positions()
         # Get all joint velocities.
         joint_velocities = art.get_joint_velocities()
-        # print the robot state
+        
         logger.info("Joint positions: {}", joint_positions)
         logger.info("Joint velocities: {}", joint_velocities)
 

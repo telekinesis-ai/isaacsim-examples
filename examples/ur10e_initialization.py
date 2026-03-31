@@ -303,7 +303,7 @@ while simulation_app.is_running():
         # 12. Get the current joint states (positions and velocities).
         joints_state = art.get_joints_state()
    
-        # 13. Get the dof index and build a "joint name -> DOF index" map for 
+        # 13. Get the dof index and build a "joint name -> DOF index" map for
         # fast name-based control commands.
         dof_names = art.dof_names
         dof_name_to_index = {
@@ -323,8 +323,12 @@ while simulation_app.is_running():
         logger.info("Velocities: {}", velocities)
         logger.info("Linear velocities: {}", linear_velocities)
         logger.info("Angular velocities: {}", angular_velocities)
-        logger.info("Joints default position: {}", joints_default_state.positions)
-        logger.info("Joints default velocity: {}", joints_default_state.velocities)
+        logger.info(
+            "Joints default position: {}", joints_default_state.positions
+        )
+        logger.info(
+            "Joints default velocity: {}", joints_default_state.velocities
+        )
         logger.info("Joints default effort: {}", joints_default_state.efforts)
         logger.info("Joints position: {}", joints_state.positions)
         logger.info("Joints velocity: {}", joints_state.velocities)

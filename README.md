@@ -25,7 +25,7 @@ To activate the environment:
 1. Clone the repository:
     ```bash
     cd path/to/working_directory
-    git clone -b develop https://gitlab.com/telekinesis/isaacsim-examples.git
+    git clone https://github.com/telekinesis-ai/isaacsim-examples.git
     ```
 
 
@@ -65,9 +65,6 @@ To activate the environment:
     pip install isaacsim[all,extscache]==5.1.0 --extra-index-url https://pypi.nvidia.com
     ```
 
-
-## Dependencies
-
 ## Examples
 
 To be able to run the examples, follow the below steps:
@@ -79,7 +76,7 @@ To be able to run the examples, follow the below steps:
     ```bash
     python examples/ur10e_set_joint_positions.py
     ```
-    Expected output: Some logs and joint positions：
+    Expected output: Some logs and joint positions
     ```bash
     ...
     ...
@@ -88,11 +85,8 @@ To be able to run the examples, follow the below steps:
     Note: The first time isaacsim is imported, a prompt asks you to accept the EULA at runtime. After the EULA is accepted, you will not see it again. If the EULA is not accepted, the execution will be terminated.
     
 
-## License
-
-
 ## Support
 
 For issues and questions:
-- Create an issue in the GitLab repository
+- Create an issue in the Github repository
 - Contact the development team
