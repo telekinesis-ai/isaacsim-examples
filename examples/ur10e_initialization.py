@@ -49,15 +49,6 @@ import omni.timeline
 import omni.usd
 from pxr import Gf, PhysicsSchemaTools, Sdf, UsdLux
 
-logger.remove()
-logger.add(
-    sys.stdout,
-    format=(
-        "{time:YYYY-MM-DD HH:mm:ss.SSS} | "
-        "{level:<8} | {name}:{function}:{line} - {message}"
-    ),
-)
-
 # ----------------------------- Setup stage -----------------------------
 # Get stage handle
 stage = omni.usd.get_context().get_stage()
