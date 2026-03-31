@@ -11,14 +11,16 @@ isaacsim-examples provides Isaac Sim examples for loading and controlling the ro
 It is highly recommended to install a Miniconda environment before setting up the project. You can install Miniconda by following instructions from [here](https://docs.conda.io/en/latest/miniconda.html#installing).
 
 Create a new Conda environment called `isaacsim-examples`:
-    ```
-    conda create -n isaacsim-examples python=3.11
-    ```
+
+```bash
+conda create -n isaacsim-examples python=3.11
+```
 
 To activate the environment:
-    ```
-    conda activate isaacsim-examples
-    ```
+
+```bash
+conda activate isaacsim-examples
+```
 
 ## Installation
 
