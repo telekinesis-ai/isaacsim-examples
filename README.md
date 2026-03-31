@@ -130,7 +130,7 @@ To be able to run the examples, follow the below steps:
     Joint positions: [[1.5 1.5 1.5 0.0 0.5 0.5]]
     ```
 
-    **Robot and Gripper Assembly Example**
+    **Robot and Gripper control Example**
 
     ```bash
     python examples/ur10e_with_onrobot_rg6.py
