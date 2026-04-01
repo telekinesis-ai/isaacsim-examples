@@ -20,7 +20,7 @@ Workflow:
 
     4. Simulation startup:
         - Initialize physics with `SimulationContext`.
-        - Create an `Articulation` handle for the UR10e and print DOF names.
+        - Create an `Articulation` handle for the UR10e.
         - Run a Play-gated simulation loop (`timeline.is_playing()`).
 """
 
@@ -216,7 +216,6 @@ while simulation_app.is_running():
 
     # One-shot close command.
     if TRIAL_IDX == 0:
-        print("closing gripper")
         # Close the gripper
         robot.gripper.close()
         TRIAL_IDX = 1
