@@ -26,7 +26,6 @@ Workflow:
 
 import pathlib
 import numpy as np
-from loguru import logger
 
 # Launch the SimulationApp
 from isaacsim import SimulationApp
@@ -37,7 +36,8 @@ simulation_app = SimulationApp({"headless": False})
 # instantiated (because APIs are provided by the extension/runtime plugin
 # system, it must be loaded before they will be available to import).
 from isaacsim.core.api import SimulationContext
-from isaacsim.core.prims import Articulation
+from isaacsim.robot.manipulators.manipulators import SingleManipulator
+from isaacsim.robot.manipulators.grippers import ParallelGripper
 import omni.kit.commands
 import omni.timeline
 import omni.usd
@@ -141,7 +141,7 @@ onrobot_rg6_attach = Sdf.Path(gripper_prim_path).GetParentPath().pathString
 onrobot_rg6_attach_mount = f"{onrobot_rg6_attach}/onrobot_rg6_base_link"
 # Assembly namespace
 assembly_namespace = "Gripper"
-variant_name = "ur10e_with_onrobot_rg6"
+variant_name = "ur10e_with_rg6"
 
 # Assemble ur10e and onrobot rg6
 assembler = RobotAssembler()
@@ -168,54 +168,59 @@ assembler.finish_assemble()
 # ----------------------------- simulation -----------------------------
 
 
-# Update the simulation to ensure the robot is fully imported before we try to
-# interact with it.
+# Flush a few frames so assembled USD prims are fully realized before physics
+# and articulation handles are created.
 simulation_app.update()
 simulation_app.update()
 
-# Create a `SimulationContext` to interact with the physics scene and get/set
-# robot state.
+# Build physics context and initialize PhysX tensor views.
 simulation_context = SimulationContext()
-
-# Initialize physics for getting any articulation.
 simulation_context.initialize_physics()
 
+# One more frame flush after physics init to make handles stable.
 simulation_app.update()
 simulation_app.update()
 
-# Articulation
-art = Articulation(ur10e_prim_path)
-art.initialize()
-finger_idx = art.get_dof_index("finger_joint")
+# Configure the RG6 as a 1-DOF parallel gripper driven by finger_joint.
+gripper = ParallelGripper(
+    end_effector_prim_path=f"{ur10e_base}/onrobot_rg6_model/onrobot_rg6_base_link",
+    joint_prim_names=["finger_joint"],
+    joint_opened_positions=np.array([0.0]),
+    joint_closed_positions=np.array([0.8]),
+    action_deltas=np.array([-0.8]),
+    use_mimic_joints=True,
+)
 
-# Wait for manual Play in the Isaac Sim UI; do not auto-start.
+robot = SingleManipulator(
+    prim_path=ur10e_prim_path,
+    name="ur10e_with_rg6",
+    end_effector_prim_path=f"{ur10e_base}/onrobot_rg6_model/onrobot_rg6_base_link",
+    gripper=gripper,
+)
+# Initialize wires gripper callbacks (apply_action/getters/setters).
+robot.initialize()
+
 timeline = omni.timeline.get_timeline_interface()
 
 TRIAL_IDX = 0
 
 # Main simulation loop
 while simulation_app.is_running():
+
+    # Pump Kit app/UI/events every frame.
     simulation_app.update()
 
+    # Only control robot when user presses Play in the UI timeline.
     if not timeline.is_playing():
         continue
 
-    # Initialization control is performed only once when the device first enters
-    # Play mode, avoiding repeated resets every frame.
+    # One-shot close command.
     if TRIAL_IDX == 0:
-
-        # Set the finger joints to close.
-        positions = np.array([[0.5]])
-        art.set_joint_positions(
-            positions,
-            joint_indices=np.array([finger_idx])
-        )
-
-        # Get all joint positions.
-        joint_positions = art.get_joint_positions()
-        logger.info("Joint positions: {}", joint_positions)
-
+        print("closing gripper")
+        # Close the gripper
+        robot.gripper.close()
         TRIAL_IDX = 1
         continue
 
+    # Step physics + render after commands are issued.
     simulation_context.step(render=True)

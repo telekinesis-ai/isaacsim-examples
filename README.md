@@ -133,7 +133,7 @@ To be able to run the examples, follow the below steps:
     **Robot and Gripper control Example**
 
     ```bash
-    python examples/ur10e_with_onrobot_rg6.py
+    python examples/ur10e_with_rg6.py
     ```
     Note: The first time Isaac Sim is imported, a prompt will ask you to accept the EULA at runtime. After the EULA is accepted, you will not see it again. If the EULA is not accepted, the execution will be terminated. Running Isaac Sim for the first time also take longer to loading.
     
