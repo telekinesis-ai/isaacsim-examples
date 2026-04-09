@@ -23,13 +23,13 @@ Overview:
             * set_joint_velocity_targets
 """
 
-import pathlib
-import numpy as np
-from loguru import logger
-
 # Launch the SimulationApp
 from isaacsim import SimulationApp
 simulation_app = SimulationApp({"headless": False})
+
+import pathlib
+import numpy as np
+from loguru import logger
 
 # Any Omniverse level imports must occur after the `SimulationApp` class is
 # instantiated (because APIs are provided by the extension/runtime plugin

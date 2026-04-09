@@ -1,0 +1,160 @@
+#usda 1.0
+(
+    defaultPrim = "BlueBeamC_03"
+    upAxis = "Z"
+)
+
+def Xform "BlueBeamC_03" (
+    instanceable = false
+    kind = "component"
+)
+{
+    token ui:displayGroup = "Material Graphs"
+    token ui:displayName = "BlueBeamC_03"
+    int ui:order = 1024
+    float3 xformOp:rotateXYZ = (0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+    def Scope "Looks"
+    {
+        def Material "BluePaint"
+        {
+            token outputs:mdl:displacement.connect = </BlueBeamC_03/Looks/BluePaint/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </BlueBeamC_03/Looks/BluePaint/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </BlueBeamC_03/Looks/BluePaint/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.19607843, 0.2784314, 0.45490196) (
+                    customData = {
+                        float3 default = (0.2, 0.2, 0.2)
+                    }
+                    displayGroup = "Albedo"
+                    displayName = "Base Color"
+                    doc = "This is the base color"
+                    hidden = false
+                )
+                bool inputs:enable_ORM_texture = 1 (
+                    customData = {
+                        bool default = 0
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "Enable ORM Texture"
+                    doc = "When True the ORM texture will be used to extract the Occlusion, Roughness and Metallic Map"
+                    hidden = false
+                )
+                bool inputs:excludeFromWhiteMode = 0 (
+                    customData = {
+                        bool default = 0
+                        token remappedFrom = ""
+                    }
+                    displayGroup = "Material Flags"
+                    displayName = "Exclude from White Mode"
+                    hidden = false
+                )
+                float inputs:metallic_texture_influence = 1 (
+                    customData = {
+                        float default = 0
+                        dictionary range = {
+                            float max = 1
+                            float min = 0
+                        }
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "Metallic Map Influence"
+                    doc = "Blends between the constant value and the lookup of the metallic texture"
+                    hidden = false
+                )
+                asset inputs:ORM_texture = @./textures/T_YellowPaint_A1_ORM.png@ (
+                    colorSpace = "raw"
+                    customData = {
+                        asset default = @@
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "ORM Map"
+                    doc = "Texture that hae Occlusion, Roughness and Metallic map stored in the respective r, g and b channels"
+                    hidden = false
+                )
+                float inputs:reflection_roughness_texture_influence = 1 (
+                    customData = {
+                        float default = 0
+                        dictionary range = {
+                            float max = 1
+                            float min = 0
+                        }
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "Roughness Map Influence"
+                    doc = "Blends between the constant value and the lookup of the roughness texture"
+                    hidden = false
+                )
+                token outputs:out
+            }
+        }
+
+        def Material "Metal"
+        {
+            token outputs:mdl:displacement.connect = </BlueBeamC_03/Looks/Metal/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </BlueBeamC_03/Looks/Metal/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </BlueBeamC_03/Looks/Metal/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                bool inputs:enable_ORM_texture = 1 (
+                    customData = {
+                        bool default = 0
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "Enable ORM Texture"
+                    doc = "When True the ORM texture will be used to extract the Occlusion, Roughness and Metallic Map"
+                    hidden = false
+                )
+                bool inputs:excludeFromWhiteMode = 0 (
+                    customData = {
+                        bool default = 0
+                        token remappedFrom = ""
+                    }
+                    displayGroup = "Material Flags"
+                    displayName = "Exclude from White Mode"
+                    hidden = false
+                )
+                float inputs:metallic_texture_influence = 1 (
+                    customData = {
+                        float default = 0
+                        dictionary range = {
+                            float max = 1
+                            float min = 0
+                        }
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "Metallic Map Influence"
+                    doc = "Blends between the constant value and the lookup of the metallic texture"
+                    hidden = false
+                )
+                float inputs:reflection_roughness_texture_influence = 1 (
+                    customData = {
+                        float default = 0
+                        dictionary range = {
+                            float max = 1
+                            float min = 0
+                        }
+                    }
+                    displayGroup = "Reflectivity"
+                    displayName = "Roughness Map Influence"
+                    doc = "Blends between the constant value and the lookup of the roughness texture"
+                    hidden = false
+                )
+                token outputs:out
+            }
+        }
+    }
+}
+

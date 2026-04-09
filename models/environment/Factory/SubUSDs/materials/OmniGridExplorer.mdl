@@ -1,0 +1,516 @@
+mdl 1.5;
+
+import ::base::*;
+import ::anno::*;
+import ::math::*;
+import ::state::*;
+import ::tex::*;
+
+import ::OmniSurface::OmniSurfaceBase::*;
+import ::OmniSurface::OmniImage::*;
+
+export enum dash_style_method {
+    solid,
+    thick_dashes,
+    remove_dashed
+};
+
+export enum units_method {
+    meters,
+    centimeters,
+    millimiters,
+    inches,
+    feet
+};
+
+float unit_multiplier(
+    units_method units
+)
+{
+    switch( units )
+    {
+        case meters:
+            return 1.f;
+        case centimeters:
+            return 100.f;
+        case millimiters:
+            return 1000.f;
+        case inches:
+            return 39.3701f;
+        case feet:
+            return 3.28084f;
+    }
+}
+
+int unit_icon_selection(
+    units_method units
+)
+{
+    switch( units )
+    {
+        case meters:
+            return 0;
+        case centimeters:
+            return 1;
+        case millimiters:
+            return 2;
+        case inches:
+            return 3;
+        case feet:
+            return 4;
+    }
+}
+
+float3 calculate_projection_position(
+    uniform float3 projection_scale = float3(1.0)
+)
+{
+    float4x4 matrix = state::transform(state::coordinate_object, state::coordinate_world);
+
+    float objectspace_scale_x = math::length( float3( matrix[0].x, matrix[0].y, matrix[0].z ) ) / projection_scale.x;
+    float objectspace_scale_y = math::length( float3( matrix[1].x, matrix[1].y, matrix[1].z ) ) / projection_scale.y;
+    float objectspace_scale_z = math::length( float3( matrix[2].x, matrix[2].y, matrix[2].z ) ) / projection_scale.z;
+
+    float3 position = state::transform_point(state::coordinate_internal, state::coordinate_object, state::position());
+    return position * float3(objectspace_scale_x, objectspace_scale_y, objectspace_scale_z);
+}
+
+float sample_unit_icon(
+    uniform texture_2d tex   = texture_2d(),
+    float2 position          = float2( 0.f ),
+    float icon_size          = 1.f,
+    float icon_count           = 8,
+    float icon_index           = 0,
+    float image_threshold    = 0.05f
+)
+{
+    float icon_offset = float(icon_index) / float(icon_count);
+    float icon_width = 1.f / icon_count;
+
+    if (position.x < icon_size && position.y < icon_size) {
+        
+        float2 icon_uv = float2(
+            (position.x / icon_size) * icon_width + icon_offset,
+            position.y / icon_size
+        );
+        
+        return tex::lookup_float( 
+            tex, 
+            icon_uv
+             ) > image_threshold ? 1.f : 0.f;
+    }
+    return 0.f;
+}
+
+float draw_unit_icon(
+    uniform texture_2d tex   = texture_2d(),
+    float3 normal            = state::normal(),
+    float3 position          = state::position() * state::meters_per_scene_unit(),
+    float grid_divisions     = 1.f,
+    float icon_size          = 1.f,
+    float icon_index_count   = 8,
+    float icon_index         = 0
+)
+{
+    float x = math::frac( position.x * grid_divisions );
+    float y = math::frac( position.y * grid_divisions );
+    float z = math::frac( position.z * grid_divisions );    
+
+    float2 tex_coords_x = float2(z, y); 
+    float2 tex_coords_y = float2(x, z); 
+    float2 tex_coords_z = float2(x, y);
+
+    bool draw_texture_x = math::abs( math::dot( normal, float3( 1.f, 0.f, 0.f ) ) ) == 1.f;
+    bool draw_texture_y = math::abs( math::dot( normal, float3( 0.f, 1.f, 0.f ) ) ) == 1.f;
+    bool draw_texture_z = math::abs( math::dot( normal, float3( 0.f, 0.f, 1.f ) ) ) == 1.f;
+
+    if( math::dot( normal, float3( 1.f, 0.f, 0.f ) ) == 1.f ) {
+        tex_coords_x.x = 1.0f - tex_coords_x.x;
+    }
+    if( math::dot( normal, float3( 0.f, 1.f, 0.f ) ) == 1.f ) {
+        tex_coords_y.y = 1.0f - tex_coords_y.y;
+    }
+    if( math::dot( normal, float3( 0.f, 0.f, 1.f ) ) == -1.f ) {
+        tex_coords_z.x = 1.0f - tex_coords_z.x;
+    }
+
+    float sampled_color_x = draw_texture_x ? sample_unit_icon( tex, tex_coords_x, icon_size, icon_index_count, icon_index ) : 0.f;
+    float sampled_color_y = draw_texture_y ? sample_unit_icon( tex, tex_coords_y, icon_size, icon_index_count, icon_index ) : 0.f;
+    float sampled_color_z = draw_texture_z ? sample_unit_icon( tex, tex_coords_z, icon_size, icon_index_count, icon_index ) : 0.f;
+
+    float sampled_color = math::max( math::max( sampled_color_x, sampled_color_y ), sampled_color_z );    
+
+    bool draw_texture = draw_texture_x || draw_texture_y || draw_texture_z;
+    if( draw_texture ) {
+        return sampled_color;
+    }    
+
+    return 0.f;
+}
+
+float checkerboard(
+    float3 position                  = state::position() * state::meters_per_scene_unit(),
+    float grid_divisions             = 1.f,
+    float3 normal                    = state::normal()
+)
+{
+    float epsilon = 0.0001;
+    position = ( position + epsilon );
+
+    bool is_dark_x = math::fmod(math::floor(position.x * grid_divisions), 2.f) == 0.f;
+    bool is_dark_y = math::fmod(math::floor(position.y * grid_divisions), 2.f) == 0.f;
+    bool is_dark_z = math::fmod(math::floor(position.z * grid_divisions), 2.f) == 0.f;
+
+    bool is_dark_xy = is_dark_x ^ is_dark_y;
+    bool is_dark_xz = is_dark_x ^ is_dark_z;
+    bool is_dark_yz = is_dark_y ^ is_dark_z;
+
+    float checker_val_xy = is_dark_xy ? 1.f : 0.f;
+    float checker_val_xz = is_dark_xz ? 1.f : 0.f;
+    float checker_val_yz = is_dark_yz ? 1.f : 0.f;
+
+    float dot_x = math::abs(math::dot(normal, float3(1.f, 0.f, 0.f)));
+    float dot_y = math::abs(math::dot(normal, float3(0.f, 1.f, 0.f)));
+    float dot_z = math::abs(math::dot(normal, float3(0.f, 0.f, 1.f)));
+
+    float normal_threshold = 0.577;
+
+    if (dot_x > normal_threshold)
+        return checker_val_yz;
+    else if (dot_y > normal_threshold)
+        return checker_val_xz;
+    else if (dot_z > normal_threshold)
+        return checker_val_xy;
+    else
+        return 0.f;
+}
+
+float grid( 
+    float3 position                   = state::position() * state::meters_per_scene_unit(),
+    float3 normal                     = state::normal(),
+    float grid_divisions              = 1.f,
+    float unit_divisions_thickness    = 0.0375f,    
+    float dashes_per_unit             = 10.f,
+    dash_style_method dash_style      = solid,
+    float normal_culling_round_number = 0.01f,
+    bool offset_position              = true,
+    float offset_override_amount      = 0.0f
+)
+{
+    position -= offset_position ? unit_divisions_thickness / grid_divisions : offset_override_amount;
+
+    float x = math::frac( position.x * grid_divisions );
+    float y = math::frac( position.y * grid_divisions );
+    float z = math::frac( position.z * grid_divisions );
+
+    bool line_x = x < unit_divisions_thickness || x > ( 1.0 - unit_divisions_thickness );
+    bool line_y = y < unit_divisions_thickness || y > ( 1.0 - unit_divisions_thickness );
+    bool line_z = z < unit_divisions_thickness || z > ( 1.0 - unit_divisions_thickness );
+
+    float grid_val = 0;
+    switch( dash_style )
+    {
+        case solid:
+            if( line_x || line_y || line_z ) {
+                grid_val = 1.f;
+            }
+            break;
+
+        case thick_dashes:
+        case remove_dashed:
+            float3 perp_vector;
+            if(line_x) {
+                perp_vector = float3(0.f, 1.f, 1.f);
+            } else if(line_y) {
+                perp_vector = float3(1.f, 0.f, 1.f);
+            } else { 
+                perp_vector = float3(1.f, 1.f, 0.f);
+            }
+
+            float dash_pattern = math::frac( math::dot( position, perp_vector ) * dashes_per_unit);
+            bool is_dash = dash_pattern < 0.5f;
+
+            if(dash_style == thick_dashes) {
+                float interpolated_thickness = unit_divisions_thickness * ( is_dash ? 0.25 : 1.0 );
+
+                x = math::frac( position.x * grid_divisions );
+                y = math::frac( position.y * grid_divisions );
+                z = math::frac( position.z * grid_divisions );
+
+                bool interpolated_line_x = x < interpolated_thickness || x > ( 1.0 - interpolated_thickness );
+                bool interpolated_line_y = y < interpolated_thickness || y > ( 1.0 - interpolated_thickness );
+                bool interpolated_line_z = z < interpolated_thickness || z > ( 1.0 - interpolated_thickness );
+
+                if( interpolated_line_x || interpolated_line_y || interpolated_line_z ) {
+                    grid_val = is_dash ? 0.25f : 1.f;
+                } 
+
+            } else if( dash_style == remove_dashed ) {
+                if( !is_dash && ( line_x || line_y || line_z ) ) {
+                    grid_val = 1.f;
+                } 
+            }
+            break;
+    }
+
+    float dot_x = math::abs( math::dot( normal, float3( 1.f, 0.f, 0.f ) ) );
+    float dot_y = math::abs( math::dot( normal, float3( 0.f, 1.f, 0.f ) ) );
+    float dot_z = math::abs( math::dot( normal, float3( 0.f, 0.f, 1.f ) ) );
+
+    float grid_val_x = line_x ? math::smoothstep( 0.f, 1.f, 1.f - dot_x ) : 0.f;
+    float grid_val_y = line_y ? math::smoothstep( 0.f, 1.f, 1.f - dot_y ) : 0.f;
+    float grid_val_z = line_z ? math::smoothstep( 0.f, 1.f, 1.f - dot_z ) : 0.f;
+
+    grid_val_x = grid_val_x > normal_culling_round_number ? 1.f : 0.f;
+    grid_val_y = grid_val_y > normal_culling_round_number ? 1.f : 0.f;
+    grid_val_z = grid_val_z > normal_culling_round_number ? 1.f : 0.f;
+
+    float mask_grid_val = math::max( math::max( grid_val_x, grid_val_y ), grid_val_z );
+    grid_val *= mask_grid_val;
+
+    return grid_val;    
+}
+
+export material OmniGridExplorer(
+    units_method units = meters [[
+        anno::display_name("Grid Units"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(0),
+        anno::description("The units to use for the grid.")
+    ]],
+    float normal_culling_round_number = 0.01f [[
+        anno::display_name("Round Number"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(1),
+        anno::description("The number to round the normal culling to. Fixes artifacts on the grid lines."),
+        anno::hidden()
+    ]],
+    bool draw_units_icon = true [[
+        anno::display_name("Draw Units Icon"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(2),
+        anno::description("Draws the units icon on the grid.")
+    ]],
+    uniform texture_2d units_icon = texture_2d("../textures/OmniGridExplorer/units_icon.png") [[
+        anno::display_name("Units Icon"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(3),
+        anno::description("The texture to use for the units icon.")
+    ]],
+    float units_icon_scale = 0.2f [[
+        anno::display_name("Icon Scale"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(4),
+        anno::description("The scale of the units icon.")
+    ]],
+    int units_icon_index_count = 8 [[
+        anno::display_name("Units Icon Index Count"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(5),
+        anno::description("The number of icons in the units icon texture."),
+        anno::hidden()
+    ]],
+    bool use_object_space_rotation_translation = true [[
+        anno::display_name("Use Object Space Rotation Translation"),
+        anno::in_group("Cooridinates Settings"),
+        anno::ui_order(6),
+        anno::description("Use the object space rotation and translation for the grid.")
+    ]],    
+
+    //Units
+	float unit_divisions_thickness = 0.0125f [[
+        anno::display_name("Unit Line Thickness"),
+        anno::in_group("Units"),
+        anno::ui_order(7),
+        anno::description("The thickness of the unit lines.")
+    ]],
+    dash_style_method unit_dash_style = solid [[
+        anno::display_name("Unit Draw Style"),
+        anno::in_group("Units"),
+        anno::ui_order(8),
+        anno::description("The draw style of the unit lines.")
+    ]],    
+    int unit_dashes_per_unit = 10 [[
+        anno::display_name("Dashes Per Unit"),
+        anno::in_group("Units"),
+        anno::ui_order(9),
+        anno::description("The number of dashes per unit.")
+    ]],
+
+    //Subdivisions
+    int unit_subdivisions = 5 [[
+        anno::display_name("Number of Subdivisions"),
+        anno::in_group("Subdivisions"),
+        anno::ui_order(10),
+        anno::description("The number of subdivisions per unit.")
+    ]],
+    float unit_subdivisions_thickness = 0.00625f [[
+        anno::display_name("Subdivisions Line Thickness"),
+        anno::in_group("Subdivisions"),
+        anno::ui_order(11),
+        anno::description("The thickness of the subdivisions lines.")
+    ]],
+    dash_style_method unit_subdivisions_dash_style = remove_dashed [[
+        anno::display_name("Subdivisions Draw Style"),
+        anno::in_group("Subdivisions"),
+        anno::ui_order(12),
+        anno::description("The draw style of the subdivisions lines.")
+    ]],
+    int unit_subdivisions_dashes_per_unit = 50 [[
+        anno::display_name("Subdivisions Dashes Per Unit"),
+        anno::in_group("Subdivisions"),
+        anno::ui_order(13),
+        anno::description("The number of dashes per unit for the subdivisions.")
+    ]],
+
+    ///Colors
+	color background_color_01 = color( 0.003, 0.0035, 0.004 ) [[
+        anno::display_name("Base Color"),
+        anno::in_group("Base Color"),
+        anno::ui_order(14),
+        anno::description("The base color of the grid.")
+    ]],
+	color background_color_02 = color( 0.006, 0.0065, 0.007  ) [[
+        anno::display_name("Base Color Alternate"),
+        anno::in_group("Base Color"),
+        anno::ui_order(15),
+        anno::description("The alternate base color of the grid.")
+    ]],    
+	color unit_divisions_color = color( 0.45, 0.45, 0.375 ) [[
+        anno::display_name("Unit Line Color"),
+        anno::in_group("Base Color"),
+        anno::ui_order(16),
+        anno::description("The color of the unit lines.")
+    ]],
+    color subdivisions_color = color( 0.45, 0.45, 0.375 ) [[
+        anno::display_name("Subdivisions Line Color"),
+        anno::in_group("Base Color"),
+        anno::ui_order(17),
+        anno::description("The color of the subdivisions lines.")
+    ]],
+
+    //Roughness
+    float roughness = 0.7 [[
+        anno::display_name("Roughness"),
+        anno::in_group("Roughness"),
+        anno::ui_order(18),
+        anno::hard_range(0,1),
+        anno::description("The roughness of the grid.")
+    ]],
+    uniform texture_2d roughness_image = texture_2d() [[
+        anno::display_name("Roughness Image"),
+        anno::in_group("Roughness"),
+        anno::ui_order(19),
+        anno::description("The roughness image of the grid.")
+    ]],
+
+    //UVW
+    //
+    uniform base::texture_coordinate_system uvw_texture_coordinate_system = 
+        base::texture_coordinate_object [[
+        anno::display_name("Texture Coordinate"),
+        anno::in_group("Roughness"),
+        anno::ui_order(20),
+        anno::description("The texture coordinate system to use.")
+    ]],
+    uniform ::OmniSurface::OmniImage::projection_mode uvw_projection_mode = 
+        ::OmniSurface::OmniImage::projection_cubic [[
+        anno::display_name("Projection Mode"),
+        anno::in_group("Roughness"),
+        anno::ui_order(21),
+        anno::description("The projection mode to use.")
+    ]],
+    uniform float3 uvw_projection_translate = float3(0.0) [[
+        anno::display_name("Translate"),
+        anno::description("Translate the projected texture."),
+        anno::in_group("Roughness"),
+        anno::ui_order(22),
+        anno::description("Translate the projected texture.")
+    ]],
+    uniform float3 uvw_projection_rotate = float3(0.0) [[
+        anno::display_name("Rotate"),
+        anno::description("Rotate the projected texture."),
+        anno::in_group("Roughness"),
+        anno::ui_order(23),
+        anno::description("Rotate the projected texture.")
+    ]],
+    uniform float3 uvw_projection_scale = float3(0.1) [[
+        anno::display_name("Scale"),
+        anno::description("Scale the projected texture."),
+        anno::in_group("Roughness"),
+        anno::ui_order(24),
+        anno::description("Scale the projected texture.")
+    ]]
+
+) = let {
+    float get_units_multiplier = unit_multiplier( units );
+    int get_icon_index         = unit_icon_selection( units );
+
+    float3 position = ( use_object_space_rotation_translation ? 
+                        calculate_projection_position() : 
+                        state::position() ) * state::meters_per_scene_unit();
+
+    float3 normal = use_object_space_rotation_translation ? 
+                        math::normalize( state::transform_normal( state::coordinate_internal, state::coordinate_object, state::normal() ) ):
+                        state::normal();
+
+    float unit_grid = grid( position: position,
+                            normal: normal,
+                            grid_divisions: get_units_multiplier,
+                            unit_divisions_thickness: unit_divisions_thickness,
+                            dash_style: unit_dash_style,
+                            dashes_per_unit: float( unit_dashes_per_unit ) * get_units_multiplier,
+                            normal_culling_round_number: normal_culling_round_number
+                        );
+
+    float subd_grid = grid( position: position,
+                            normal: normal,
+                            grid_divisions: get_units_multiplier * float( math::max( unit_subdivisions, 1 ) ),
+                            unit_divisions_thickness: unit_subdivisions_thickness,
+                            dash_style: unit_subdivisions_dash_style,
+                            dashes_per_unit: float( unit_subdivisions_dashes_per_unit ) * get_units_multiplier,
+                            normal_culling_round_number: normal_culling_round_number,
+                            offset_position: false,
+                            offset_override_amount: unit_divisions_thickness / get_units_multiplier
+                        ) * 0.25f;
+
+    float unit_icon = draw_units_icon ? draw_unit_icon( 
+        tex: units_icon,
+        normal: normal,
+        position: position,
+        grid_divisions: get_units_multiplier,
+        icon_size: units_icon_scale,
+        icon_index_count: units_icon_index_count,
+        icon_index: get_icon_index
+    ) : 0.f;
+
+    color grid_line_color       = math::lerp( unit_divisions_color, subdivisions_color, subd_grid * 4.f );
+    color grid_background_color = math::lerp( background_color_01, background_color_02, checkerboard( position, get_units_multiplier, normal ) );
+    color final_color           = math::lerp( grid_background_color, grid_line_color, math::max( unit_icon, math::max( unit_grid, subd_grid ) ) );
+
+    base::texture_coordinate_info texture_coordinate_info = 
+        ::OmniSurface::OmniImage::compute_texture_coordinate_2(
+            texture_coordinate_system: uvw_texture_coordinate_system,
+            extended_projection_mode: uvw_projection_mode,
+            projection_translate: uvw_projection_translate,
+            projection_rotate: uvw_projection_rotate,
+            projection_scale: uvw_projection_scale
+        );
+
+    float final_roughness = tex::texture_isvalid( roughness_image ) ? 
+        ::OmniSurface::OmniImage::texture_alpha_channel_remap_2(
+            OmniSurface::OmniImage::texture_lookup_2(            
+            texture: roughness_image,
+            texture_coordinate_info: texture_coordinate_info
+        ), ::OmniSurface::OmniImage::alpha_red ).mono * roughness : roughness;
+
+	material base = OmniSurface::OmniSurfaceBase::OmniSurfaceBase(
+        diffuse_reflection_weight:      1.f,
+        diffuse_reflection_color:       final_color,
+        specular_reflection_roughness:  final_roughness
+    );
+	
+} in material( 
+    surface: base.surface,
+    geometry: base.geometry
+);
