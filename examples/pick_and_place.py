@@ -34,12 +34,11 @@ import numpy as np
 # Any Omniverse level imports must occur after the `SimulationApp` class is
 # instantiated (because APIs are provided by the extension/runtime plugin
 # system, it must be loaded before they will be available to import).
-from isaacsim.core.api import SimulationContext
 from isaacsim.core.api.world import World
 from isaacsim.core.api.objects import DynamicCuboid
-from isaacsim.core.prims import XFormPrim
 from isaacsim.core.utils.stage import add_reference_to_stage, get_stage_units
 from isaacsim.core.utils.types import ArticulationAction
+from isaacsim.asset.importer.urdf import _urdf
 from isaacsim.robot.manipulators.manipulators import SingleManipulator
 from isaacsim.robot.manipulators.grippers import ParallelGripper
 import isaacsim.robot_motion.motion_generation.interface_config_loader as interface_config_loader
@@ -53,7 +52,7 @@ from isaacsim.storage.native import get_assets_root_path
 import omni.kit.commands
 import omni.timeline
 import omni.usd
-from pxr import Gf, PhysicsSchemaTools, Sdf, UsdLux, UsdGeom, Usd
+from pxr import Gf, PhysicsSchemaTools, Sdf, UsdGeom, UsdLux
 
 # Robot Assembler is packaged as an extension. It must be enabled before
 # importing, otherwise the import may fail if the extension is not loaded yet.
@@ -74,9 +73,9 @@ world = World(stage_units_in_meters=1.0)
 # Get stage handle
 stage = omni.usd.get_context().get_stage()
 
-# Ensure /World exists and is the default prim.
+# Ensure /World is the default prim.
 world_path = Sdf.Path("/World")
-world_prim = stage.GetPrimAtPath(world_path)
+world_prim = UsdGeom.Xform.Define(stage, world_path).GetPrim()
 stage.SetDefaultPrim(world_prim)
 
 # Add a ground plane
@@ -101,14 +100,6 @@ cube = world.scene.add(
     )
 )
 
-# Ensure a stable /World default prim exists. This helps keep the stage
-# structure predictable.
-world_path = Sdf.Path("/World")
-world_prim = stage.GetPrimAtPath(world_path)
-if not world_prim.IsValid():
-    world_prim = UsdGeom.Xform.Define(stage, world_path).GetPrim()
-stage.SetDefaultPrim(world_prim)
-
 
 # ----------------------------- Setup robot -----------------------------
 
@@ -125,6 +116,11 @@ ur10e_import_config.convex_decomp = False
 ur10e_import_config.import_inertia_tensor = True
 ur10e_import_config.fix_base = True
 ur10e_import_config.distance_scale = 1.0
+ur10e_import_config.default_drive_strength = 1047.19751
+ur10e_import_config.default_position_drive_damping = 52.35988
+ur10e_import_config.default_drive_type = _urdf.UrdfJointTargetType.JOINT_DRIVE_POSITION
+ur10e_import_config.distance_scale = 1
+ur10e_import_config.density = 0.0
 ur10e_urdf_path = (
     model_dir
     / "example-robot-data"
@@ -139,7 +135,6 @@ status, ur10e_prim_path = omni.kit.commands.execute(
     import_config=ur10e_import_config,
     get_articulation_root=True,
 )
-
 # The base robot prim is the parent of the articulation root returned by importer.
 ur10e_base = Sdf.Path(ur10e_prim_path).GetParentPath().pathString
 ur10e_base_mount = f"{ur10e_base}/tool0"
@@ -155,7 +150,6 @@ add_reference_to_stage(
 )
 robotiq_prim_path = "/World/Robotiq_2F_85"
 robotiq_mount_path = f"{robotiq_prim_path}/base_link"
-
 # Configure RG6 as a parallel gripper with one driving joint before assembly.
 gripper = ParallelGripper(
     end_effector_prim_path=robotiq_mount_path,
@@ -168,6 +162,8 @@ gripper = ParallelGripper(
 
 # Make sure stage updates after import/reference.
 simulation_app.update()
+simulation_app.update()
+
 stage = omni.usd.get_context().get_stage()
 
 # Assemble robot with gripper
@@ -204,9 +200,8 @@ robot = world.scene.add(
         gripper=gripper,
     )
 )
-world.reset()
-
 # Update after robot wrapper
+world.reset()
 simulation_app.update()
 
 # IK solver
@@ -217,7 +212,6 @@ kinematics_config = (
     )
 )
 lula_solver = LulaKinematicsSolver(**kinematics_config)
-
 # Solve IK on UR10e tool0 frame.
 ik_solver = ArticulationKinematicsSolver(
     robot,
@@ -229,17 +223,14 @@ ik_solver = ArticulationKinematicsSolver(
 ARM_HOME = np.array([-0.0, -1.2, 1.1, 0.0, 0.0, 0.0], dtype=np.float32)
 ARM_JOINT_INDICES = np.array([0, 1, 2, 3, 4, 5], dtype=np.int32)
 HOME_TOL = 2e-2
-
 # Cube position
 cube_pos, _ = cube.get_world_pose()
 # Convert cube pose to the mirrored convention used by this script.
 cube_pos[:2] *= -1
-
 # Target position
 target_pos = np.array([-cube_pos[0], cube_pos[1], cube_pos[2]])
 # Convert target pose to the mirrored convention used by this script.
 target_pos[:2] *= -1
-
 # Tcp_offset: tool0 to gripper TCP compensation.
 tcp_offset = np.array([0, 0, 0.172])
 # Offset: safe approach height above object/target.

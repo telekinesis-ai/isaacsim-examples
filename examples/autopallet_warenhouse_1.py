@@ -95,8 +95,12 @@ class BinConveyorTask(BaseTask):
             positions=np.array([position], dtype=np.float32),
             orientations=np.array([orientation], dtype=np.float32),
         )
-        rigid_bin.set_linear_velocities(np.array([[0.0, -0.30, 0.0]], dtype=np.float32))
-        rigid_bin.set_angular_velocities(np.array([[0.0, 0.0, 0.0]], dtype=np.float32))
+        rigid_bin.set_linear_velocities(
+            np.array([[0.0, -0.30, 0.0]], dtype=np.float32)
+        )
+        rigid_bin.set_angular_velocities(
+            np.array([[0.0, 0.0, 0.0]], dtype=np.float32)
+        )
         rigid_bin.set_visibilities(np.array([True], dtype=bool))
 
     def post_reset(self):
