@@ -1,0 +1,41 @@
+{
+    "version": "1.0",
+    "file_records": [
+        {
+            "source_url": "C:/Users/arjun/Documents/workspace/isaacsim-examples/assets/environments/ift/Collected_ift/omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/KLT_Bin/Materials/Textures/FOF_Map_Labels_D.png",
+            "source_hash": "272ff8401563ef8fbe032e5437e5b66d388cd217",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/KLT_Bin/Materials/Textures/FOF_Map_Labels_D.png",
+            "target_hash": "272ff8401563ef8fbe032e5437e5b66d388cd217"
+        },
+        {
+            "source_url": "C:/Users/arjun/Documents/workspace/isaacsim-examples/assets/environments/ift/Collected_ift/omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/KLT_Bin/Materials/Textures/FOF_Map_Magenta_Box_D.png",
+            "source_hash": "8c875ded2f1732f71e7091200fc6aa4dbd83e1db",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/KLT_Bin/Materials/Textures/FOF_Map_Magenta_Box_D.png",
+            "target_hash": "8c875ded2f1732f71e7091200fc6aa4dbd83e1db"
+        },
+        {
+            "source_url": "C:/Users/arjun/Documents/workspace/isaacsim-examples/assets/environments/ift/Collected_ift/omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/KLT_Bin/Materials/Textures/FOF_Mesh_Labels_D.png",
+            "source_hash": "5cd251aef1cd9bf553029ef5a3bf4c70ebcf1f06",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/KLT_Bin/Materials/Textures/FOF_Mesh_Labels_D.png",
+            "target_hash": "5cd251aef1cd9bf553029ef5a3bf4c70ebcf1f06"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Environments/Grid/Materials/Textures/WireframeBlur_basecolor.png",
+            "source_hash": "981013c4855f01411ccf74e5b7cabb6b2155f516",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Environments/Grid/Materials/Textures/WireframeBlur_basecolor.png",
+            "target_hash": "e571e937ff3f944f805b60659166b59b832578d4"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Environments/Grid/Materials/Textures/WireframeBlur_blue.png",
+            "source_hash": "6a989a8128b8101db37167f421473d22ed2c4eee",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Environments/Grid/Materials/Textures/WireframeBlur_blue.png",
+            "target_hash": "14f850e56bfb289b273742b82de44abd9bdb721a"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Environments/Grid/Materials/Textures/Wireframe_blue.png",
+            "source_hash": "089460953c4996cc198cc79b811cc311a439ad43",
+            "target_url": "./omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Environments/Grid/Materials/Textures/Wireframe_blue.png",
+            "target_hash": "a8f29dd34f5129ba34cdaa20fb7ea4ef50fafc4f"
+        }
+    ]
+}

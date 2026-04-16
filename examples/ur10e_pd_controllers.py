@@ -62,7 +62,7 @@ distantLight.CreateIntensityAttr(1000)
 
 
 root_dir = pathlib.Path(__file__).resolve().parent.parent
-model_dir = root_dir / "models"
+model_dir = root_dir / "assets"
 
 # Import URDF, prim_path contains the path the path to the usd prim in the stage.
 status, ur10e_import_config = omni.kit.commands.execute(

@@ -105,7 +105,7 @@ cube = world.scene.add(
 
 
 root_dir = pathlib.Path(__file__).resolve().parent.parent
-model_dir = root_dir / "models"
+model_dir = root_dir / "assets"
 
 # Import UR10e from URDF
 status, ur10e_import_config = omni.kit.commands.execute(
@@ -164,9 +164,8 @@ gripper = ParallelGripper(
 simulation_app.update()
 simulation_app.update()
 
-stage = omni.usd.get_context().get_stage()
-
 # Assemble robot with gripper
+stage = omni.usd.get_context().get_stage()
 assembly_namespace = "Gripper"
 variant_name = "ur10e_with_robotiq_2f_85"
 assembler = RobotAssembler()
