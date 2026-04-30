@@ -15,7 +15,13 @@ authors = [
 
 dependencies = [
     "loguru",
+    "torch==2.7.0",
+    "torchvision==0.22.0",
+    "torchaudio==2.7.0",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [project.urls]
 Homepage = "https://telekinesis.ai"

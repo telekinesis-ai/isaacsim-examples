@@ -109,6 +109,20 @@ conda activate isaacsim-examples
     pip install isaacsim[all,extscache]==5.1.0 --extra-index-url https://pypi.nvidia.com
     ```
 
+5. Install `telekinesis-urdfs`:
+    ```bash
+    git clone --depth 1 https://github.com/telekinesis-ai/telekinesis-urdfs.git
+    cd telekinesis-urdfs
+    pip install .
+    ```
+
+    > **Note:** `telekinesis-urdfs` is a large repository containing robot model data. The initial clone and wheel build are expected to take several minutes — do not interrupt the process.
+
+6. Install `synapse` as part of `telekinesis-ai`:
+    ```bash
+    pip install telekinesis-ai[synapse]
+    ```
+
 ## Examples
 
 To be able to run the examples, follow the below steps:
