@@ -366,13 +366,14 @@ class SimManipulator(AbstractManipulator):
                 f"got {cartesian_pose.shape[0]}.")
 
         logger.info(f"Doing ik with {self._current_joints,}" )
-        q_deg = self.inverse_kinematics(
+        q_rad = self.inverse_kinematics(
             target_pose=cartesian_pose,
             rot_type="deg",
             q_init=self._current_joints,
             solver='multi_start_clik'
         )
 
+        q_deg = np.rad2deg(q_rad)
         self.set_joint_positions(
             q_deg,
             speed=speed,
@@ -397,6 +398,127 @@ class SimManipulator(AbstractManipulator):
         q_deg = self.get_joint_positions()
         pose = self.forward_kinematics(q_deg, rot_type="deg")
         return pose.tolist() if isinstance(pose, np.ndarray) else list(pose)
+
+
+    # ------------------------------------------------------------------
+    # attach_tool — assemble gripper onto robot via RobotAssembler
+    # ------------------------------------------------------------------
+
+    def attach_tool(
+        self,
+        sim_tool,
+        parent_mount: str,
+        assembly_namespace: str,
+        variant_name: str,
+    ) -> None:
+        """Physically assemble a gripper onto the robot using RobotAssembler.
+
+        Rebuilds the SingleManipulator with a ParallelGripper after assembly
+        so that gripper commands are scoped to finger joints only.
+
+        Args:
+            sim_tool: Connected SimParallelGripper instance.
+            parent_mount: Link name on this robot to attach to (e.g. "tool0").
+            assembly_namespace: Namespace for the assembly variant set.
+            variant_name: Name of the combined robot variant.
+        """
+
+        self._check_connected()
+
+        import omni.kit.app
+        ext_manager = omni.kit.app.get_app().get_extension_manager()
+        ext_manager.set_extension_enabled_immediate("isaacsim.robot_setup.assembler", True)
+        from isaacsim.robot_setup.assembler import RobotAssembler
+
+        import omni.usd
+        from pxr import Sdf
+
+        stage = omni.usd.get_context().get_stage()
+
+        robot_base = Sdf.Path(self._prim_path).GetParentPath().pathString
+        robot_mount = f"{robot_base}/{parent_mount}"
+        gripper_base = sim_tool.stage_prim_path
+        gripper_mount = sim_tool.mount_prim_path
+
+        # RobotAssembler creates an AssemblerFixedJoint — it does NOT
+        # re-parent the gripper, so ee_prim_path stays at its original path.
+        ee_prim_path = sim_tool.mount_prim_path
+        # ee_prim_path = sim_tool._stage_prim_path
+
+        # Stop physics BEFORE creating ParallelGripper / SingleManipulator.
+        # Both constructors call _on_physics_ready immediately when physics is
+        # running, which fails when tensor views are mid-invalidation from the
+        # assembly stage modifications.
+        sim_context = SimulationContext.instance()
+        if sim_context is not None:
+            sim_context.stop()
+            self._render(3)
+
+        use_mimic = len(sim_tool.joint_prim_names) == 1
+        action_deltas = sim_tool._joint_opened - sim_tool._joint_closed  # e.g. [-0.8]
+        gripper = ParallelGripper(
+            end_effector_prim_path=ee_prim_path,
+            joint_prim_names=sim_tool.joint_prim_names,
+            joint_opened_positions=sim_tool._joint_opened,
+            joint_closed_positions=sim_tool._joint_closed,
+            action_deltas=action_deltas,
+            use_mimic_joints=use_mimic,
+        )
+
+        assembler = RobotAssembler()
+        assembler.begin_assembly(
+            stage,
+            robot_base,
+            robot_mount,
+            gripper_base,
+            gripper_mount,
+            assembly_namespace,
+            variant_name,
+        )
+        assembler.assemble()
+        assembler.finish_assemble()
+        self._render(5)
+
+        # Replace the bare SingleManipulator from connect() with one that
+        # has the gripper wired in. Physics is still stopped at this point.
+        self._single_manipulator = SingleManipulator(
+            prim_path=self._prim_path,
+            name=variant_name,
+            end_effector_prim_path=ee_prim_path,
+            gripper=gripper,
+        )
+
+        # Restart physics and initialize the new SM + gripper.
+        # Prefer World.reset() so all scene objects are handled together;
+        # fall back to SimulationContext.reset() if World isn't available.
+        try:
+            from isaacsim.core.api.world import World as _World
+            _w = _World.instance()
+            if _w is not None:
+                _w.scene.add(self._single_manipulator)
+                _w.reset()
+            else:
+                raise RuntimeError("no world")
+        except Exception:
+            if sim_context is not None:
+                sim_context.reset()
+                self._render(5)
+            self._single_manipulator.initialize()
+
+        new_ndof = self._single_manipulator.num_dof
+        self._motion_kps = np.full(new_ndof, self._base_motion_stiffness)
+        self._motion_kds = np.full(new_ndof, self._base_motion_damping)
+        self._hold_kps = np.full(new_ndof, self._DEFAULT_HOLD_STIFFNESS)
+        self._hold_kds = np.full(new_ndof, self._DEFAULT_HOLD_DAMPING)
+        self._apply_hold_gains()
+
+        sim_tool._post_attach(self._single_manipulator, self._prim_path)
+
+        logger.info(
+            f"SimManipulator: attached gripper at {ee_prim_path} "
+            f"(variant={variant_name})"
+        )
+
 
 
     # ------------------------------------------------------------------
