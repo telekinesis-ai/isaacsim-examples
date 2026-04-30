@@ -1233,7 +1233,7 @@ class SimManipulator(AbstractManipulator):
         time: float = 0.0,
     ) -> None:
         raise NotImplementedError(
-            "move_with_cartesian_velocity is not implemented for SimManipulator yet.")
+            "move_with_cartesian_velocity is not implemented for SimManipulator yet."
         )
 
     @override
