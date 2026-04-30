@@ -1232,24 +1232,8 @@ class SimManipulator(AbstractManipulator):
         acceleration: float = 0.25,
         time: float = 0.0,
     ) -> None:
-        """Command Cartesian velocity (speed controller).
-
-        The TCP moves at the given velocity until :meth:`stop_speed_motion` is called
-        or ``time`` elapses.
-
-        Args:
-            xd (list[float]): TCP velocity ``[vx, vy, vz, vrx, vry, vrz]``.
-                vx, vy, vz in m/s; vrx, vry, vrz in deg/s.
-            acceleration (float): TCP acceleration [m/s²]. Defaults to
-                ``0.25``.
-            time (float): Duration [s]. ``0.0`` means run indefinitely.
-                Defaults to ``0.0``.
-
-        Raises:
-            NotImplementedError: Not implemented for this manipulator brand.
-        """
         raise NotImplementedError(
-            "move_with_cartesian_velocity must be implemented by the derived class."
+            "move_with_cartesian_velocity is not implemented for SimManipulator yet.")
         )
 
     @override
@@ -1259,40 +1243,8 @@ class SimManipulator(AbstractManipulator):
         acceleration: float = 0.5,
         time: float = 0.0,
     ) -> None:
-        """Command joint-space velocities (speed controller).
-
-        The robot moves at the given joint velocities until :meth:`stop_speed_motion`
-        is called or ``time`` elapses.
-
-        Args:
-            qd (list[float]): Joint velocities ``[j1…j6]`` [deg/s].
-            acceleration (float): Joint acceleration [deg/s²]. Defaults to
-                ``0.5``.
-            time (float): Duration [s]. ``0.0`` means run indefinitely.
-                Defaults to ``0.0``.
-
-        Raises:
-            NotImplementedError: Not implemented for this manipulator brand.
-        """
-        raise NotImplementedError("move_with_joint_speed must be implemented by the derived class.")
+        raise NotImplementedError("move_with_joint_speed  is not implemented for SimManipulator yet.")
 
     @override
     def stop_speed_motion(self, deceleration: float = 10.0) -> None:
-        """Stop an active speed controller.
-
-        Stops whichever speed mode is currently active (joint or Cartesian).
-
-        Args:
-            deceleration (float): Deceleration rate. Units depend on the active
-                speed mode:
-                - After ``move_with_joint_speed``: joint deceleration [deg/s²].
-                - After ``move_with_cartesian_velocity``: tool deceleration
-                  [m/s²] — note the deceleration is passed as-is after
-                  deg/s² → rad/s² conversion, which is incorrect for Cartesian
-                  mode; pass a value scaled accordingly.
-                Defaults to ``10.0``.
-
-        Raises:
-            NotImplementedError: Not implemented for this manipulator brand.
-        """
-        raise NotImplementedError("stop_speed_motion must be implemented by the derived class.")
+        raise NotImplementedError("stop_speed_motion  is not implemented for SimManipulator yet.")
