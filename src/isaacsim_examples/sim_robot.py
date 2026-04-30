@@ -155,7 +155,7 @@ class SimManipulator(AbstractManipulator):
         self._hold_kps: np.ndarray | None = None
         self._hold_kds: np.ndarray | None = None
 
-        self._current_joints = np.array(self.ndof)
+        self._current_joints = np.array(self._default_joint_configuration)
     # ------------------------------------------------------------------
     # Abstract method implementations
     # ------------------------------------------------------------------
@@ -365,6 +365,7 @@ class SimManipulator(AbstractManipulator):
                 "cartesian_pose must have 6 elements [x, y, z, rx, ry, rz], "
                 f"got {cartesian_pose.shape[0]}.")
 
+        logger.info(f"Doing ik with {self._current_joints,}" )
         q_deg = self.inverse_kinematics(
             target_pose=cartesian_pose,
             rot_type="deg",
