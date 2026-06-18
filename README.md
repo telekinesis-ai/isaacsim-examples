@@ -120,7 +120,7 @@ conda activate isaacsim-examples
 
 6. Install `synapse` as part of `telekinesis-ai`:
     ```bash
-    pip install telekinesis-ai[synapse]
+    pip install telekinesis[synapse]
     ```
 
 ## Examples
