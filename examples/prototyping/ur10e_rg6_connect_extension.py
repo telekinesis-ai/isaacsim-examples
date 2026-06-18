@@ -51,26 +51,46 @@ GRIPPER_CLOSE_DEG = 30.0
 WAIT_STEPS = 120
 
 
+def _build_articulation(prim_path, name):
+    """Construct + initialize a SingleArticulation, or None if not ready yet."""
+    try:
+        art = SingleArticulation(prim_path=prim_path, name=name)
+        art.initialize()
+        if art.num_dof and art.num_dof > 0:
+            return art
+    except Exception:
+        pass
+    return None
+
+
 async def main():
     timeline = omni.timeline.get_timeline_interface()
     timeline.play()
 
-    # Let Isaac Sim tick so PhysX / tensor simulation view exists.
-    await omni.kit.app.get_app().next_update_async()
-    await omni.kit.app.get_app().next_update_async()
+    app = omni.kit.app.get_app()
 
-    # Two independent articulations -> two handles.
-    robot = SingleArticulation(prim_path=UR10E_PATH, name="ur10e")
-    robot.initialize()
-    # gripper = SingleArticulation(prim_path=RG6_PATH, name="rg6")
-    # gripper.initialize()
-    return 
+    # No assembly here: the UR10e and RG6 are two independent articulations, so
+    # each gets its own handle. Build both with a small retry guard in case
+    # physics needs a few frames to expose the tensor views.
+    robot = None
+    for _ in range(60):
+        if robot is None:
+            robot = _build_articulation(UR10E_PATH, "ur10e")
+        if robot is not None:
+            break
+        await app.next_update_async()
+
+    if robot is None:
+        raise RuntimeError(
+            f"Articulations did not become valid: "
+            f"robot={UR10E_PATH!r} gripper={RG6_PATH!r}."
+        )
+
     print(f"arm dof_names: {robot.dof_names}")
-    # print(f"gripper dof_names: {gripper.dof_names}")
 
     # Resolve joint indices by name (robust to articulation ordering).
     arm_indices = [robot.dof_names.index(n) for n in ARM_JOINT_NAMES]
-    finger_idx = 7
+    finger_idx = robot.dof_names.index("finger_joint")
 
     # 1) Move the arm.
     arm_target = np.deg2rad(ARM_TARGET_DEG)
@@ -84,25 +104,25 @@ async def main():
 
     # 2) Wait a fixed number of steps so the arm can settle.
     for _ in range(WAIT_STEPS):
-        await omni.kit.app.get_app().next_update_async()
+        await app.next_update_async()
 
-    # # 3) Close the gripper.
-    # finger_target = np.deg2rad([GRIPPER_CLOSE_DEG])
-    # gripper.apply_action(
-    #     ArticulationAction(
-    #         joint_positions=finger_target.tolist(),
-    #         joint_indices=[finger_idx],
-    #     )
-    # )
-    # print(f"Commanded finger_joint (deg): {GRIPPER_CLOSE_DEG}")
+    # 3) Close the gripper.
+    finger_target = np.deg2rad([GRIPPER_CLOSE_DEG])
+    robot.apply_action(
+        ArticulationAction(
+            joint_positions=finger_target.tolist(),
+            joint_indices=[finger_idx],
+        )
+    )
+    print(f"Commanded finger_joint (deg): {GRIPPER_CLOSE_DEG}")
 
-    # # Poll until the gripper reaches the target.
-    # tolerance = 1e-3
-    # reached = False
-    # while not reached:
-    #     await omni.kit.app.get_app().next_update_async()
-    #     current = gripper.get_joint_positions()[finger_idx]
-    #     reached = abs(current - finger_target[0]) < tolerance
+    # Poll until the gripper reaches the target.
+    tolerance = 1e-3
+    reached = False
+    while not reached:
+        await app.next_update_async()
+        current = robot.get_joint_positions()[finger_idx]
+        reached = abs(current - finger_target[0]) < tolerance
 
     print("\nDone. Arm moved and gripper closed.")
 

@@ -4,11 +4,14 @@ References:
 -https://docs.isaacsim.omniverse.nvidia.com/latest/robot_setup/assemble_robots.html
 -https://github.com/isaac-sim/IsaacSim/blob/40316786340b3f034a229d9e12650df1ac0b68ab/source/extensions/isaacsim.robot_setup.assembler/isaacsim/robot_setup/assembler/ui/ui_builder.py#L64
 -https://github.com/isaac-sim/IsaacSim/blob/40316786340b3f034a229d9e12650df1ac0b68ab/source/extensions/isaacsim.robot_setup.assembler/isaacsim/robot_setup/assembler/tests/test_robot_assembler.py#L44
+
 How to use:
 - Add ur10e to scene
 - Add rg6 to scene
 - run this with extension
 
+Notes:
+- Attachin points have to be RigidBodyAPI liek wrist 3 and not simple frames like flange or tool0 
 
 UR10e + OnRobot RG6 — extension-mode ASSEMBLE demo, native Isaac Sim APIs.
 
@@ -41,6 +44,8 @@ from isaacsim.core.utils.types import ArticulationAction
 import omni.timeline
 import omni.usd
 import omni.kit.app
+import omni.kit.commands
+from pxr import Gf
 
 # Robot Assembler is packaged as an extension. Enable it before importing so the
 # import doesn't fail if the extension isn't loaded yet.
@@ -67,6 +72,41 @@ GRIPPER_CLOSE_DEG = 30.0
 
 # Sim steps to wait after the arm command before closing the gripper.
 WAIT_STEPS = 120
+
+# Custom mount offset applied to the gripper, in its mount-local frame.
+ATTACH_OFFSET_TRANSLATION_M = (0.0, 0.0, 0.1)      # meters (x, y, z)
+ATTACH_OFFSET_ROTATION_DEG = (0.0, 0.0, 0.0)       # XYZ Euler degrees
+
+
+def _apply_attach_offset(prim_path, translation_m, rotation_deg):
+    """Nudge the attach prim by a custom offset in its own (mount-local) frame.
+
+    Applied between begin_assembly() and assemble() so the fixed joint is baked
+    at the adjusted relative pose. No-op when both offsets are zero.
+    """
+    if not any(translation_m) and not any(rotation_deg):
+        return
+
+    prim = omni.usd.get_context().get_stage().GetPrimAtPath(prim_path)
+    old_mat = omni.usd.get_local_transform_matrix(prim)
+
+    rot = (
+        Gf.Rotation(Gf.Vec3d(1, 0, 0), rotation_deg[0])
+        * Gf.Rotation(Gf.Vec3d(0, 1, 0), rotation_deg[1])
+        * Gf.Rotation(Gf.Vec3d(0, 0, 1), rotation_deg[2])
+    )
+    offset = Gf.Matrix4d().SetRotate(rot)
+    offset.SetTranslateOnly(Gf.Vec3d(*translation_m))
+
+    # offset * old_mat -> offset expressed in the prim's local frame.
+    # Swap to old_mat * offset for world/parent-axis offsets instead.
+    new_mat = offset * old_mat
+    omni.kit.commands.execute(
+        "TransformPrimCommand",
+        path=prim.GetPath(),
+        new_transform_matrix=new_mat,
+        old_transform_matrix=old_mat,
+    )
 
 
 async def assemble_gripper_onto_arm():
@@ -114,6 +154,32 @@ async def assemble_gripper_onto_arm():
         "Gripper",          # assembly namespace
         "ur10e_with_rg6",   # variant name
     )
+
+
+    # Adjust the gripper pose relative to the mount with a custom offset.
+    prim = omni.usd.get_context().get_stage().GetPrimAtPath(onrobot_rg6_attach)
+    old_mat = omni.usd.get_local_transform_matrix(prim)
+
+    rot = (
+        Gf.Rotation(Gf.Vec3d(1, 0, 0), ATTACH_OFFSET_ROTATION_DEG[0])
+        * Gf.Rotation(Gf.Vec3d(0, 1, 0), ATTACH_OFFSET_ROTATION_DEG[1])
+        * Gf.Rotation(Gf.Vec3d(0, 0, 1), ATTACH_OFFSET_ROTATION_DEG[2])
+    )
+    offset = Gf.Matrix4d().SetRotate(rot)
+    offset.SetTranslateOnly(Gf.Vec3d(*ATTACH_OFFSET_TRANSLATION_M))
+
+    # offset * old_mat -> offset expressed in the prim's local frame.
+    # Swap to old_mat * offset for world/parent-axis offsets instead.
+    new_mat = offset * old_mat
+    omni.kit.commands.execute(
+        "TransformPrimCommand",
+        path=prim.GetPath(),
+        new_transform_matrix=new_mat,
+        old_transform_matrix=old_mat,
+    )
+
+
+
     assembler.assemble()
     assembler.finish_assemble()
 
