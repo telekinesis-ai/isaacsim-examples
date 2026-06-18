@@ -25,8 +25,8 @@ import omni.timeline
 from telekinesis.synapse.robots.manipulators import kuka
 from isaacsim.core.utils.types import ArticulationAction
 
-SIM_ROBOT_PRIM_PATH = "/World/factory/kuka_kr120r2500pro"
-SIM_ROBOT_PRIM_PATH = "/World/working_usd/kuka_kr120r2500pro"
+SIM_ROBOT_PRIM_PATH = "/World/robot_assembly/kuka_kr120r2500pro"
+# SIM_ROBOT_PRIM_PATH = "/World/RobotAssembly/kuka_kr120r2500pro"
 
 
 def main():
@@ -70,7 +70,7 @@ def main():
 
     # Cartesian round-trip. Inside the VS Code extension only the last command
     # of a single Run takes effect, so run this on its own Run to watch it move.
-    pose = [0.3, -1.5, 0.75, -180, 0, -180]
+    pose = [0.3, -1.5, 0.5, -180, 0, -180]
     print(f"\nCommanding pose (m, deg): {pose}")
 
     # Move the robot.

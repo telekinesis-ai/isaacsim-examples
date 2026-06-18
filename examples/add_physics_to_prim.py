@@ -5,7 +5,7 @@ from pxr import UsdPhysics, UsdGeom, PhysxSchema
 
 stage = omni.usd.get_context().get_stage()
 
-prim = stage.GetPrimAtPath("/World/A6")
+prim = stage.GetPrimAtPath("/World/high_pedestal")
 
 SDF_RESOLUTION = 128  # increase for better accuracy (512, 1024), costs more memory/time
 
