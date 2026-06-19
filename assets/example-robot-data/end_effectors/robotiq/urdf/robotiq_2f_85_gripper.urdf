@@ -267,28 +267,28 @@
     <child link="robotiq_85_right_finger_link"/>
     <origin rpy="0 0 0" xyz="-0.03152616 0.0 -0.00376347"/>
   </joint>
-  <joint name="robotiq_85_left_inner_knuckle_joint" type="continuous">
+  <joint name="robotiq_85_left_inner_knuckle_joint" type="revolute">
     <parent link="robotiq_85_base_link"/>
     <child link="robotiq_85_left_inner_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.0127 0.0 0.06142"/>
     <mimic joint="robotiq_85_left_knuckle_joint"/>
   </joint>
-  <joint name="robotiq_85_right_inner_knuckle_joint" type="continuous">
+  <joint name="robotiq_85_right_inner_knuckle_joint" type="revolute">
     <parent link="robotiq_85_base_link"/>
     <child link="robotiq_85_right_inner_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="-0.0127 0.0 0.06142"/>
     <mimic joint="robotiq_85_left_knuckle_joint" multiplier="-1"/>
   </joint>
-  <joint name="robotiq_85_left_finger_tip_joint" type="continuous">
+  <joint name="robotiq_85_left_finger_tip_joint" type="revolute">
     <parent link="robotiq_85_left_finger_link"/>
     <child link="robotiq_85_left_finger_tip_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.00563134 0.0 0.04718515"/>
     <mimic joint="robotiq_85_left_knuckle_joint" multiplier="-1"/>
   </joint>
-  <joint name="robotiq_85_right_finger_tip_joint" type="continuous">
+  <joint name="robotiq_85_right_finger_tip_joint" type="revolute">
     <parent link="robotiq_85_right_finger_link"/>
     <child link="robotiq_85_right_finger_tip_link"/>
     <axis xyz="0 -1 0"/>
