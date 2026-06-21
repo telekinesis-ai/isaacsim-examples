@@ -96,6 +96,40 @@ conda activate isaacsim-examples
     pip install telekinesis-synapse
     ```
 
+## Examples
+
+| File | Description |
+|------|-------------|
+| `examples/test_palletizing.py` | Multi-brand palletizing demo — mounts a robot, moves to home, runs the conveyor and stops it when a box reaches the lightbeam sensor. Change one line to switch between all 7 supported brands. |
+| `examples/add_physics_to_prim.py` | Adds rigid body and SDF collider physics to any prim in the open stage. |
+| `examples/remove_timeline.py` | Strips animation curves from a USD stage and exports a static version — useful when imported assets animate unexpectedly during physics simulation. |
+| `examples/examine_tree.py` | Prints the full prim tree of the open stage — useful for inspecting scene structure and finding prim paths. |
+
+
+## Palletizing Scene Demo
+
+Demonstrates a palletizing workflow across all 7 supported robot brands in Isaac Sim. A robot mounts on a stand or floor anchor, moves to its home configuration, and stops the conveyor when a box arrives at the lightbeam sensor.
+
+### Scene USDs
+
+Two ready-to-use scenes are provided under `assets/environments/palletizing/`:
+
+| File | Robots |
+|------|--------|
+| `palletizing_with_stand.usd` | UR10e, Franka Panda, Fanuc CRX-10iA/L, Motoman MH5, Neura MAiRA 7M — compact and medium arms on the stand |
+| `palletizing_floor_mount.usd` | Kuka KR210 L150, ABB IRB7600 — large industrial arms placed directly on the floor |
+
+### How to Run
+
+1. Open Isaac Sim.
+2. Open the scene USD that matches your robot (`File → Open`).
+3. Import the robot URDF via `Isaac Utils → URDF Importer` with **Fix Base = ON**. The robot spawns at the world origin — the script repositions it automatically.
+4. Open `examples/test_palletizing.py` in VS Code.
+5. Set `ACTIVE_ROBOT` at the top of the file to your robot brand:
+
+   ```python
+   ACTIVE_ROBOT = "ur10e"   # or "franka", "fanuc", "motoman", "kuka", "neura", "abb"
+
 ## Support
 
 For issues and questions:

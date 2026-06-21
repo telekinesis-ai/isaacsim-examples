@@ -42,7 +42,7 @@ from telekinesis.synapse.robots.manipulators import (
 # ===========================================================================
 # ← Change this one line to switch the active robot brand.
 # ===========================================================================
-ACTIVE_ROBOT: str = "neura"
+ACTIVE_ROBOT: str = "ur10e"
 
 
 # ===========================================================================
@@ -63,12 +63,12 @@ ACTIVE_ROBOT: str = "neura"
 #   damping     — PhysX position-drive damping (N·m·s/rad).
 # ===========================================================================
 ROBOT_REGISTRY: dict = {
-    "ur10e":   (universal_robots.UniversalRobotsUR10E,   "/World/ur10e",               [0.0, -90.0, -90.0, 0.0, 90.0, 0.0],      None,                     1.0e5, 1.0e4),
-    "franka":  (franka_robotics.FrankaRoboticsPanda,      "/World/franka",              None,                                      None,                     1.0e5, 1.0e4),
+    "ur10e":   (universal_robots.UniversalRobotsUR10E,    "/World/ur10e_robot",         [0.0, -90.0, -90.0, 0.0, 90.0, 0.0],      None,                     1.0e5, 1.0e4),
+    "franka":  (franka_robotics.FrankaRoboticsPanda,      "/World/franka",              [0.0, -45.0, 0.0, -135.0, 0.0, 180.0, 45.0, 1.146, 1.146],  None,   1.0e5, 1.0e4),
     "fanuc":   (fanuc.FanucCRX10IAL,                      "/World/fanuc_crx10ial",      [0.0, 0.0, 0.0, 0.0, 10.0, 0.0],          None,                     1.0e5, 1.0e4),
     "motoman": (motoman.MotomanMH5,                       "/World/motoman_mh5",         [0.0, 0.0, 0.0, 0.0,  0.0, 0.0],          None,                     1.0e5, 1.0e4),
-    "kuka":    (kuka.KukaKR210L150,                       "/World/kuka_kr210",          None,                                      [-12.144, -9.7247, 0.0],  1.0e6, 1.0e5),
-    "neura":   (neura_robotics.NeuraRoboticsMAiRA7M,      "/World/maira7M",             None,                                      [-12.144, -9.7247, 0.0],  1.0e6, 1.0e5),
+    "kuka":    (kuka.KukaKR210L150,                       "/World/kuka_kr210",          None,                                      [-12.596, -9.7247, 0.0],  1.0e6, 1.0e5),
+    "neura":   (neura_robotics.NeuraRoboticsMAiRA7M,      "/World/maira7M",             None,                                      None,                      1.0e6, 1.0e5),
     "abb":     (abb.AbbIRB7600150350,                     "/World/abb_irb7600_150_350", None,                                      [-12.596, -9.7247, 0.0],  1.0e7, 1.0e6),
 }
 
