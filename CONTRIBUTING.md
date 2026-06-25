@@ -6,7 +6,9 @@ This guide walks through building an Isaac Sim scene from scratch, importing a r
 
 ## Prerequisites
 
-- Isaac Sim 5.1.0 or 6.0.0 installed and running
+- Isaac Sim installed and running:
+  - **5.1.0** → Python 3.10, conda env: `conda create -n isaacsim python=3.10`
+  - **6.0.0** → Python 3.12, conda env: `conda create -n isaacsim python=3.12`
 - `telekinesis-synapse` installed (see [README](README.md))
 - `telekinesis-urdfs` cloned and installed
 - Isaac Sim VS Code Extension installed and connected
@@ -14,6 +16,8 @@ This guide walks through building an Isaac Sim scene from scratch, importing a r
 ---
 
 ## 1. Scene Structure
+
+> The following steps walk through building the **palletizing scene** included in this repository. The same approach applies to any industrial scene — swap the warehouse environment, conveyor, and sensor for the props relevant to your application, and follow the same structure.
 
 A well-structured scene separates environment (static props) from active components (robot, conveyor, sensor). The palletizing scene follows this layout:
 
