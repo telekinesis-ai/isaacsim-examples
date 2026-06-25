@@ -68,7 +68,7 @@ STAND_PRIM_PATH:    str   = "/World/high_pedestal"
 STAND_TOP_OFFSET_Z: float = 2.51   # pedestal origin is at its base; this is its height (m)
 
 GRIPPER_PRIM_PATH: str = "/World/suction_gripper"
-GRIPPER_BODY_PATH: str = "/World/suction_gripper"
+GRIPPER_BODY_PATH: str = "/World/suction_gripper/suction_gripper/A6"
 
 # Orientation correction applied on top of the flange pose (XYZ Euler degrees).
 # Adjust if the gripper face does not align with the expected approach direction.

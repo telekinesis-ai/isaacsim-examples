@@ -1,16 +1,20 @@
 """
-Multi-brand palletizing demo — Isaac Sim + Telekinesis Synapse.
+UR10e palletizing demo — Isaac Sim + Telekinesis Synapse.
 
-Demonstrates a palletizing workflow across all supported manipulator brands.
-A robot mounts on a stand or floor anchor, moves to its home configuration,
-and waits for a box to arrive at a lightbeam sensor before stopping the
-conveyor belt.
+Demonstrates a palletizing workflow for the Universal Robots UR10e.
+The robot mounts on a stand, moves to its home configuration, and waits
+for a box to arrive at a lightbeam sensor before stopping the conveyor.
+
+Components not yet supported by Synapse (conveyor, suction gripper,
+lightbeam sensor, box spawner, pallet) are wrapped as thin classes.
+When Synapse adds native support, replace a class body with the relevant
+import — the pipeline in ``main()`` stays unchanged.
 
 Workflow (complete in Isaac Sim before running):
   1. Open the palletizing scene USD.
-  2. Import the target robot URDF via the URDF Importer (Fix Base = ON).
+  2. Import the UR10e URDF via the URDF Importer (Fix Base = ON).
      The robot spawns at the world origin; this script repositions it.
-  3. Set ``ACTIVE_ROBOT`` to the desired brand key (see registry below).
+  3. Update the prim-path constants below to match the open stage.
   4. Run via the Isaac Sim VS Code Extension or the Kit Script Editor.
 
 You manage the timeline: ``main()`` plays it before connecting to any
@@ -28,65 +32,35 @@ import omni.usd
 import numpy as np
 from pxr import Usd, UsdGeom, UsdPhysics, Gf
 
-from telekinesis.synapse.robots.manipulators import (
-    abb,
-    fanuc,
-    franka_robotics,
-    kuka,
-    motoman,
-    neura_robotics,
-    universal_robots,
-)
-
-
-# ===========================================================================
-# ← Change this one line to switch the active robot brand.
-# ===========================================================================
-ACTIVE_ROBOT: str = "ur10e"
-
-
-# ===========================================================================
-# Robot registry
-#
-# Each entry: (class, prim_path, home_q, floor_pos, stiffness, damping)
-#
-#   class       — Synapse manipulator class.
-#   prim_path   — USD articulation-root path; must match the imported URDF.
-#   home_q      — Joint positions in degrees for the ready pose.
-#                 None → use robot.default_joint_configuration.
-#   floor_pos   — [x, y, z] world position for floor-mounted robots (heavy
-#                 industrial arms that do not fit on the compact stand).
-#                 None → position on STAND_PRIM_PATH instead.
-#   stiffness   — PhysX position-drive stiffness (N·m/rad). Heavier arms
-#                 require higher values to resist gravity; under-tuned drives
-#                 cause the arm to sag or oscillate after moving.
-#   damping     — PhysX position-drive damping (N·m·s/rad).
-# ===========================================================================
-ROBOT_REGISTRY: dict = {
-    "ur10e":   (universal_robots.UniversalRobotsUR10E,    "/World/ur10e_robot",         [0.0, -90.0, -90.0, 0.0, 90.0, 0.0],      None,                     1.0e5, 1.0e4),
-    "franka":  (franka_robotics.FrankaRoboticsPanda,      "/World/franka",              [0.0, -45.0, 0.0, -135.0, 0.0, 180.0, 45.0, 1.146, 1.146],  None,   1.0e5, 1.0e4),
-    "fanuc":   (fanuc.FanucCRX10IAL,                      "/World/fanuc_crx10ial",      [0.0, 0.0, 0.0, 0.0, 10.0, 0.0],          None,                     1.0e5, 1.0e4),
-    "motoman": (motoman.MotomanMH5,                       "/World/motoman_mh5",         [0.0, 0.0, 0.0, 0.0,  0.0, 0.0],          None,                     1.0e5, 1.0e4),
-    "kuka":    (kuka.KukaKR210L150,                       "/World/kuka_kr210",          None,                                      [-12.596, -9.7247, 0.0],  1.0e6, 1.0e5),
-    "neura":   (neura_robotics.NeuraRoboticsMAiRA7M,      "/World/maira7M",             None,                                      None,                      1.0e6, 1.0e5),
-    "abb":     (abb.AbbIRB7600150350,                     "/World/abb_irb7600_150_350", None,                                      [-12.596, -9.7247, 0.0],  1.0e7, 1.0e6),
-}
+from telekinesis.synapse.robots.manipulators import universal_robots
 
 
 # ===========================================================================
 # Scene prim paths — right-click any prim in the Stage panel → Copy Prim Path.
 # ===========================================================================
 
-# Stand that compact robots mount on.
+# Articulation-root path of the imported UR10e URDF.
+ROBOT_PRIM_PATH: str = "/World/ur10e_robot"
+
+# Prim on which the robot base should rest.
 STAND_PRIM_PATH: str = "/World/palletizing_rough_scene/ur10_mount"
 
-# Vertical offset above the stand origin where the robot base should rest (m).
-# Zero when the stand origin is already flush with its top surface.
+# Vertical offset above the stand origin where the robot base sits (m).
+# Zero when the stand origin is flush with its top surface.
 STAND_TOP_OFFSET_Z: float = 0.0
 
-# Yaw (deg) about world Z applied to the robot after positioning so it faces
-# the conveyor. Set to 0.0 if the URDF default orientation already faces the belt.
+# Yaw (deg) about world Z applied after positioning so the robot faces the
+# conveyor. Set to 0.0 if the URDF default orientation already faces the belt.
 ROBOT_YAW_DEG: float = 0.0
+
+# Position-drive gains. Imported URDFs default to soft drives; raising these
+# keeps the arm steady under gravity. Must be set before play().
+# UR10e (33 kg): 1e5 / 1e4 is sufficient.
+ROBOT_DRIVE_STIFFNESS: float = 1.0e5
+ROBOT_DRIVE_DAMPING: float = 1.0e4
+
+# UR10e ready pose — elbow-up configuration (degrees).
+HOME_Q: list[float] = [0.0, -90.0, -90.0, 0.0, 90.0, 0.0]
 
 # All conveyor belt prims that carry boxes. start()/stop() control them together.
 CONVEYOR_PRIM_PATHS: list[str] = [
@@ -97,6 +71,9 @@ CONVEYOR_PRIM_PATHS: list[str] = [
 
 # Isaac LightBeam sensor that detects a box arriving in the pick zone.
 LIGHTBEAM_PRIM_PATH: str = "/World/palletizing_rough_scene/LightBeam_Sensor"
+
+# USD path of the suction gripper added from Isaac assets.
+GRIPPER_PRIM_PATH: str = "/World/suction_gripper"
 
 # Maximum physics frames to wait for the lightbeam before giving up.
 MONITOR_MAX_STEPS: int = 3000
@@ -166,11 +143,12 @@ class Conveyor:
     SURFACE_VELOCITY_ATTR: str = "physxSurfaceVelocity:surfaceVelocity"
 
     def __init__(self, stage, conveyor_prim_paths: list[str]) -> None:
+        self._stage = stage
         self._attrs: list = []
         self._run_velocities: list[Gf.Vec3f] = []
 
         for path in conveyor_prim_paths:
-            attr = self._find_surface_velocity_attr(stage, path)
+            attr = self._find_surface_velocity_attr(path)
             if attr is None:
                 print(f"[WARN] No surface velocity found under {path!r} — skipping.")
                 continue
@@ -185,10 +163,10 @@ class Conveyor:
             )
         print(f"Conveyor: controlling {len(self._attrs)} belt(s).")
 
-    def _find_surface_velocity_attr(self, stage, root_path: str):
+    def _find_surface_velocity_attr(self, root_path: str):
         """Traverse descendants of *root_path* and return the first prim that
         carries a surface-velocity attribute, or ``None`` if absent."""
-        root = stage.GetPrimAtPath(root_path)
+        root = self._stage.GetPrimAtPath(root_path)
         if not root.IsValid():
             return None
         for prim in Usd.PrimRange(root):
@@ -285,63 +263,7 @@ def _world_translation(stage, prim_path: str) -> np.ndarray:
     return np.array([float(t[0]), float(t[1]), float(t[2])])
 
 
-def _set_translate_op(robot_prim, xyz: list[float]) -> None:
-    """Write *xyz* into the robot prim's existing translate op (or add one).
-
-    The URDF importer authors an ``xformOp:orient`` (quaternion) op which
-    makes ``XformCommonAPI.SetTranslate`` silently no-op. This function
-    targets the translate op directly to avoid that pitfall.
-
-    Args:
-        robot_prim: USD prim of the robot root.
-        xyz: Target world position [x, y, z] in metres.
-    """
-    xform = UsdGeom.Xformable(robot_prim)
-    translate_op = next(
-        (op for op in xform.GetOrderedXformOps()
-         if op.GetOpType() == UsdGeom.XformOp.TypeTranslate),
-        None,
-    )
-    if translate_op is None:
-        translate_op = xform.AddTranslateOp()
-    translate_op.Set(Gf.Vec3d(float(xyz[0]), float(xyz[1]), float(xyz[2])))
-
-
-def _apply_yaw(robot_prim, yaw_deg: float) -> None:
-    """Compose a Z-axis yaw rotation onto the robot prim's orient op.
-
-    Composing (not replacing) preserves the URDF's own orientation while
-    adding the requested yaw offset.
-
-    Args:
-        robot_prim: USD prim of the robot root.
-        yaw_deg: Yaw angle in degrees about the world Z axis.
-    """
-    if not yaw_deg:
-        return
-    yaw = Gf.Rotation(Gf.Vec3d(0, 0, 1), yaw_deg).GetQuat()
-    xform = UsdGeom.Xformable(robot_prim)
-    orient_op = next(
-        (op for op in xform.GetOrderedXformOps()
-         if op.GetOpType() == UsdGeom.XformOp.TypeOrient),
-        None,
-    )
-    if orient_op is None:
-        xform.AddOrientOp().Set(Gf.Quatf(yaw))
-    else:
-        cur = orient_op.Get()
-        orient_op.Set(
-            Gf.Quatf(yaw) * cur if isinstance(cur, Gf.Quatf)
-            else yaw * Gf.Quatd(cur)
-        )
-
-
-def set_robot_drive_gains(
-    stage,
-    robot_prim_path: str,
-    stiffness: float,
-    damping: float,
-) -> None:
+def set_robot_drive_gains(stage) -> None:
     """Apply position-drive gains to every revolute joint under the robot root.
 
     Imported URDFs often default to soft drives that sag or oscillate under
@@ -350,58 +272,80 @@ def set_robot_drive_gains(
 
     Args:
         stage: Open USD stage.
-        robot_prim_path: Root prim path of the robot articulation.
-        stiffness: Position-drive stiffness in N·m/rad.
-        damping: Position-drive damping in N·m·s/rad.
     """
     count = 0
     for prim in stage.Traverse():
-        if not str(prim.GetPath()).startswith(robot_prim_path):
+        if not str(prim.GetPath()).startswith(ROBOT_PRIM_PATH):
             continue
         drive = UsdPhysics.DriveAPI.Get(prim, "angular")
         if drive:
-            drive.CreateStiffnessAttr().Set(stiffness)
-            drive.CreateDampingAttr().Set(damping)
+            drive.CreateStiffnessAttr().Set(ROBOT_DRIVE_STIFFNESS)
+            drive.CreateDampingAttr().Set(ROBOT_DRIVE_DAMPING)
             count += 1
     print(f"Drive gains set on {count} joint(s) "
-          f"(stiffness={stiffness:g}, damping={damping:g}).")
+          f"(stiffness={ROBOT_DRIVE_STIFFNESS:g}, damping={ROBOT_DRIVE_DAMPING:g}).")
 
 
-def position_robot(
-    stage,
-    robot_prim_path: str,
-    target_xyz: list[float],
-    yaw_deg: float = 0.0,
-) -> None:
-    """Reposition the robot base to *target_xyz* and optionally yaw it.
+def position_robot_on_stand(stage) -> None:
+    """Reposition the robot base onto the stand and apply the configured yaw.
 
-    Must run **before** ``play()`` — repositioning a live articulation
-    corrupts its internal state.
+    The URDF importer places the robot at the world origin. This function
+    moves the base to the stand's world position before the timeline starts.
+    Repositioning a live articulation corrupts its internal state, so this
+    must run **before** ``play()``.
+
+    The URDF importer authors an ``xformOp:orient`` (quaternion) op which
+    makes ``XformCommonAPI.SetTranslate`` silently no-op. The translate op
+    is therefore written directly.
 
     Args:
         stage: Open USD stage.
-        robot_prim_path: Root prim path of the robot articulation.
-        target_xyz: Desired world position [x, y, z] in metres.
-        yaw_deg: Optional rotation about world Z (degrees).
 
     Raises:
-        RuntimeError: If the robot prim is not found in the stage.
+        RuntimeError: If the robot or stand prim is not found in the stage.
     """
-    robot_prim = stage.GetPrimAtPath(robot_prim_path)
+    mount_xyz = _world_translation(stage, STAND_PRIM_PATH)
+    mount_xyz[2] += STAND_TOP_OFFSET_Z
+
+    robot_prim = stage.GetPrimAtPath(ROBOT_PRIM_PATH)
     if not robot_prim.IsValid():
         raise RuntimeError(
-            f"Robot prim {robot_prim_path!r} not found in the stage. "
+            f"Robot prim {ROBOT_PRIM_PATH!r} not found in the stage. "
             "Import the URDF first (URDF Importer → Fix Base ON)."
         )
-    _set_translate_op(robot_prim, target_xyz)
-    _apply_yaw(robot_prim, yaw_deg)
+
+    xform = UsdGeom.Xformable(robot_prim)
+    translate_op = next(
+        (op for op in xform.GetOrderedXformOps()
+         if op.GetOpType() == UsdGeom.XformOp.TypeTranslate),
+        None,
+    )
+    if translate_op is None:
+        translate_op = xform.AddTranslateOp()
+    translate_op.Set(Gf.Vec3d(float(mount_xyz[0]), float(mount_xyz[1]), float(mount_xyz[2])))
+
+    if ROBOT_YAW_DEG:
+        yaw = Gf.Rotation(Gf.Vec3d(0, 0, 1), ROBOT_YAW_DEG).GetQuat()
+        orient_op = next(
+            (op for op in xform.GetOrderedXformOps()
+             if op.GetOpType() == UsdGeom.XformOp.TypeOrient),
+            None,
+        )
+        if orient_op is None:
+            xform.AddOrientOp().Set(Gf.Quatf(yaw))
+        else:
+            cur = orient_op.Get()
+            orient_op.Set(
+                Gf.Quatf(yaw) * cur if isinstance(cur, Gf.Quatf)
+                else yaw * Gf.Quatd(cur)
+            )
 
     actual = UsdGeom.XformCache().GetLocalToWorldTransform(
         robot_prim
     ).ExtractTranslation()
     print(
         f"Robot base → {[round(float(v), 3) for v in actual]}  "
-        f"(target {[round(float(v), 3) for v in target_xyz]})"
+        f"(target {[round(float(v), 3) for v in mount_xyz]})"
     )
 
 
@@ -410,39 +354,24 @@ def position_robot(
 # ===========================================================================
 
 def main() -> None:
-    """Run the palletizing demo for the robot selected by ``ACTIVE_ROBOT``."""
-    robot_cls, robot_prim_path, home_q, floor_pos, stiffness, damping = (
-        ROBOT_REGISTRY[ACTIVE_ROBOT]
-    )
-    print(f"Active robot : {ACTIVE_ROBOT} — {robot_cls.__name__} @ {robot_prim_path}")
-
+    """Run the UR10e palletizing demo."""
     stage = omni.usd.get_context().get_stage()
 
-    # Determine mount position: floor anchor for large arms, stand for compact ones.
-    if floor_pos is not None:
-        target_xyz = floor_pos
-    else:
-        target_xyz = _world_translation(stage, STAND_PRIM_PATH).tolist()
-        target_xyz[2] += STAND_TOP_OFFSET_Z
-
     # Reposition and configure drives before the timeline starts.
-    position_robot(stage, robot_prim_path, target_xyz, ROBOT_YAW_DEG)
-    set_robot_drive_gains(stage, robot_prim_path, stiffness, damping)
+    position_robot_on_stand(stage)
+    set_robot_drive_gains(stage)
 
     omni.timeline.get_timeline_interface().play()
 
-    robot = robot_cls()
-    robot.connect(simulation_prim_path=robot_prim_path)
-
-    if home_q is None:
-        home_q = robot.default_joint_configuration.tolist()
+    robot = universal_robots.UniversalRobotsUR10E()
+    robot.connect(simulation_prim_path=ROBOT_PRIM_PATH)
 
     app = omni.kit.app.get_app()
     conveyor = Conveyor(stage, CONVEYOR_PRIM_PATHS)
     sensor = LightBeamSensor(LIGHTBEAM_PRIM_PATH)
 
     try:
-        robot.set_joint_positions(home_q)
+        robot.set_joint_positions(HOME_Q)
         print("Robot at home:", [round(v, 1) for v in robot.state.joint_positions])
 
         conveyor.start()
@@ -455,6 +384,9 @@ def main() -> None:
                 break
         else:
             print("[WARN] Lightbeam not triggered within step budget.")
+
+        # Next: wait for box to settle → read box world pose → convert to
+        # robot base frame → suction pick → place on pallet → restart conveyor.
 
     finally:
         robot.disconnect()
