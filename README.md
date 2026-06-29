@@ -101,6 +101,7 @@ conda activate isaacsim-examples
 | File | Description |
 |------|-------------|
 | `examples/test_palletizing.py` | Multi-brand palletizing demo mounts a robot, moves to home, runs the conveyor and stops it when a box reaches the lightbeam sensor. Change one line to switch between all 7 supported brands. |
+| `examples/automotive_assembly.py` | Multi-brand automotive assembly demo mounts a heavy industrial robot on a pedestal in a vehicle-factory scene, faces the work cell, moves to home, and attaches a suction gripper to the flange. Change one line to switch brands (Kuka, ABB, Neura). |
 | `examples/add_physics_to_prim.py` | Adds rigid body and SDF collider physics to any prim in the open stage. |
 | `examples/remove_timeline.py` | Strips animation curves from a USD stage and exports a static version useful when imported assets animate unexpectedly during physics simulation. |
 | `examples/examine_tree.py` | Prints the full prim tree of the open stage useful for inspecting scene structure and finding prim paths. |
@@ -129,6 +130,37 @@ Two ready-to-use scenes are provided under `assets/environments/palletizing/`:
 
    ```python
    ACTIVE_ROBOT = "ur10e"   # or "franka", "fanuc", "motoman", "kuka", "neura", "abb"
+   ```
+
+
+## Automotive Assembly Scene Demo
+
+Demonstrates a multi-brand automotive material-handling workflow in Isaac Sim. A large industrial robot mounts on a pedestal in a vehicle-factory scene, rotates to face the work cell, moves to its home configuration, and is coupled to a suction gripper for sheet-metal handling.
+
+### Scene USDs
+
+The scene and the gripper asset are provided separately:
+
+| File | Contents |
+|------|----------|
+| `assets/environments/vehicle_factory_01/Empty_factory.usd` | Vehicle-factory environment with the pedestal and the sledge (car body) |
+| `assets/tools/suction_gripper.usd` | Suction gripper end-effector, added to the scene by the user |
+
+Supported robots (large industrial arms): **Kuka KR210 L150**, **ABB IRB7600**, **Neura MAiRA 7M**.
+
+### How to Run
+
+1. Open Isaac Sim.
+2. Open `assets/environments/vehicle_factory_01/Empty_factory.usd` (`File → Open`).
+3. Import the robot URDF via `Isaac Utils → URDF Importer` with **Fix Base = ON**. The robot spawns at the world origin; the script repositions it onto the pedestal automatically.
+4. Add the suction gripper: in the **Content** browser, browse to the repo folder `isaacsim-examples/assets/tools/` and drag **`suction_gripper.usd`** into the viewport (or onto `/World` in the Stage tree). Confirm its prim path matches `GRIPPER_PRIM_PATH` / `GRIPPER_BODY_PATH` in the script.
+5. Open `examples/automotive_assembly.py` in VS Code.
+6. Set `ACTIVE_ROBOT` at the top of the file to your robot brand, then run:
+
+   ```python
+   ACTIVE_ROBOT = "kuka"   # or "abb", "neura"
+   ```
+
 
 ## Support
 
