@@ -102,7 +102,7 @@ conda activate isaacsim-examples
 |------|-------------|
 | `examples/palletizing.py` | Multi-brand palletizing demo mounts a robot, moves to home, runs the conveyor and stops it when a box reaches the lightbeam sensor. Change one line to switch between all 7 supported brands. |
 | `examples/automotive_assembly.py` | Multi-brand automotive assembly demo mounts a heavy industrial robot on a pedestal in a vehicle-factory scene, faces the work cell, moves to home, and attaches a suction gripper to the flange. Change one line to switch brands (Kuka, ABB, Neura). |
-| `examples/machine_tending.py` | Multi-brand machine-tending demo spawns a small collaborative or industrial robot on a mount point next to a CNC machine and drives it to a ready pose. Change one line to switch between UR10e, Franka, Fanuc, Motoman, and Neura. |
+| `examples/cnc_machine_tending.py` | Multi-brand machine-tending demo spawns a small collaborative or industrial robot on a mount point next to a CNC machine and drives it to a ready pose. Change one line to switch between UR10e, Franka, Fanuc, Motoman, and Neura. |
 | `examples/add_physics_to_prim.py` | Adds rigid body and SDF collider physics to any prim in the open stage. |
 | `examples/remove_timeline.py` | Strips animation curves from a USD stage and exports a static version useful when imported assets animate unexpectedly during physics simulation. |
 | `examples/examine_tree.py` | Prints the full prim tree of the open stage useful for inspecting scene structure and finding prim paths. |
@@ -177,7 +177,7 @@ Demonstrates multi-brand robot spawning in a warehouse digital-twin scene next t
 
 | File | Contents |
 |------|----------|
-| `assets/environments/machine_tending/cnc_machine_tending.usd` | Small warehouse digital-twin environment with the CNC machine and robot mount point |
+| `assets/environments/cnc_machine_tending/cnc_machine_tending.usd` | Small warehouse digital-twin environment with the CNC machine and robot mount point |
 
 Supported robots: **UR10e**, **Franka Panda**, **Fanuc CRX-10iA/L**, **Motoman MH5**, **Neura MAiRA 7M**.
 
@@ -186,9 +186,9 @@ Supported robots: **UR10e**, **Franka Panda**, **Fanuc CRX-10iA/L**, **Motoman M
 ### How to Run
 
 1. Open Isaac Sim.
-2. Open `assets/environments/machine_tending/cnc_machine_tending.usd` (`File → Open`).
+2. Open `assets/environments/cnc_machine_tending/cnc_machine_tending.usd` (`File → Open`).
 3. Add the robot from the Content Browser or import via `Isaac Utils → URDF Importer` with **Fix Base = ON**. Confirm the `prim_path` in the registry matches the Stage tree.
-4. Open `examples/machine_tending.py` in VS Code.
+4. Open `examples/cnc_machine_tending.py` in VS Code.
 5. Set `ACTIVE_ROBOT` at the top of the file to your robot brand, then run:
 
    ```python

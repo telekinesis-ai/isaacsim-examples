@@ -48,8 +48,6 @@ Keep the robot **out of the scene USD**. Users import their own URDF at runtime 
 3. Drag `sm_warehouse_a06_h10m_straight90_01` into the viewport.
 4. Position it to frame your scene place the working area (conveyor + robot) near the centre.
 
-> The warehouse USD is also available in `assets/environments/palletizing/` in this repo.
-
 ---
 
 ### 2.2 Conveyor Belt
@@ -72,8 +70,6 @@ Keep the robot **out of the scene USD**. Users import their own URDF at runtime 
    - `Surface Velocity Local Space` ✓
 8. Set **Surface Linear Velocity** assign a value (e.g. `0.8`) to either X, Y, or Z depending on the belt's orientation. To find the correct axis, place a cardboard box on the belt and press **Play** to see which direction it moves. Adjust the axis until boxes travel toward the robot.
 
-> The conveyor USD is also available in `assets/environments/palletizing/` in this repo.
-
 ---
 
 ### 2.3 Robot Stand (optional for compact arms)
@@ -84,10 +80,7 @@ For smaller collaborative robots (UR10e, Franka, Fanuc CRX, Motoman MH5), add a 
    ```
    Isaac Sim / Props / Mounts /
    ```
-   Select a suitable mount, or use the one already in this repo:
-   ```
-   assets/environments/palletizing/ur10_mount.usd
-   ```
+   Select a suitable mount and drag it into the viewport.
 2. Add it to the stage and position it next to the conveyor belt at the pick zone.
 3. Note the prim path (right-click → **Copy Prim Path**) you will set this as `STAND_PRIM_PATH` in the script.
 
@@ -179,7 +172,7 @@ Robot URDFs are sourced from [telekinesis-urdfs](https://github.com/telekinesis-
    ```
 3. Enable **Fix Base** ✓ required for all manipulators.
 4. Set **Reference Model** as needed.
-5. Leave stiffness and damping at defaults the application script sets them via code before the simulation starts (see `set_robot_drive_gains()` in `examples/test_palletizing.py`).
+5. Leave stiffness and damping at defaults the application script sets them via code before the simulation starts (see `set_robot_drive_gains()` in `examples/palletizing.py`).
 6. Click **Import**. The robot spawns at the world origin the script repositions it.
 7. Right-click the robot's root prim in the Stage panel → **Copy Prim Path**. Set this as `ROBOT_PRIM_PATH` (or the matching key in `ROBOT_REGISTRY`) in the script.
 
@@ -191,8 +184,8 @@ Save the scene **without the robot** so it can be reused across all robot brands
 
 1. Remove the robot prim from the stage (or undo the import).
 2. `File → Save As` → save to `assets/environments/palletizing/` with a descriptive name:
-   - `palletizing_with_stand.usd` for compact robots using the stand
-   - `palletizing_floor_mount.usd` for large robots placed on the floor
+   - `palletizing_stand.usd` for compact robots using the stand
+   - `palletizing_floor.usd` for large robots placed on the floor
 
 ---
 
@@ -200,7 +193,7 @@ Save the scene **without the robot** so it can be reused across all robot brands
 
 Once the scene is built and a robot URDF is imported, test it with the provided script:
 
-1. Open `examples/test_palletizing.py` in VS Code.
+1. Open `examples/palletizing.py` in VS Code.
 2. Set `ACTIVE_ROBOT` to your robot brand and verify the prim paths match your stage.
 3. Run via the **Isaac Sim VS Code Edition** extension → **Run**.
 
@@ -213,4 +206,4 @@ See [README.md](README.md) for the full run instructions and supported robot lis
 - **No prototyping or test files in the public repo.** Only clean, working examples belong here.
 - **Assets in one place.** Scene USDs go under `assets/environments/<application>/` not in the root or in `examples/`.
 - **Scene USDs must not contain the robot.** Users import their own URDF; the script handles placement.
-- **All public functions need docstrings and type hints.** See `examples/test_palletizing.py` for reference style.
+- **All public functions need docstrings and type hints.** See `examples/palletizing.py` for reference style.
