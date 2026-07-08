@@ -196,6 +196,19 @@ Supported robots: **UR10e**, **Franka Panda**, **Fanuc CRX-10iA/L**, **Motoman M
    ```
 
 
+## Material Handling Scene
+
+A general-purpose humanoid material handling environment with shelving racks, an input bin with grid slots, and safety barriers. Load this asset to carry out any material handling application with a humanoid robot.
+
+![Material handling scene](docs/images/material_handling.png)
+
+### Scene USDs
+
+| File | Contents |
+|------|----------|
+| `assets/environments/material_handling/material_handling.usd` | Warehouse environment with shelving rack, tote container, humanoid robot, office area, and safety fencing |
+
+
 ## Third-Party Assets
 
 Some scene assets are sourced from third-party providers. We gratefully acknowledge their work.
@@ -203,6 +216,7 @@ Some scene assets are sourced from third-party providers. We gratefully acknowle
 | Asset | Scene | Provider | Repository |
 |-------|-------|----------|------------|
 | CNC machine (`model_machine003_1_0.usd`) | Machine Tending | [Extwin Synthesis](https://synthesis.extwin.com/#/home) | [Synthesis Assets Explorer](https://github.com/Extwin-Synthesis/Synthesis-Assets-Explorer) |
+| Shelf rack (`model_shelf003_0.usd`) | Material Handling | [Extwin Synthesis](https://synthesis.extwin.com/#/home) | [Synthesis Assets Explorer](https://github.com/Extwin-Synthesis/Synthesis-Assets-Explorer) |
 
 ### Credits
 
