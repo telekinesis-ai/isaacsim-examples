@@ -1,0 +1,3970 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.3"
+    }
+    doc = """Generated from Composed Stage of root layer C:\\Users\\Herrt\\AppData\\Local\\Temp\\tmppelm5vku\\kuka_kr210.usdc
+
+
+Generated from Composed Stage of root layer C:\\Users\\Herrt\\AppData\\Local\\Temp\\urdf_import_kr210l150_02xiv7td\\usdex_kr210l150\\kuka_kr210.usdc
+
+
+Generated from Composed Stage of root layer C:\\Users\\Herrt\\AppData\\Local\\Temp\\urdf_import_kr210l150_02xiv7td\\temp_kr210l150\\kr210l150.usd
+
+
+Generated from Composed Stage of root layer C:\\dev\\isaacsim-examples\\assets\\robots_isaacsim_6_0_1\\kr210l150\\payloads\\base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Scope "Instances"
+{
+    def Xform "tn__" (
+        prepend references = @./geometries.usd@</Geometries/tn__>
+    )
+    {
+        over "tn__" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__/VisualMaterials/Color_008>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1" (
+        prepend references = @./geometries.usd@</Geometries/_1>
+    )
+    {
+        over "_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1/VisualMaterials/Color_008>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_2" (
+        prepend references = @./geometries.usd@</Geometries/_2>
+    )
+    {
+        over "_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_2/VisualMaterials/Color_008>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_3" (
+        prepend references = @./geometries.usd@</Geometries/_3>
+    )
+    {
+        over "_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_3/VisualMaterials/Color_008>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_4" (
+        prepend references = @./geometries.usd@</Geometries/_4>
+    )
+    {
+        over "_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_4/VisualMaterials/Color_008>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_5" (
+        prepend references = @./geometries.usd@</Geometries/_5>
+    )
+    {
+        over "_5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_5/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_6" (
+        prepend references = @./geometries.usd@</Geometries/_6>
+    )
+    {
+        over "_6" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_6/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_7" (
+        prepend references = @./geometries.usd@</Geometries/_7>
+    )
+    {
+        over "_7" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_7/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_8" (
+        prepend references = @./geometries.usd@</Geometries/_8>
+    )
+    {
+        over "_8" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_8/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_9" (
+        prepend references = @./geometries.usd@</Geometries/_9>
+    )
+    {
+        over "_9" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_9/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_10" (
+        prepend references = @./geometries.usd@</Geometries/_10>
+    )
+    {
+        over "_10" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_10/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_11" (
+        prepend references = @./geometries.usd@</Geometries/_11>
+    )
+    {
+        over "_11" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_11/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_12" (
+        prepend references = @./geometries.usd@</Geometries/_12>
+    )
+    {
+        over "_12" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_12/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_13" (
+        prepend references = @./geometries.usd@</Geometries/_13>
+    )
+    {
+        over "_13" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_13/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_14" (
+        prepend references = @./geometries.usd@</Geometries/_14>
+    )
+    {
+        over "_14" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_14/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_15" (
+        prepend references = @./geometries.usd@</Geometries/_15>
+    )
+    {
+        over "_15" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_15/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_16" (
+        prepend references = @./geometries.usd@</Geometries/_16>
+    )
+    {
+        over "_16" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_16/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_17" (
+        prepend references = @./geometries.usd@</Geometries/_17>
+    )
+    {
+        over "_17" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_17/VisualMaterials/KukaOrange>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn___1" (
+        prepend references = @./geometries.usd@</Geometries/tn___1>
+    )
+    {
+        over "tn___1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/tn___1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/tn___1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1_1" (
+        prepend references = @./geometries.usd@</Geometries/_1_1>
+    )
+    {
+        over "_1_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_2_1" (
+        prepend references = @./geometries.usd@</Geometries/_2_1>
+    )
+    {
+        over "_2_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_2_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_2_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_3_1" (
+        prepend references = @./geometries.usd@</Geometries/_3_1>
+    )
+    {
+        over "_3_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_3_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_3_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_4_1" (
+        prepend references = @./geometries.usd@</Geometries/_4_1>
+    )
+    {
+        over "_4_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_4_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_4_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_5_1" (
+        prepend references = @./geometries.usd@</Geometries/_5_1>
+    )
+    {
+        over "_5_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_5_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_5_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_6_1" (
+        prepend references = @./geometries.usd@</Geometries/_6_1>
+    )
+    {
+        over "_6_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_6_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_7_1" (
+        prepend references = @./geometries.usd@</Geometries/_7_1>
+    )
+    {
+        over "_7_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_7_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_8_1" (
+        prepend references = @./geometries.usd@</Geometries/_8_1>
+    )
+    {
+        over "_8_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_8_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_8_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_9_1" (
+        prepend references = @./geometries.usd@</Geometries/_9_1>
+    )
+    {
+        over "_9_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_9_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_9_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_10_1" (
+        prepend references = @./geometries.usd@</Geometries/_10_1>
+    )
+    {
+        over "_10_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_10_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_11_1" (
+        prepend references = @./geometries.usd@</Geometries/_11_1>
+    )
+    {
+        over "_11_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_11_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_12_1" (
+        prepend references = @./geometries.usd@</Geometries/_12_1>
+    )
+    {
+        over "_12_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_12_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_13_1" (
+        prepend references = @./geometries.usd@</Geometries/_13_1>
+    )
+    {
+        over "_13_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_13_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_14_1" (
+        prepend references = @./geometries.usd@</Geometries/_14_1>
+    )
+    {
+        over "_14_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_14_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_14_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_15_1" (
+        prepend references = @./geometries.usd@</Geometries/_15_1>
+    )
+    {
+        over "_15_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_15_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_15_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_16_1" (
+        prepend references = @./geometries.usd@</Geometries/_16_1>
+    )
+    {
+        over "_16_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_16_1/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_17_1" (
+        prepend references = @./geometries.usd@</Geometries/_17_1>
+    )
+    {
+        over "_17_1"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_17_1/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_17_1/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_18" (
+        prepend references = @./geometries.usd@</Geometries/_18>
+    )
+    {
+        over "_18" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_18/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_19" (
+        prepend references = @./geometries.usd@</Geometries/_19>
+    )
+    {
+        over "_19"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_19/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_19/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_20" (
+        prepend references = @./geometries.usd@</Geometries/_20>
+    )
+    {
+        over "_20" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_20/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_21" (
+        prepend references = @./geometries.usd@</Geometries/_21>
+    )
+    {
+        over "_21"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_21/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_21/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_22" (
+        prepend references = @./geometries.usd@</Geometries/_22>
+    )
+    {
+        over "_22"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_22/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_22/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_23" (
+        prepend references = @./geometries.usd@</Geometries/_23>
+    )
+    {
+        over "_23"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_23/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_23/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_24" (
+        prepend references = @./geometries.usd@</Geometries/_24>
+    )
+    {
+        over "_24"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_24/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_24/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_25" (
+        prepend references = @./geometries.usd@</Geometries/_25>
+    )
+    {
+        over "_25" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_25/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_26" (
+        prepend references = @./geometries.usd@</Geometries/_26>
+    )
+    {
+        over "_26"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_26/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_26/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_27" (
+        prepend references = @./geometries.usd@</Geometries/_27>
+    )
+    {
+        over "_27"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_27/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_27/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_28" (
+        prepend references = @./geometries.usd@</Geometries/_28>
+    )
+    {
+        over "_28" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_28/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_29" (
+        prepend references = @./geometries.usd@</Geometries/_29>
+    )
+    {
+        over "_29" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_29/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_30" (
+        prepend references = @./geometries.usd@</Geometries/_30>
+    )
+    {
+        over "_30" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_30/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_31" (
+        prepend references = @./geometries.usd@</Geometries/_31>
+    )
+    {
+        over "_31" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_31/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_32" (
+        prepend references = @./geometries.usd@</Geometries/_32>
+    )
+    {
+        over "_32" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_32/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_33" (
+        prepend references = @./geometries.usd@</Geometries/_33>
+    )
+    {
+        over "_33" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_33/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_34" (
+        prepend references = @./geometries.usd@</Geometries/_34>
+    )
+    {
+        over "_34" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_34/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_35" (
+        prepend references = @./geometries.usd@</Geometries/_35>
+    )
+    {
+        over "_35" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_35/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_36" (
+        prepend references = @./geometries.usd@</Geometries/_36>
+    )
+    {
+        over "_36" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_36/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_37" (
+        prepend references = @./geometries.usd@</Geometries/_37>
+    )
+    {
+        over "_37" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_37/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_38" (
+        prepend references = @./geometries.usd@</Geometries/_38>
+    )
+    {
+        over "_38" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_38/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_39" (
+        prepend references = @./geometries.usd@</Geometries/_39>
+    )
+    {
+        over "_39" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_39/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_40" (
+        prepend references = @./geometries.usd@</Geometries/_40>
+    )
+    {
+        over "_40" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_40/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_41" (
+        prepend references = @./geometries.usd@</Geometries/_41>
+    )
+    {
+        over "_41" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_41/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_42" (
+        prepend references = @./geometries.usd@</Geometries/_42>
+    )
+    {
+        over "_42" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_42/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_43" (
+        prepend references = @./geometries.usd@</Geometries/_43>
+    )
+    {
+        over "_43" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_43/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_44" (
+        prepend references = @./geometries.usd@</Geometries/_44>
+    )
+    {
+        over "_44"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_44/VisualMaterials/Color_008_1>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_44/VisualMaterials/KukaOrange_1>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_45" (
+        prepend references = @./geometries.usd@</Geometries/_45>
+    )
+    {
+        over "_45" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_45/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_46" (
+        prepend references = @./geometries.usd@</Geometries/_46>
+    )
+    {
+        over "_46" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_46/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_47" (
+        prepend references = @./geometries.usd@</Geometries/_47>
+    )
+    {
+        over "_47" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_47/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_48" (
+        prepend references = @./geometries.usd@</Geometries/_48>
+    )
+    {
+        over "_48" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_48/VisualMaterials/KukaOrange_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn___2" (
+        prepend references = @./geometries.usd@</Geometries/tn___2>
+    )
+    {
+        over "tn___2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn___2/VisualMaterials/KukaOrange_2>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1_2" (
+        prepend references = @./geometries.usd@</Geometries/_1_2>
+    )
+    {
+        over "_1_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1_2/VisualMaterials/KukaOrange_2>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_2_2" (
+        prepend references = @./geometries.usd@</Geometries/_2_2>
+    )
+    {
+        over "_2_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_2_2/VisualMaterials/KukaOrange_2>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_3_2" (
+        prepend references = @./geometries.usd@</Geometries/_3_2>
+    )
+    {
+        over "_3_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_3_2/VisualMaterials/KukaOrange_2>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_4_2" (
+        prepend references = @./geometries.usd@</Geometries/_4_2>
+    )
+    {
+        over "_4_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_4_2/VisualMaterials/KukaOrange_2>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_5_2" (
+        prepend references = @./geometries.usd@</Geometries/_5_2>
+    )
+    {
+        over "_5_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_5_2/VisualMaterials/KukaOrange_2>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn___3" (
+        prepend references = @./geometries.usd@</Geometries/tn___3>
+    )
+    {
+        over "tn___3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn___3/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1_3" (
+        prepend references = @./geometries.usd@</Geometries/_1_3>
+    )
+    {
+        over "_1_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1_3/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_2_3" (
+        prepend references = @./geometries.usd@</Geometries/_2_3>
+    )
+    {
+        over "_2_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_2_3/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_3_3" (
+        prepend references = @./geometries.usd@</Geometries/_3_3>
+    )
+    {
+        over "_3_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_3_3/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_4_3" (
+        prepend references = @./geometries.usd@</Geometries/_4_3>
+    )
+    {
+        over "_4_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_4_3/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_5_3" (
+        prepend references = @./geometries.usd@</Geometries/_5_3>
+    )
+    {
+        over "_5_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_5_3/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_6_2" (
+        prepend references = @./geometries.usd@</Geometries/_6_2>
+    )
+    {
+        over "_6_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_6_2/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_7_2" (
+        prepend references = @./geometries.usd@</Geometries/_7_2>
+    )
+    {
+        over "_7_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_7_2/VisualMaterials/KukaOrange_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_8_2" (
+        prepend references = @./geometries.usd@</Geometries/_8_2>
+    )
+    {
+        over "_8_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_8_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_8_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_9_2" (
+        prepend references = @./geometries.usd@</Geometries/_9_2>
+    )
+    {
+        over "_9_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_9_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_9_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_10_2" (
+        prepend references = @./geometries.usd@</Geometries/_10_2>
+    )
+    {
+        over "_10_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_10_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_10_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_11_2" (
+        prepend references = @./geometries.usd@</Geometries/_11_2>
+    )
+    {
+        over "_11_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_11_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_11_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_12_2" (
+        prepend references = @./geometries.usd@</Geometries/_12_2>
+    )
+    {
+        over "_12_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_12_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_12_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_13_2" (
+        prepend references = @./geometries.usd@</Geometries/_13_2>
+    )
+    {
+        over "_13_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_13_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_13_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_14_2" (
+        prepend references = @./geometries.usd@</Geometries/_14_2>
+    )
+    {
+        over "_14_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_14_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_14_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_15_2" (
+        prepend references = @./geometries.usd@</Geometries/_15_2>
+    )
+    {
+        over "_15_2"
+        {
+            token subsetFamily:materialBind:familyType = "partition"
+
+            over "GeomSubset_001" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_15_2/VisualMaterials/Color_008_2>
+            }
+
+            over "GeomSubset_002" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                custom rel material:binding
+                prepend rel material:binding = </Instances/_15_2/VisualMaterials/KukaOrange_3>
+            }
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_2" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+
+            def Material "KukaOrange_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn___4" (
+        prepend references = @./geometries.usd@</Geometries/tn___4>
+    )
+    {
+        over "tn___4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn___4/VisualMaterials/KukaOrange_4>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_4" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1_4" (
+        prepend references = @./geometries.usd@</Geometries/_1_4>
+    )
+    {
+        over "_1_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1_4/VisualMaterials/KukaOrange_4>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_4" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_2_4" (
+        prepend references = @./geometries.usd@</Geometries/_2_4>
+    )
+    {
+        over "_2_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_2_4/VisualMaterials/KukaOrange_4>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_4" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_3_4" (
+        prepend references = @./geometries.usd@</Geometries/_3_4>
+    )
+    {
+        over "_3_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_3_4/VisualMaterials/KukaOrange_4>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_4" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn___5" (
+        prepend references = @./geometries.usd@</Geometries/tn___5>
+    )
+    {
+        over "tn___5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn___5/VisualMaterials/KukaOrange_5>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_5" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1_5" (
+        prepend references = @./geometries.usd@</Geometries/_1_5>
+    )
+    {
+        over "_1_5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1_5/VisualMaterials/KukaOrange_5>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "KukaOrange_5" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/KukaOrange>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn___6" (
+        prepend references = @./geometries.usd@</Geometries/tn___6>
+    )
+    {
+        over "tn___6" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn___6/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_1_6" (
+        prepend references = @./geometries.usd@</Geometries/_1_6>
+    )
+    {
+        over "_1_6" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_1_6/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_2_5" (
+        prepend references = @./geometries.usd@</Geometries/_2_5>
+    )
+    {
+        over "_2_5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_2_5/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_3_5" (
+        prepend references = @./geometries.usd@</Geometries/_3_5>
+    )
+    {
+        over "_3_5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_3_5/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_4_4" (
+        prepend references = @./geometries.usd@</Geometries/_4_4>
+    )
+    {
+        over "_4_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_4_4/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_5_4" (
+        prepend references = @./geometries.usd@</Geometries/_5_4>
+    )
+    {
+        over "_5_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_5_4/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_6_3" (
+        prepend references = @./geometries.usd@</Geometries/_6_3>
+    )
+    {
+        over "_6_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_6_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_7_3" (
+        prepend references = @./geometries.usd@</Geometries/_7_3>
+    )
+    {
+        over "_7_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_7_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_8_3" (
+        prepend references = @./geometries.usd@</Geometries/_8_3>
+    )
+    {
+        over "_8_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_8_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_9_3" (
+        prepend references = @./geometries.usd@</Geometries/_9_3>
+    )
+    {
+        over "_9_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_9_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_10_3" (
+        prepend references = @./geometries.usd@</Geometries/_10_3>
+    )
+    {
+        over "_10_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_10_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_11_3" (
+        prepend references = @./geometries.usd@</Geometries/_11_3>
+    )
+    {
+        over "_11_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_11_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_12_3" (
+        prepend references = @./geometries.usd@</Geometries/_12_3>
+    )
+    {
+        over "_12_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_12_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_13_3" (
+        prepend references = @./geometries.usd@</Geometries/_13_3>
+    )
+    {
+        over "_13_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_13_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_14_3" (
+        prepend references = @./geometries.usd@</Geometries/_14_3>
+    )
+    {
+        over "_14_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_14_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_15_3" (
+        prepend references = @./geometries.usd@</Geometries/_15_3>
+    )
+    {
+        over "_15_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_15_3/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_16_2" (
+        prepend references = @./geometries.usd@</Geometries/_16_2>
+    )
+    {
+        over "_16_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_16_2/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_17_2" (
+        prepend references = @./geometries.usd@</Geometries/_17_2>
+    )
+    {
+        over "_17_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_17_2/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_18_1" (
+        prepend references = @./geometries.usd@</Geometries/_18_1>
+    )
+    {
+        over "_18_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_18_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_19_1" (
+        prepend references = @./geometries.usd@</Geometries/_19_1>
+    )
+    {
+        over "_19_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_19_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_20_1" (
+        prepend references = @./geometries.usd@</Geometries/_20_1>
+    )
+    {
+        over "_20_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_20_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_21_1" (
+        prepend references = @./geometries.usd@</Geometries/_21_1>
+    )
+    {
+        over "_21_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_21_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_22_1" (
+        prepend references = @./geometries.usd@</Geometries/_22_1>
+    )
+    {
+        over "_22_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_22_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_23_1" (
+        prepend references = @./geometries.usd@</Geometries/_23_1>
+    )
+    {
+        over "_23_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_23_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_24_1" (
+        prepend references = @./geometries.usd@</Geometries/_24_1>
+    )
+    {
+        over "_24_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_24_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_25_1" (
+        prepend references = @./geometries.usd@</Geometries/_25_1>
+    )
+    {
+        over "_25_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_25_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_26_1" (
+        prepend references = @./geometries.usd@</Geometries/_26_1>
+    )
+    {
+        over "_26_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_26_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_27_1" (
+        prepend references = @./geometries.usd@</Geometries/_27_1>
+    )
+    {
+        over "_27_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_27_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_28_1" (
+        prepend references = @./geometries.usd@</Geometries/_28_1>
+    )
+    {
+        over "_28_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_28_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_29_1" (
+        prepend references = @./geometries.usd@</Geometries/_29_1>
+    )
+    {
+        over "_29_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_29_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_30_1" (
+        prepend references = @./geometries.usd@</Geometries/_30_1>
+    )
+    {
+        over "_30_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_30_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_31_1" (
+        prepend references = @./geometries.usd@</Geometries/_31_1>
+    )
+    {
+        over "_31_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_31_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_32_1" (
+        prepend references = @./geometries.usd@</Geometries/_32_1>
+    )
+    {
+        over "_32_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_32_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_33_1" (
+        prepend references = @./geometries.usd@</Geometries/_33_1>
+    )
+    {
+        over "_33_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_33_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_34_1" (
+        prepend references = @./geometries.usd@</Geometries/_34_1>
+    )
+    {
+        over "_34_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_34_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_35_1" (
+        prepend references = @./geometries.usd@</Geometries/_35_1>
+    )
+    {
+        over "_35_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_35_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_36_1" (
+        prepend references = @./geometries.usd@</Geometries/_36_1>
+    )
+    {
+        over "_36_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_36_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_37_1" (
+        prepend references = @./geometries.usd@</Geometries/_37_1>
+    )
+    {
+        over "_37_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_37_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_38_1" (
+        prepend references = @./geometries.usd@</Geometries/_38_1>
+    )
+    {
+        over "_38_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_38_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_39_1" (
+        prepend references = @./geometries.usd@</Geometries/_39_1>
+    )
+    {
+        over "_39_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_39_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_40_1" (
+        prepend references = @./geometries.usd@</Geometries/_40_1>
+    )
+    {
+        over "_40_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_40_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_41_1" (
+        prepend references = @./geometries.usd@</Geometries/_41_1>
+    )
+    {
+        over "_41_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_41_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_42_1" (
+        prepend references = @./geometries.usd@</Geometries/_42_1>
+    )
+    {
+        over "_42_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_42_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_43_1" (
+        prepend references = @./geometries.usd@</Geometries/_43_1>
+    )
+    {
+        over "_43_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_43_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_44_1" (
+        prepend references = @./geometries.usd@</Geometries/_44_1>
+    )
+    {
+        over "_44_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_44_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_45_1" (
+        prepend references = @./geometries.usd@</Geometries/_45_1>
+    )
+    {
+        over "_45_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_45_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_46_1" (
+        prepend references = @./geometries.usd@</Geometries/_46_1>
+    )
+    {
+        over "_46_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_46_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_47_1" (
+        prepend references = @./geometries.usd@</Geometries/_47_1>
+    )
+    {
+        over "_47_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_47_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_48_1" (
+        prepend references = @./geometries.usd@</Geometries/_48_1>
+    )
+    {
+        over "_48_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_48_1/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_49" (
+        prepend references = @./geometries.usd@</Geometries/_49>
+    )
+    {
+        over "_49" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_49/VisualMaterials/Color_008_3>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "Color_008_3" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/Color_008>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "link_6_1" (
+        prepend references = @./geometries.usd@</Geometries/link_6_1>
+    )
+    {
+        over "link_6_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "link_5_1" (
+        prepend references = @./geometries.usd@</Geometries/link_5_1>
+    )
+    {
+        over "link_5_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "link_4_1" (
+        prepend references = @./geometries.usd@</Geometries/link_4_1>
+    )
+    {
+        over "link_4_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "link_3_1" (
+        prepend references = @./geometries.usd@</Geometries/link_3_1>
+    )
+    {
+        over "link_3_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "link_2_1" (
+        prepend references = @./geometries.usd@</Geometries/link_2_1>
+    )
+    {
+        over "link_2_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "link_1_1" (
+        prepend references = @./geometries.usd@</Geometries/link_1_1>
+    )
+    {
+        over "link_1_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "base_link_1" (
+        prepend references = @./geometries.usd@</Geometries/base_link_1>
+    )
+    {
+        over "base_link_1" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+}
+
