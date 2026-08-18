@@ -1,7 +1,7 @@
 """Build and visualize the static frame tree for the machine-tending cell.
 
-Only the CNC machine and the logical table frame get global poses from Isaac
-Sim. Every frame mounted inside them is stored relative to its physical parent:
+Only the CNC machine and logical table frames receive world poses from Isaac
+Sim. Every frame mounted inside them is defined relative to its source frame:
 
     world
     |-- cnc_machine
@@ -16,15 +16,19 @@ Sim. Every frame mounted inside them is stored relative to its physical parent:
             |-- place_slot_0_0
             `-- ... place_slot_3_3
 
-The bridge supplies only the global CNC and logical-table poses. The CNC
-pedestal, robot mount, and grid origins are fixed calibrated child transforms.
-Each grid origin is its first slot, so each ``slot_0_0`` has a zero transform
-relative to its grid. This script is read-only.
+The bridge supplies the CNC machine and table poses in the Isaac Sim world
+frame. The CNC pedestal, robot mount, robot base, and grid origins are
+calibrated transforms relative to their source frames.
+
+Each grid origin coincides with slot ``0_0``. The remaining slots are generated
+using the configured X and Y step vectors. User-defined translations are in
+metres, and user-defined rotations are Euler XYZ angles in degrees.
+
+This script reads frame information and visualizes it in Rerun. It does not
+move the robot or modify the Isaac Sim stage.
 """
 
 from __future__ import annotations
-
-import math
 
 import requests
 import rerun as rr
@@ -50,9 +54,9 @@ TABLE_T_ROBOT_MOUNT = [
     -0.036506316,
     0.0,
     0.0,
-    0.0,
+    89.868316437,
 ]
-ROBOT_MOUNT_T_ROBOT_BASE = [0.0, 0.0, -0.005, 0.0, 0.0, math.pi]
+ROBOT_MOUNT_T_ROBOT_BASE = [0.0, 0.0, -0.005, 0.0, 0.0, 180.0]
 TABLE_T_PICK_GRID = [
     -0.249323199,
     0.541363956,
@@ -61,8 +65,6 @@ TABLE_T_PICK_GRID = [
     0.0,
     0.0,
 ]
-PICK_GRID_COLUMN_STEP = [0.0, 0.178184612, 0.0]
-PICK_GRID_ROW_STEP = [0.165020259, 0.000243775, 0.0]
 TABLE_T_PLACE_GRID = [
     -0.255704683,
     0.284615655,
@@ -71,15 +73,35 @@ TABLE_T_PLACE_GRID = [
     0.0,
     0.0,
 ]
-PLACE_GRID_COLUMN_STEP = [0.000083327, -0.181380000, 0.0]
-PLACE_GRID_ROW_STEP = [0.161526667, -0.001556672, 0.0]
-GRID_ROWS = 4
-GRID_COLUMNS = 4
+PICK_GRID_XSTEP = [0.165020259, 0.000243775, 0.0]
+PICK_GRID_YSTEP = [0.0, 0.178184612, 0.0]
+PLACE_GRID_XSTEP = [0.161526667, -0.001556672, 0.0]
+PLACE_GRID_YSTEP = [0.000083327, -0.181380000, 0.0]
+GRID_NUMX = 4
+GRID_NUMY = 4
 TF_AXIS_LENGTH = 0.05
 
 
-def bridge_request(method: str, path: str, *, params=None):
-    """Send a read-only request to the local Isaac Sim bridge."""
+def bridge_request(
+    method: str,
+    path: str,
+    *,
+    params: dict[str, str] | None = None,
+) -> dict:
+    """Send a read-only request to the local Isaac Sim bridge.
+
+    Args:
+        method (str): HTTP request method.
+        path (str): Bridge endpoint path.
+        params (dict[str, str] | None): Optional query parameters.
+
+    Returns:
+        dict: Decoded JSON response from the bridge.
+
+    Raises:
+        requests.RequestException: If the request fails, the bridge returns an
+            unsuccessful status, or its response is not valid JSON.
+    """
     response = requests.request(
         method,
         BASE_URL + path,
@@ -90,8 +112,22 @@ def bridge_request(method: str, path: str, *, params=None):
     return response.json()
 
 
-def world_pose(prim_path: str) -> list[float]:
-    """Read a prim's world pose as metres plus rotation-vector radians."""
+def get_pose_in_world(prim_path: str) -> list[float]:
+    """Read a prim pose in the Isaac Sim world frame.
+
+    Args:
+        prim_path (str): USD path of the prim to query.
+
+    Returns:
+        list[float]: Six-value pose containing XYZ in metres followed by a
+            rotation vector in radians.
+
+    Raises:
+        requests.RequestException: If the bridge request fails.
+        KeyError: If the bridge response does not contain ``pose``.
+        TypeError: If the returned pose is not iterable.
+        ValueError: If a pose value cannot be converted to ``float``.
+    """
     result = bridge_request(
         "GET",
         "/prims/poses",
@@ -105,60 +141,150 @@ def world_pose(prim_path: str) -> list[float]:
 
 
 class Grid:
-    """A reusable rectangular collection of TF slot frames."""
+    """Represent a rectangular grid of TF slot frames.
+
+    Attributes:
+        name (str): Name of the grid frame.
+        source_frame (str): Frame under which the grid is added.
+        slot_frame_prefix (str): Prefix used for generated slot-frame names.
+        source_T_grid (list[float]): Grid pose relative to the source frame.
+            Translation is in metres and rotation is in Euler XYZ degrees.
+        xstep (list[float]): XYZ translation in metres between slots in the X
+            direction.
+        ystep (list[float]): XYZ translation in metres between slots in the Y
+            direction.
+        numx (int): Number of slots in the X direction.
+        numy (int): Number of slots in the Y direction.
+    """
 
     def __init__(
         self,
         name: str,
-        parent: str,
-        slot_prefix: str,
-        parent_T_grid: list[float],
-        row_step: list[float],
-        column_step: list[float],
-        rows: int,
-        columns: int,
+        source_frame: str,
+        slot_frame_prefix: str,
+        source_T_grid: list[float],
+        xstep: list[float],
+        ystep: list[float],
+        numx: int,
+        numy: int,
     ) -> None:
-        self.name = name
-        self.parent = parent
-        self.slot_prefix = slot_prefix
-        self.parent_T_grid = parent_T_grid
-        self.row_step = row_step
-        self.column_step = column_step
-        self.rows = rows
-        self.columns = columns
+        """Initialize a grid of TF slot frames.
 
-    def slot_frame(self, row: int, column: int) -> str:
-        """Return the TF frame name for one slot."""
-        return f"{self.slot_prefix}_{row}_{column}"
+        Args:
+            name (str): Name of the grid frame.
+            source_frame (str): Frame under which the grid will be added.
+            slot_frame_prefix (str): Prefix used for slot-frame names.
+            source_T_grid (list[float]): Grid pose relative to the source
+                frame. Translation is in metres and rotation is in Euler XYZ
+                degrees.
+            xstep (list[float]): XYZ translation in metres for one step in the
+                X direction.
+            ystep (list[float]): XYZ translation in metres for one step in the
+                Y direction.
+            numx (int): Number of slots in the X direction.
+            numy (int): Number of slots in the Y direction.
+
+        Raises:
+            ValueError: If the pose, steps, or grid dimensions are invalid.
+        """
+        if len(source_T_grid) != 6:
+            raise ValueError("source_T_grid must contain six pose values.")
+        if len(xstep) != 3:
+            raise ValueError("xstep must contain three XYZ values.")
+        if len(ystep) != 3:
+            raise ValueError("ystep must contain three XYZ values.")
+        if numx <= 0 or numy <= 0:
+            raise ValueError("numx and numy must be greater than zero.")
+
+        self.name: str = name
+        self.source_frame: str = source_frame
+        self.slot_frame_prefix: str = slot_frame_prefix
+        self.source_T_grid: list[float] = source_T_grid
+        self.xstep: list[float] = xstep
+        self.ystep: list[float] = ystep
+        self.numx: int = numx
+        self.numy: int = numy
+
+    def get_slot_frame(self, x_index: int, y_index: int) -> str:
+        """Return the TF frame name for a slot.
+
+        Args:
+            x_index (int): Zero-based slot index in the grid X direction.
+            y_index (int): Zero-based slot index in the grid Y direction.
+
+        Returns:
+            str: Name of the requested slot frame.
+
+        Raises:
+            IndexError: If either index is outside the grid.
+        """
+        if not 0 <= x_index < self.numx:
+            raise IndexError(f"X index is outside the grid: {x_index}")
+
+        if not 0 <= y_index < self.numy:
+            raise IndexError(f"Y index is outside the grid: {y_index}")
+
+        return f"{self.slot_frame_prefix}_{x_index}_{y_index}"
 
     def add_to_tf(self, tree: tftree.TransformTree) -> None:
-        """Add the grid origin and every generated slot to a TF tree."""
-        tree.add(self.parent, self.name, self.parent_T_grid, rot_type="rad")
+        """Add the grid and all its slot frames to a TF tree.
 
-        for row in range(self.rows):
-            for column in range(self.columns):
+        Args:
+            tree (tftree.TransformTree): TF tree that will receive the grid and
+                slot frames.
+
+        Returns:
+            None.
+
+        Raises:
+            ValueError: If a frame with the same name already exists.
+        """
+        tree.add(
+            self.source_frame,
+            self.name,
+            self.source_T_grid,
+            rot_type="deg",
+        )
+
+        for x_index in range(self.numx):
+            for y_index in range(self.numy):
                 slot_xyz = [
-                    column * self.column_step[axis] + row * self.row_step[axis]
+                    x_index * self.xstep[axis]
+                    + y_index * self.ystep[axis]
                     for axis in range(3)
                 ]
+
                 tree.add(
                     self.name,
-                    self.slot_frame(row, column),
+                    self.get_slot_frame(x_index, y_index),
                     [*slot_xyz, 0.0, 0.0, 0.0],
-                    rot_type="rad",
+                    rot_type="deg",
                 )
 
 
-def main() -> None:
-    """Build and display the verified static cell frames."""
-    bridge_request("GET", "/status")
+def build_static_frame_tree(
+    cnc_machine_pose_in_world: list[float],
+    table_pose_in_world: list[float],
+) -> tuple[tftree.TransformTree, Grid, Grid]:
+    """Build the machine-tending cell's static TF tree.
 
-    cnc_machine_world_pose = world_pose(CNC_PRIM_PATH)
-    table_world_pose = world_pose(TABLE_FRAME_PRIM_PATH)
+    Args:
+        cnc_machine_pose_in_world (list[float]): CNC machine pose in the world
+            frame, with XYZ in metres and rotation vector in radians.
+        table_pose_in_world (list[float]): Logical table pose in the world
+            frame, with XYZ in metres and rotation vector in radians.
 
+    Returns:
+        tuple[tftree.TransformTree, Grid, Grid]: Static TF tree, pick grid, and
+            place grid.
+
+    Raises:
+        ValueError: If a supplied pose, grid configuration, or TF frame is
+            invalid.
+    """
     tree = tftree.TransformTree("world")
     world_T_cnc_machine = tfutils.pose_to_transformation_matrix(
-        cnc_machine_world_pose,
+        cnc_machine_pose_in_world,
         rot_type="rotvec",
     )
     tree.add("world", "cnc_machine", world_T_cnc_machine, rot_type="mat")
@@ -166,45 +292,67 @@ def main() -> None:
         "cnc_machine",
         "cnc_pedestal",
         CNC_MACHINE_T_PEDESTAL,
-        rot_type="rad",
+        rot_type="deg",
     )
 
     world_T_table = tfutils.pose_to_transformation_matrix(
-        table_world_pose,
+        table_pose_in_world,
         rot_type="rotvec",
     )
     tree.add("world", "table", world_T_table, rot_type="mat")
-    tree.add("table", "robot_mount", TABLE_T_ROBOT_MOUNT, rot_type="rad")
-
+    tree.add("table", "robot_mount", TABLE_T_ROBOT_MOUNT, rot_type="deg")
     tree.add(
         "robot_mount",
         "robot_base",
         ROBOT_MOUNT_T_ROBOT_BASE,
-        rot_type="rad",
+        rot_type="deg",
     )
 
     pick_grid = Grid(
         name="pick_grid",
-        parent="table",
-        slot_prefix="pick_slot",
-        parent_T_grid=TABLE_T_PICK_GRID,
-        row_step=PICK_GRID_ROW_STEP,
-        column_step=PICK_GRID_COLUMN_STEP,
-        rows=GRID_ROWS,
-        columns=GRID_COLUMNS,
+        source_frame="table",
+        slot_frame_prefix="pick_slot",
+        source_T_grid=TABLE_T_PICK_GRID,
+        xstep=PICK_GRID_XSTEP,
+        ystep=PICK_GRID_YSTEP,
+        numx=GRID_NUMX,
+        numy=GRID_NUMY,
     )
     place_grid = Grid(
         name="place_grid",
-        parent="table",
-        slot_prefix="place_slot",
-        parent_T_grid=TABLE_T_PLACE_GRID,
-        row_step=PLACE_GRID_ROW_STEP,
-        column_step=PLACE_GRID_COLUMN_STEP,
-        rows=GRID_ROWS,
-        columns=GRID_COLUMNS,
+        source_frame="table",
+        slot_frame_prefix="place_slot",
+        source_T_grid=TABLE_T_PLACE_GRID,
+        xstep=PLACE_GRID_XSTEP,
+        ystep=PLACE_GRID_YSTEP,
+        numx=GRID_NUMX,
+        numy=GRID_NUMY,
     )
     pick_grid.add_to_tf(tree)
     place_grid.add_to_tf(tree)
+    return tree, pick_grid, place_grid
+
+
+def main() -> None:
+    """Build and display the verified static cell frames.
+
+    Returns:
+        None.
+
+    Raises:
+        requests.RequestException: If an Isaac Sim bridge request fails.
+        KeyError: If a bridge pose response is missing required data.
+        TypeError: If a bridge pose response has an invalid structure.
+        ValueError: If a pose, grid configuration, or TF frame is invalid.
+    """
+    bridge_request("GET", "/status")
+
+    cnc_machine_pose_in_world = get_pose_in_world(CNC_PRIM_PATH)
+    table_pose_in_world = get_pose_in_world(TABLE_FRAME_PRIM_PATH)
+    tree, _, _ = build_static_frame_tree(
+        cnc_machine_pose_in_world,
+        table_pose_in_world,
+    )
 
     rr.init("machine_tending_tf_tree", spawn=True)
     recording = rr.get_global_data_recording()
