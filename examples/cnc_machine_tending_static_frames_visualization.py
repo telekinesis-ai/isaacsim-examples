@@ -6,15 +6,21 @@ Sim. Every frame mounted inside them is defined relative to its source frame:
     world
     |-- cnc_machine
     |   `-- cnc_pedestal
+    |       `-- cnc_object
+    |           `-- cnc_grasp
     `-- table
         |-- robot_mount
         |   `-- robot_base
         |-- pick_grid
         |   |-- pick_slot_0_0
-        |   `-- ... pick_slot_3_3
+        |   |   `-- pick_object_0_0
+        |   |       `-- pick_grasp_0_0
+        |   `-- ... pick_slot/object/grasp_3_3
         `-- place_grid
             |-- place_slot_0_0
-            `-- ... place_slot_3_3
+            |   `-- place_object_0_0
+            |       `-- place_grasp_0_0
+            `-- ... place_slot/object/grasp_3_3
 
 The bridge supplies the CNC machine and table poses in the Isaac Sim world
 frame. The CNC pedestal, robot mount, robot base, and grid origins are
@@ -23,6 +29,13 @@ calibrated transforms relative to their source frames.
 Each grid origin coincides with slot ``0_0``. The remaining slots are generated
 using the configured X and Y step vectors. User-defined translations are in
 metres, and user-defined rotations are Euler XYZ angles in degrees.
+
+The pick and place slot frames were calibrated at the centres of seated
+cylinders, so their expected-object children use identity transforms. The CNC
+pedestal is a support surface, so its expected-object frame is half an object
+height above it. Every grasp frame is above its object centre with its Z axis
+flipped to face downward. These are static expected targets, not live frames
+that track the physical cylinders after pickup.
 
 This script reads frame information and visualizes it in Rerun. It does not
 move the robot or modify the Isaac Sim stage.
@@ -58,28 +71,41 @@ TABLE_T_ROBOT_MOUNT = [
 ]
 ROBOT_MOUNT_T_ROBOT_BASE = [0.0, 0.0, -0.005, 0.0, 0.0, 180.0]
 TABLE_T_PICK_GRID = [
-    -0.249323199,
-    0.541363956,
-    -0.126516663,
+    -0.248248789,
+    0.540517945,
+    -0.126516634,
     0.0,
     0.0,
     0.0,
 ]
 TABLE_T_PLACE_GRID = [
-    -0.255704683,
-    0.284615655,
-    0.075980730,
+    -0.254255254,
+    0.278978349,
+    0.075566687,
     0.0,
     0.0,
     0.0,
 ]
-PICK_GRID_XSTEP = [0.165020259, 0.000243775, 0.0]
-PICK_GRID_YSTEP = [0.0, 0.178184612, 0.0]
-PLACE_GRID_XSTEP = [0.161526667, -0.001556672, 0.0]
-PLACE_GRID_YSTEP = [0.000083327, -0.181380000, 0.0]
+PICK_GRID_XSTEP = [0.161751909, 0.000119909, 0.0]
+PICK_GRID_YSTEP = [-0.000004609, 0.179967408, 0.0]
+PLACE_GRID_XSTEP = [0.000266228, -0.180109580, 0.0]
+PLACE_GRID_YSTEP = [0.161841134, 0.000461414, 0.0]
 GRID_NUMX = 4
 GRID_NUMY = 4
 TF_AXIS_LENGTH = 0.05
+
+OBJECT_HEIGHT = 0.135
+GRASP_ABOVE_OBJECT_CENTER = 0.0475
+CNC_OBJECT_FRAME = "cnc_object"
+CNC_GRASP_FRAME = "cnc_grasp"
+PICK_OBJECT_FRAME_PREFIX = "pick_object"
+PICK_GRASP_FRAME_PREFIX = "pick_grasp"
+PLACE_OBJECT_FRAME_PREFIX = "place_object"
+PLACE_GRASP_FRAME_PREFIX = "place_grasp"
+CNC_PEDESTAL_T_OBJECT = [0.0, 0.0, OBJECT_HEIGHT / 2, 0.0, 0.0, 0.0]
+PICK_SLOT_T_OBJECT = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+PLACE_SLOT_T_OBJECT = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+OBJECT_T_GRASP = [0.0, 0.0, GRASP_ABOVE_OBJECT_CENTER, 180.0, 0.0, 0.0]
 
 
 def bridge_request(
@@ -294,6 +320,18 @@ def build_static_frame_tree(
         CNC_MACHINE_T_PEDESTAL,
         rot_type="deg",
     )
+    tree.add(
+        "cnc_pedestal",
+        CNC_OBJECT_FRAME,
+        CNC_PEDESTAL_T_OBJECT,
+        rot_type="deg",
+    )
+    tree.add(
+        CNC_OBJECT_FRAME,
+        CNC_GRASP_FRAME,
+        OBJECT_T_GRASP,
+        rot_type="deg",
+    )
 
     world_T_table = tfutils.pose_to_transformation_matrix(
         table_pose_in_world,
@@ -330,6 +368,39 @@ def build_static_frame_tree(
     )
     pick_grid.add_to_tf(tree)
     place_grid.add_to_tf(tree)
+
+    for grid, object_prefix, grasp_prefix, slot_T_object in (
+        (
+            pick_grid,
+            PICK_OBJECT_FRAME_PREFIX,
+            PICK_GRASP_FRAME_PREFIX,
+            PICK_SLOT_T_OBJECT,
+        ),
+        (
+            place_grid,
+            PLACE_OBJECT_FRAME_PREFIX,
+            PLACE_GRASP_FRAME_PREFIX,
+            PLACE_SLOT_T_OBJECT,
+        ),
+    ):
+        for x_index in range(grid.numx):
+            for y_index in range(grid.numy):
+                slot_frame = grid.get_slot_frame(x_index, y_index)
+                object_frame = f"{object_prefix}_{x_index}_{y_index}"
+                grasp_frame = f"{grasp_prefix}_{x_index}_{y_index}"
+                tree.add(
+                    slot_frame,
+                    object_frame,
+                    slot_T_object,
+                    rot_type="deg",
+                )
+                tree.add(
+                    object_frame,
+                    grasp_frame,
+                    OBJECT_T_GRASP,
+                    rot_type="deg",
+                )
+
     return tree, pick_grid, place_grid
 
 
@@ -358,7 +429,10 @@ def main() -> None:
     recording = rr.get_global_data_recording()
     tree.visualize_rerun(axis_len=TF_AXIS_LENGTH, recording_stream=recording)
 
-    input("Rerun is showing the cell frames and both 16-slot grids. Press Enter...")
+    input(
+        "Rerun is showing the cell, slot, expected-object, and grasp frames. "
+        "Press Enter..."
+    )
 
 
 if __name__ == "__main__":

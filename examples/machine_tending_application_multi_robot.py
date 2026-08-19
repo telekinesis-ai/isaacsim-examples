@@ -1,4 +1,4 @@
-"""UR10e machine tending in Isaac Sim, for every part it finds in the tray.
+"""Multi-robot machine tending in Isaac Sim for a fixed 4x4 part grid.
 
     tray -> CNC -> [door, machine, door] -> CNC -> container
 
@@ -12,10 +12,12 @@ frames; live frames that track the physical cylinders are deliberately omitted.
 Before running:
     1. Open the machine-tending USD in Isaac Sim.
     2. Enable the local Telekinesis Isaac Sim bridge extension.
-    3. Import the UR10e and OnRobot RG2 at the prim paths below. Import the RG2
-       with the dialog's Natural Frequency set to 0, or its fingers sag.
+    3. Import either the UR10e or Fanuc CRX-10iA/L, plus the OnRobot RG2, at
+       the configured prim paths below. Import the RG2 with the dialog's
+       Natural Frequency set to 0, or its fingers sag.
     4. Run from the examples:
-       python examples/machine_tending_application.py
+       python examples/machine_tending_application_multi_robot.py --ur10e
+       python examples/machine_tending_application_multi_robot.py --fanuc
 
 This example is an external application. It imports neither ``omni`` nor
 ``isaacsim``; all scene operations cross the local bridge.
@@ -23,13 +25,15 @@ This example is an external application. It imports neither ``omni`` nor
 
 from __future__ import annotations
 
+import argparse
 import math
 import time
+from dataclasses import dataclass
 
 import requests
 
 from telekinesis.tf import tftree, tfutils
-from telekinesis.synapse.robots.manipulators import universal_robots
+from telekinesis.synapse.robots.manipulators import fanuc, universal_robots
 from telekinesis.synapse.tools.parallel_grippers import onrobot
 
 from cnc_machine_tending_static_frames_visualization import (
@@ -45,7 +49,6 @@ from cnc_machine_tending_static_frames_visualization import (
 BASE_URL = "http://127.0.0.1:8766"
 REQUEST_TIMEOUT_SECONDS = 120.0
 
-ROBOT_PRIM_PATH = "/World/ur10e_robot"
 GRIPPER_PRIM_PATH = "/World/onrobot_rg2_model"
 PART_COUNT = 16
 
@@ -56,7 +59,6 @@ GRIPPER_DRIVE_STIFFNESS = 5.0e3
 GRIPPER_DRIVE_DAMPING = 5.0e2
 
 GRIPPER_TCP_NAME = "gripper_tcp"
-GRIPPER_TCP_OFFSET = [0.0, 0.0, 0.21677, 0.0, 0.0, 0.0]
 
 # Widths in mm, on a 75 mm part: commanded inside it so the compliant
 # fingers stall under load. STOPPED_INNER_OBJECT is a grasp, AT_DEST is a miss.
@@ -64,25 +66,11 @@ GRIPPER_OPEN_MM = 105.0
 GRIPPER_GRASP_MM = 58.0
 GRIPPER_CLOSE_SECONDS = 2.0
 
-# The folded rest pose -- a shape, not a direction: only the base angle changes
-# per target. The elbow is open of the natural -90 to lift the wrist clear of the
-# machine and wrist 1 gives that back, keeping the tool's tilt (joints 2+3+4)
-# unchanged. Raise it further in that same pairing.
-HOME_L_JOINTS = [-90.0, -90.0, -60.0, -120.0, 90.0, 0.0]
-
 # Hover height. The machine gets less: furthest reach in the cycle, and lift costs reach.
 APPROACH_HEIGHT = 0.20
 CNC_APPROACH_HEIGHT = 0.06
 GRID_RELEASE_CLEARANCE = 0.003
 GRID_PLACE_SPEED = 0.05
-
-# How far the wrist sits to one side of the arm's plane.
-SHOULDER_OFFSET = 0.17415
-
-# Comfortably above the furthest flange distance that has actually succeeded
-# (1.328 m, measured) and below the UR10e's own spec (1.3 m to the wrist, more
-# with a tool), so this only skips targets that were never going to solve.
-MAX_PHYSICAL_REACH_METERS = 1.40
 
 TRANSFER_SPEED = 0.3
 JOINT_SPEED = 45.0
@@ -96,6 +84,81 @@ CNC_DOOR_WORLD_X_PER_LOCAL_X = 2.54
 CNC_DOOR_MOVE_SECONDS = 2.0
 CNC_DOOR_MOVE_STEPS = 60
 CNC_PROCESS_SECONDS = 3.0
+
+
+@dataclass(frozen=True)
+class RobotConfig:
+    """Robot-specific values required by the shared tending sequence.
+
+    Attributes:
+        robot_class (type): Concrete Synapse manipulator class.
+        prim_path (str): Isaac Sim articulation prim path.
+        folded_joints (list[float]): Safe folded joint shape in degrees.
+        shoulder_offset_metres (float): Lateral wrist offset used when turning
+            the folded arm toward a target.
+        base_face_offset_degrees (float): Joint-1 offset that makes the folded
+            shape face a target whose radial angle is zero.
+        maximum_reach_metres (float): Conservative flange-distance guard.
+        gripper_tcp_offset (list[float]): Active RG2 TCP relative to the
+            robot's ``tool0``, in metres and Euler XYZ degrees.
+        mount_T_robot_base (list[float]): Robot-base pose relative to the
+            table's robot-mount frame, in metres and Euler XYZ degrees.
+        tool_mount_frame (str | None): Physical link used to attach the RG2.
+            ``None`` uses the robot class's declared simulation mount link.
+        tool_mount_transform (list[float] | None): Mount-link to gripper-root
+            transform in metres and Euler XYZ degrees.
+        approach_solver (str | None): Synapse IK solver used from the folded
+            pose to a clear hover pose. ``None`` keeps the current solver.
+        contact_solver (str | None): Synapse IK solver used for the short
+            hover-to-contact and contact-to-hover motions.
+    """
+
+    robot_class: type
+    prim_path: str
+    folded_joints: list[float]
+    shoulder_offset_metres: float
+    base_face_offset_degrees: float
+    maximum_reach_metres: float
+    gripper_tcp_offset: list[float]
+    mount_T_robot_base: list[float]
+    tool_mount_frame: str | None = None
+    tool_mount_transform: list[float] | None = None
+    approach_solver: str | None = None
+    contact_solver: str | None = None
+
+
+ROBOT_CONFIGS = {
+    "ur10e": RobotConfig(
+        robot_class=universal_robots.UniversalRobotsUR10E,
+        prim_path="/World/ur10e_robot",
+        folded_joints=[-90.0, -90.0, -60.0, -120.0, 90.0, 0.0],
+        shoulder_offset_metres=0.17415,
+        base_face_offset_degrees=0.0,
+        maximum_reach_metres=1.40,
+        gripper_tcp_offset=[0.0, 0.0, 0.21677, 0.0, 0.0, 0.0],
+        mount_T_robot_base=[0.0, 0.0, -0.005, 0.0, 0.0, 180.0],
+    ),
+    "fanuc": RobotConfig(
+        robot_class=fanuc.FanucCRX10IAL,
+        prim_path="/World/fanuc_crx10ial",
+        # Taught clear L pose with the physically attached RG2 facing down.
+        folded_joints=[-0.198880, 1.576076, 29.560686, 3.273147, -115.857480, -5.257805],
+        shoulder_offset_metres=0.0,
+        # J1 minus the taught TCP's XY heading (-18.676133 degrees).
+        base_face_offset_degrees=18.477253,
+        maximum_reach_metres=1.60,
+        gripper_tcp_offset=[0.0, 0.0, 0.21677, 0.0, 0.0, 0.0],
+        mount_T_robot_base=[0.0, 0.0, -0.005, 0.0, 0.0, 90.0],
+        tool_mount_frame="link_6",
+        # CRX URDF: link_6 -> flange is identity; flange -> tool0 is this RPY.
+        # Confirm the imported RG2 root convention before running contact moves.
+        tool_mount_transform=[0.0, 0.0, 0.0, 180.0, -90.0, 0.0],
+        # Multi-start reaches all clear hover poses. Once there, single-start
+        # CLIK keeps the short contact motion on that same joint branch.
+        approach_solver="multi_start_clik",
+        contact_solver="clik",
+    ),
+}
 
 
 # ---------------------------------------------------------------------------
@@ -126,11 +189,15 @@ def get_pose_in_world(prim_path: str) -> list[float]:
     return [float(value) for value in result["pose"]]
 
 
-def place_robot_on_mount(tree: tftree.TransformTree) -> list[float]:
+def place_robot_on_mount(
+    tree: tftree.TransformTree,
+    robot_prim_path: str,
+) -> list[float]:
     """Place the simulated robot at the TF tree's robot-base frame.
 
     Args:
         tree (tftree.TransformTree): Static machine-tending frame tree.
+        robot_prim_path (str): Isaac Sim prim path of the selected robot.
 
     Returns:
         list[float]: Robot-base world pose with XYZ in metres and rotation
@@ -155,7 +222,7 @@ def place_robot_on_mount(tree: tftree.TransformTree) -> list[float]:
         "PUT",
         "/prims/poses",
         body={
-            "prim_path": ROBOT_PRIM_PATH,
+            "prim_path": robot_prim_path,
             "input_pose": {"pose": robot_base_pose_in_world},
         },
     )
@@ -224,6 +291,7 @@ class CNCMachine:
 
 def get_motion_target(
     tree: tftree.TransformTree,
+    robot_config: RobotConfig,
     grasp_frame: str,
     approach: float,
     label: str,
@@ -232,6 +300,7 @@ def get_motion_target(
 
     Args:
         tree (tftree.TransformTree): Static machine-tending frame tree.
+        robot_config (RobotConfig): Selected robot's motion calibration.
         grasp_frame (str): Named downward-facing grasp frame in the tree.
         approach (float): Hover distance along the object's positive Z axis,
             in metres.
@@ -283,17 +352,30 @@ def get_motion_target(
     # failure than asking IK to solve a target outside the arm's workspace.
     flange = math.dist(
         [0.0, 0.0, 0.0],
-        [hover_pose[0], hover_pose[1], hover_pose[2] + GRIPPER_TCP_OFFSET[2]],
+        [
+            hover_pose[0],
+            hover_pose[1],
+            hover_pose[2] + robot_config.gripper_tcp_offset[2],
+        ],
     )
-    if flange > MAX_PHYSICAL_REACH_METERS:
+    if flange > robot_config.maximum_reach_metres:
         print(f"{heading}  OUT OF REACH at {reach:.3f} m -- {flange:.3f} m past the flange's limit")
         return None
 
     # The folded shape, with only the base turned to the target. The few degrees
     # past it are the wrist's sideways offset from the arm's plane.
-    folded = list(HOME_L_JOINTS)
-    folded[0] = radial + math.degrees(
-        math.asin(min(1.0, SHOULDER_OFFSET / math.hypot(xyz[0], xyz[1])))
+    folded = list(robot_config.folded_joints)
+    folded[0] = (
+        radial
+        + robot_config.base_face_offset_degrees
+        + math.degrees(
+            math.asin(
+                min(
+                    1.0,
+                    robot_config.shoulder_offset_metres / math.hypot(xyz[0], xyz[1]),
+                )
+            )
+        )
     )
 
     rpy = [round(value, 2) for value in grasp_pose[3:]]
@@ -351,9 +433,11 @@ def move_to(
     target_pose: list[float],
     *,
     speed: float = TRANSFER_SPEED,
+    solver: str | None = None,
 ) -> None:
-    """Drive the TCP to a pose and let it settle. Always blocking -- guessing how
-    long a descent takes is how the gripper once closed in mid-air."""
+    """Drive the TCP to a pose and let it settle."""
+    if solver is not None and robot.active_kinematics_solver != solver:
+        robot.setup_kinematics_solver(solver)
     robot.set_cartesian_pose(target_pose, speed=speed)
     time.sleep(SETTLE_SECONDS)
 
@@ -365,13 +449,28 @@ def grip(gripper, width_mm: float, *, blocking: bool = True) -> str:
     return status
 
 
-def pick_at(robot, gripper, target: dict) -> None:
+def pick_at(
+    robot,
+    gripper,
+    target: dict,
+    *,
+    approach_solver: str | None = None,
+    contact_solver: str | None = None,
+) -> None:
     """Turn to face the work, reach down, take the part, and back out."""
     grip(gripper, GRIPPER_OPEN_MM)
     move_joints(robot, target["folded"])
 
-    move_to(robot, target["hover_pose"])
-    move_to(robot, target["grasp_pose"])
+    move_to(
+        robot,
+        target["hover_pose"],
+        solver=approach_solver,
+    )
+    move_to(
+        robot,
+        target["grasp_pose"],
+        solver=contact_solver,
+    )
 
     grip(gripper, GRIPPER_GRASP_MM, blocking=False)
     print(
@@ -379,7 +478,11 @@ def pick_at(robot, gripper, target: dict) -> None:
         f"reported width {gripper.get_current_position():.1f} mm"
     )
 
-    move_to(robot, target["hover_pose"])
+    move_to(
+        robot,
+        target["hover_pose"],
+        solver=contact_solver,
+    )
     move_joints(robot, target["folded"])
 
 
@@ -390,19 +493,34 @@ def place_at(
     *,
     release_clearance: float = 0.0,
     descent_speed: float = TRANSFER_SPEED,
+    approach_solver: str | None = None,
+    contact_solver: str | None = None,
 ) -> None:
     """Reach down, release above the seated target, and back out."""
     move_joints(robot, target["folded"])
 
-    move_to(robot, target["hover_pose"])
+    move_to(
+        robot,
+        target["hover_pose"],
+        solver=approach_solver,
+    )
     release_pose = list(target["grasp_pose"])
     release_pose[2] += release_clearance
-    move_to(robot, release_pose, speed=descent_speed)
+    move_to(
+        robot,
+        release_pose,
+        speed=descent_speed,
+        solver=contact_solver,
+    )
 
     status = grip(gripper, GRIPPER_OPEN_MM)
     print(f"  released at {gripper.get_current_position():.1f} mm, status {status}")
 
-    move_to(robot, target["hover_pose"])
+    move_to(
+        robot,
+        target["hover_pose"],
+        solver=contact_solver,
+    )
     move_joints(robot, target["folded"])
 
 
@@ -411,6 +529,42 @@ def place_at(
 
 def main() -> None:
     """Run the machine-tending cycle once for every part in the tray."""
+    parser = argparse.ArgumentParser(
+        description="Run the CNC machine-tending cycle with a supported robot.",
+    )
+    robot_selection = parser.add_mutually_exclusive_group()
+    robot_selection.add_argument(
+        "--ur10e",
+        dest="robot_name",
+        action="store_const",
+        const="ur10e",
+        help="Use the Universal Robots UR10e (default).",
+    )
+    robot_selection.add_argument(
+        "--fanuc",
+        dest="robot_name",
+        action="store_const",
+        const="fanuc",
+        help="Use the Fanuc CRX-10iA/L prototype configuration.",
+    )
+    parser.set_defaults(robot_name="ur10e")
+    parser.add_argument(
+        "--robot-prim-path",
+        help="Override the selected robot's default Isaac Sim prim path.",
+    )
+    args = parser.parse_args()
+
+    robot_config = ROBOT_CONFIGS[args.robot_name]
+    robot_prim_path = args.robot_prim_path or robot_config.prim_path
+
+    print(f"Robot: {args.robot_name}")
+    print(f"Robot prim: {robot_prim_path}")
+    if args.robot_name == "fanuc":
+        print(
+            "WARNING: visually verify the Fanuc folded pose and RG2 attachment "
+            "before allowing contact motion."
+        )
+
     bridge_request("GET", "/status")
     cnc = CNCMachine(CNC_DOOR_PRIM_PATH, CNC_DOOR_OPEN_X, CNC_DOOR_CLOSED_X)
 
@@ -420,9 +574,13 @@ def main() -> None:
         cnc_machine_pose_in_world,
         table_pose_in_world,
     )
+    # The shared static-cell definition contains the original UR mounting
+    # transform. Replace only the robot-base child transform with the selected
+    # robot's mounting convention before placing it or resolving any targets.
+    tree.update("robot_base", robot_config.mount_T_robot_base, rot_type="deg")
 
     print("Placing the robot on the mount...")
-    place_robot_on_mount(tree)
+    place_robot_on_mount(tree, robot_prim_path)
 
     pick_capacity = pick_grid.numx * pick_grid.numy
     place_capacity = place_grid.numx * place_grid.numy
@@ -431,27 +589,38 @@ def main() -> None:
             f"configured for {PART_COUNT} parts, but the pick and place grids "
             f"have capacities {pick_capacity} and {place_capacity}."
         )
+
     print(f"Using {PART_COUNT} fixed pick and place slots.")
 
-    robot = universal_robots.UniversalRobotsUR10E()
+    robot = robot_config.robot_class()
     gripper = onrobot.OnRobotRG2()
 
     # Added while offline: this is model surgery, not a simulation command.
-    robot.add_tcp(GRIPPER_TCP_NAME, GRIPPER_TCP_OFFSET)
+    robot.add_tcp(GRIPPER_TCP_NAME, robot_config.gripper_tcp_offset)
+    if robot_config.approach_solver is not None:
+        print(
+            "Cartesian IK policy: Synapse "
+            f"{robot_config.approach_solver} for clear approaches, "
+            f"{robot_config.contact_solver} for contact descent/lift"
+        )
 
     print("Connecting...")
-    robot.connect(simulation_prim_path=ROBOT_PRIM_PATH)
+    robot.connect(simulation_prim_path=robot_prim_path)
 
     try:
         # Registered before the attach: doing it afterwards rebinds the merged
         # arm-and-gripper articulation and jolts the fingers.
-        arm_id = register_articulation(ROBOT_PRIM_PATH)
+        arm_id = register_articulation(robot_prim_path)
         gripper_id = register_articulation(GRIPPER_PRIM_PATH)
 
         gripper.connect(simulation_prim_path=GRIPPER_PRIM_PATH)
         try:
             print("Attaching the gripper...")
-            robot.attach_tool(gripper)
+            robot.attach_tool(
+                gripper,
+                mount_frame=robot_config.tool_mount_frame,
+                transform=robot_config.tool_mount_transform,
+            )
             time.sleep(1.0)
 
             # Gains go on after the attach: they apply to the running simulation,
@@ -465,6 +634,7 @@ def main() -> None:
             print("Preparing targets:")
             machine = get_motion_target(
                 tree,
+                robot_config,
                 CNC_GRASP_FRAME,
                 CNC_APPROACH_HEIGHT,
                 "machine",
@@ -477,6 +647,7 @@ def main() -> None:
                 picks.append(
                     get_motion_target(
                         tree,
+                        robot_config,
                         f"{PICK_GRASP_FRAME_PREFIX}_{pick_x_index}_{pick_y_index}",
                         APPROACH_HEIGHT,
                         f"part {index + 1}",
@@ -487,6 +658,7 @@ def main() -> None:
                 drops.append(
                     get_motion_target(
                         tree,
+                        robot_config,
                         f"{PLACE_GRASP_FRAME_PREFIX}_{place_x_index}_{place_y_index}",
                         APPROACH_HEIGHT,
                         f"slot {index + 1}",
@@ -506,17 +678,29 @@ def main() -> None:
                 """Announce a phase with the time since the cycle began."""
                 print(f"[{time.monotonic() - started:5.1f}s] {label}")
 
-            move_joints(robot, HOME_L_JOINTS)
+            move_joints(robot, robot_config.folded_joints)
 
             for index in range(PART_COUNT):
                 print()
                 step(f"--- part {index + 1} of {PART_COUNT} ---")
 
                 step("Picking it off the table...")
-                pick_at(robot, gripper, picks[index])
+                pick_at(
+                    robot,
+                    gripper,
+                    picks[index],
+                    approach_solver=robot_config.approach_solver,
+                    contact_solver=robot_config.contact_solver,
+                )
 
                 step("Loading it into the machine...")
-                place_at(robot, gripper, machine)
+                place_at(
+                    robot,
+                    gripper,
+                    machine,
+                    approach_solver=robot_config.approach_solver,
+                    contact_solver=robot_config.contact_solver,
+                )
 
                 step("Closing the door...")
                 cnc.move_door(cnc.closed_x)
@@ -526,7 +710,13 @@ def main() -> None:
                 cnc.move_door(cnc.open_x)
 
                 step("Taking the finished part out...")
-                pick_at(robot, gripper, machine)
+                pick_at(
+                    robot,
+                    gripper,
+                    machine,
+                    approach_solver=robot_config.approach_solver,
+                    contact_solver=robot_config.contact_solver,
+                )
 
                 step(f"Standing it in slot {index + 1}...")
                 place_at(
@@ -535,8 +725,10 @@ def main() -> None:
                     drops[index],
                     release_clearance=GRID_RELEASE_CLEARANCE,
                     descent_speed=GRID_PLACE_SPEED,
+                    approach_solver=robot_config.approach_solver,
+                    contact_solver=robot_config.contact_solver,
                 )
-                # No return to HOME_L_JOINTS here: place_at already ends folded
+                # No return to the common fold here: place_at already ends folded
                 # at this slot's angle, and the next pick_at folds straight to
                 # its own angle, so the arm just turns from one to the other.
 
