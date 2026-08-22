@@ -47,54 +47,93 @@ isaacsim-examples provides Isaac Sim examples for loading and controlling the ro
 
 ## Getting Started
 
-> **Already have a Telekinesis or Synapse environment?** You can reuse it — skip the environment setup below and go straight to [Installation](#installation). See the [quickstart guide](https://docs.telekinesis.ai/getting-started/quickstart.html) for reference.
+The complete applications use two separate processes:
 
-### Conda Environment
+1. **Isaac Sim** runs the stage, physics, and the Telekinesis bridge.
+2. **The application environment** runs Synapse, TF, and the Python files in
+   `examples/`.
 
-It is highly recommended to install a Miniconda environment before setting up the project. You can install Miniconda by following instructions from [here](https://docs.conda.io/en/latest/miniconda.html#installing).
-
-Create a new Conda environment:
-
-```bash
-conda create -n isaacsim-examples python=3.11
-conda activate isaacsim-examples
-```
+Do not install Isaac Sim into the application environment. The examples in
+this repository were calibrated with Isaac Sim 5.1. The bridge is tested with
+Isaac Sim 5.1 and 6.0; use the Python version that belongs to that Isaac Sim
+release (Python 3.11 for 5.1 and Python 3.12 for 6.0).
 
 ## Installation
 
-1. Clone the repository:
-    ```bash
-    cd path/to/working_directory
-    git clone https://github.com/telekinesis-ai/isaacsim-examples.git
-    ```
+### 1. Install and Start Isaac Sim
 
-2. On Windows, enable long path support to avoid installation errors:
+Install a supported Isaac Sim release through your normal distribution
+channel and start the full Isaac Sim application. Use Isaac Sim 5.1 to
+reproduce the calibrated scenes and motion values in this repository.
 
-    ```bash
-    # PowerShell (run as administrator)
-    New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
-    -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
-    ```
+### 2. Install the Telekinesis Isaac Sim Bridge
 
-3. Install `telekinesis-urdfs`:
-    ```bash
-    cd /path/to/working/directory
-    git clone --depth 1 https://github.com/telekinesis-ai/telekinesis-urdfs.git
-    cd telekinesis-urdfs
-    pip install .
-    ```
+Clone the bridge extension next to this repository:
 
-    > **Note:** `telekinesis-urdfs` is a large repository. The initial clone and wheel build are expected to take several minutes — do not interrupt the process.
+```bash
+git clone https://github.com/telekinesis-ai/telekinesis-isaacsim-extension.git
+```
 
-4. Install `isaacsim`:
-    ```bash
-    pip install isaacsim[all,extscache]==5.1.0 --extra-index-url https://pypi.nvidia.com
-    ```
+In Isaac Sim:
 
-5. Install `telekinesis-synapse`:
-    ```bash
-    pip install telekinesis-synapse
-    ```
+1. Open **Window > Extensions**.
+2. Open the extension settings and add the absolute
+   `telekinesis-isaacsim-extension/exts` directory to the extension search
+   paths. On Windows, use forward slashes in this path.
+3. Search for `telekinesis.isaacsim.bridge`, enable it, and select
+   **Autoload**.
+4. For the palletizing, automotive assembly, and automotive spot-welding
+   applications, also enable `isaacsim.code_editor.vscode`. Their backend
+   modules use its local code socket for conveyor, lightbeam, spawning, and
+   other scene-side operations.
+
+After Isaac Sim starts, verify the bridge from PowerShell:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8766/status
+```
+
+The response should report that the bridge is running.
+
+### 3. Create the Application Environment
+
+Create a separate Python 3.12 environment for Synapse and the external
+applications:
+
+```bash
+conda create -n telekinesis-apps python=3.12
+conda activate telekinesis-apps
+python -m pip install --upgrade pip
+```
+
+Install the robot descriptions and Synapse:
+
+```bash
+cd path/to/working_directory
+git clone --depth 1 https://github.com/telekinesis-ai/telekinesis-urdfs.git
+cd telekinesis-urdfs
+python -m pip install .
+
+python -m pip install telekinesis-synapse
+```
+
+Installing Synapse also installs the Telekinesis Isaac Sim client, TF,
+Rerun, and the other application dependencies. A user installation does not
+require building Synapse or the Isaac Sim client from source.
+
+Clone this repository:
+
+```bash
+cd path/to/working_directory
+git clone https://github.com/telekinesis-ai/isaacsim-examples.git
+cd isaacsim-examples
+```
+
+Verify the application environment:
+
+```bash
+python -c "from telekinesis.synapse.robots.manipulators import universal_robots; universal_robots.UniversalRobotsUR10E(); print('Synapse ready')"
+```
 
 <details>
 <summary><strong>Robot colors in Isaac Sim 5.1 and 6.0.1-generated USD assets</strong></summary>
@@ -121,6 +160,28 @@ The 6.0.1-generated USD assets are intended only for screenshots or static previ
 | `examples/add_physics_to_prim.py` | Adds rigid body and SDF collider physics to any prim in the open stage. |
 | `examples/remove_timeline.py` | Strips animation curves from a USD stage and exports a static version useful when imported assets animate unexpectedly during physics simulation. |
 | `examples/examine_tree.py` | Prints the full prim tree of the open stage useful for inspecting scene structure and finding prim paths. |
+
+### Complete TF Application Files
+
+The complete workflows use the same file pattern:
+
+```text
+examples/
+|-- <application>_static_frames_visualization.py
+|-- <application>_application_multi_robot.py
+`-- <application>_isaacsim_backend.py
+```
+
+| File role | Purpose |
+|-----------|---------|
+| `*_static_frames_visualization.py` | Stores the calibrated static transforms, builds the TF tree, and visualizes it in Rerun. It does not move the robot. |
+| `*_application_multi_robot.py` | Contains the robot configuration, attaches the tool, resolves target poses from TF, and runs the task cycle through Synapse. |
+| `*_isaacsim_backend.py` | Contains scene-side operations that are not yet available through the bridge, such as conveyor control, lightbeam reads, spawning, and live object measurements. Only applications that need those operations have this file. |
+
+The machine-tending workflow uses the first two files. Palletizing,
+automotive assembly, and automotive spot welding use all three files. Run the
+application files from the external `telekinesis-apps` environment, not from
+Isaac Sim's Python process.
 
 
 ## Palletizing Scene Demo
@@ -149,6 +210,42 @@ Two ready-to-use scenes are provided under `assets/environments/palletizing/`:
    ```python
    ACTIVE_ROBOT = "ur10e"   # or "franka", "fanuc", "motoman", "kuka", "neura", "abb"
    ```
+
+### Complete TF Application
+
+The verified complete workflow uses the UR10e and the modeled Defitech
+suction gripper.
+
+| Requirement | Expected value |
+|-------------|----------------|
+| Scene | `assets/environments/palletizing/palletizing_stand.usd` |
+| Robot | UR10e imported at `/World/ur10e_robot` |
+| Gripper asset | `assets/tools/defitech_modelled_surface_gripper_modelled.usd` |
+| Gripper prim | `/World/defitech_modelled_surface_gripper_modelled` |
+| TF file | `examples/palletizing_static_frames_visualization.py` |
+| Application | `examples/palletizing_application_multi_robot.py` |
+| Isaac Sim backend | `examples/palletizing_isaacsim_backend.py` |
+
+1. Open the scene in Isaac Sim.
+2. Import the UR10e with **Fix Base** enabled and rename its root prim to
+   `/World/ur10e_robot` if necessary.
+3. Drag the modeled Defitech gripper asset onto `/World` and confirm the prim
+   path shown above.
+4. Enable `telekinesis.isaacsim.bridge` and
+   `isaacsim.code_editor.vscode`.
+5. Stop or reset the timeline before starting a fresh run.
+6. From the external application environment, visualize the calibrated TF
+   tree if required, then run the application:
+
+   ```bash
+   cd path/to/isaacsim-examples/examples
+   python palletizing_static_frames_visualization.py
+   python palletizing_application_multi_robot.py --ur10e
+   ```
+
+The backend controls the conveyors and lightbeam through Isaac Sim's local
+code socket. The robot and gripper communication still goes through the
+Telekinesis bridge.
 
 
 ## Automotive Assembly Scene Demo
@@ -180,6 +277,88 @@ Supported robots (large industrial arms): **Kuka KR210 L150**, **ABB IRB7600**, 
    ```python
    ACTIVE_ROBOT = "kuka"   # or "abb", "neura"
    ```
+
+### Complete TF Application
+
+The complete roof-placement workflow uses the Kuka KR210 L150 and the modeled
+multi-cup suction gripper.
+
+| Requirement | Expected value |
+|-------------|----------------|
+| Scene | `assets/environments/automotive_assembly/automotive_assembly.usd` |
+| Robot | Kuka KR210 L150 imported at `/World/kuka_kr210` |
+| Gripper asset | `assets/tools/suction_gripper_modelled.usd` |
+| Gripper prim | `/World/suction_gripper_modelled` |
+| TF file | `examples/automotive_assembly_static_frames_visualization.py` |
+| Application | `examples/automotive_assembly_application_multi_robot.py` |
+| Isaac Sim backend | `examples/automotive_assembly_isaacsim_backend.py` |
+
+1. Open the scene in Isaac Sim.
+2. Import the Kuka with **Fix Base** enabled and confirm its root prim is
+   `/World/kuka_kr210`.
+3. Drag `suction_gripper_modelled.usd` onto `/World` and confirm its prim is
+   `/World/suction_gripper_modelled`.
+4. Enable `telekinesis.isaacsim.bridge` and
+   `isaacsim.code_editor.vscode`.
+5. Stop or reset the timeline before starting a fresh run.
+6. From the external application environment, visualize the TF tree if
+   required, then run the application:
+
+   ```bash
+   cd path/to/isaacsim-examples/examples
+   python automotive_assembly_static_frames_visualization.py
+   python automotive_assembly_application_multi_robot.py --kuka
+   ```
+
+The backend handles the conveyors, lightbeam, runtime car and roof spawning,
+and the fixed joint that keeps each placed roof on its car.
+
+
+## Automotive Spot Welding Scene Demo
+
+Demonstrates a complete automotive spot-welding cycle. Cars move to the
+lightbeam station, a Kuka KR210 moves the modeled welding gun through the
+car-relative pre-weld and weld frames, the gun closes and shows both sparks,
+and the car leaves while the next car is prepared.
+
+![Automotive spot welding scene](docs/images/automotive_spot_welding.png)
+
+### Complete TF Application
+
+| Requirement | Expected value |
+|-------------|----------------|
+| Scene | `assets/environments/spot_welding_automotive_assembly/spot_welding_automotive.usd` |
+| Robot | Kuka KR210 L150 imported at `/World/kuka_kr210` |
+| Welding-gun asset | `assets/tools/spot_welding_gun_modelled.usd` |
+| Welding-gun prim | `/World/spot_welding_gun_modelled` |
+| TF file | `examples/spot_welding_automotive_static_frames_visualization.py` |
+| Application | `examples/spot_welding_automotive_application_multi_robot.py` |
+| Isaac Sim backend | `examples/spot_welding_automotive_isaacsim_backend.py` |
+
+This application requires a Synapse release that provides
+`telekinesis.synapse.tools.welding_gun.SpotWeldingGun`.
+
+1. Open the spot-welding scene in Isaac Sim.
+2. Import the Kuka with **Fix Base** enabled and confirm its root prim is
+   `/World/kuka_kr210`.
+3. Drag `spot_welding_gun_modelled.usd` onto `/World` and confirm its prim is
+   `/World/spot_welding_gun_modelled`.
+4. Enable `telekinesis.isaacsim.bridge` and
+   `isaacsim.code_editor.vscode`.
+5. Stop or reset the timeline before starting a fresh run.
+6. From the external application environment, visualize the TF tree if
+   required, then run the application:
+
+   ```bash
+   cd path/to/isaacsim-examples/examples
+   python spot_welding_automotive_static_frames_visualization.py
+   python spot_welding_automotive_application_multi_robot.py --kuka
+   ```
+
+The backend controls the conveyors, reads the lightbeam, measures the stopped
+car, updates the dynamic car-relative weld frames, and recycles the two car
+slots. Synapse controls the Kuka and the welding gun through the Telekinesis
+bridge.
 
 
 ## All-Robots Automotive Scene Demo
@@ -246,6 +425,38 @@ Supported robots: **UR10e**, **Franka Panda**, **Fanuc CRX-10iA/L**, **Motoman M
 
    ```python
    ACTIVE_ROBOT = "ur10e"   # or "motoman", "franka", "neura", "fanuc"
+   ```
+
+### Complete TF Application
+
+The verified complete workflow uses the UR10e with an OnRobot RG2. The Fanuc
+configuration in the multi-robot file is currently a prototype; use the UR10e
+for the reproducible walkthrough below.
+
+| Requirement | Expected value |
+|-------------|----------------|
+| Scene | `assets/environments/cnc_machine_tending/cnc_machine_tending.usd` |
+| Robot | UR10e imported at `/World/ur10e_robot` |
+| Gripper | Compatible OnRobot RG2 imported at `/World/onrobot_rg2_model` |
+| TF file | `examples/cnc_machine_tending_static_frames_visualization.py` |
+| Application | `examples/machine_tending_application_multi_robot.py` |
+| Isaac Sim backend | Not required; all scene operations use the bridge |
+
+1. Open the scene in Isaac Sim.
+2. Import the UR10e with **Fix Base** enabled and confirm its root prim is
+   `/World/ur10e_robot`.
+3. Import a compatible OnRobot RG2 at `/World/onrobot_rg2_model`. Set its
+   import-dialog **Natural Frequency** to `0` so the fingers do not sag.
+4. Enable `telekinesis.isaacsim.bridge`. The code-editor socket is not needed
+   for this application.
+5. Stop or reset the timeline before starting a fresh run.
+6. From the external application environment, visualize the TF tree if
+   required, then run the application:
+
+   ```bash
+   cd path/to/isaacsim-examples/examples
+   python cnc_machine_tending_static_frames_visualization.py
+   python machine_tending_application_multi_robot.py --ur10e
    ```
 
 

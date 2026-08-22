@@ -38,9 +38,12 @@ from telekinesis.synapse.tools.parallel_grippers import onrobot
 
 from cnc_machine_tending_static_frames_visualization import (
     CNC_GRASP_FRAME,
+    CNC_PRE_FRAME,
     CNC_PRIM_PATH,
     PICK_GRASP_FRAME_PREFIX,
+    PICK_PRE_FRAME_PREFIX,
     PLACE_GRASP_FRAME_PREFIX,
+    PLACE_PRE_FRAME_PREFIX,
     TABLE_FRAME_PRIM_PATH,
     build_static_frame_tree,
 )
@@ -66,9 +69,6 @@ GRIPPER_OPEN_MM = 105.0
 GRIPPER_GRASP_MM = 58.0
 GRIPPER_CLOSE_SECONDS = 2.0
 
-# Hover height. The machine gets less: furthest reach in the cycle, and lift costs reach.
-APPROACH_HEIGHT = 0.20
-CNC_APPROACH_HEIGHT = 0.06
 GRID_RELEASE_CLEARANCE = 0.003
 GRID_PLACE_SPEED = 0.05
 
@@ -142,7 +142,14 @@ ROBOT_CONFIGS = {
         robot_class=fanuc.FanucCRX10IAL,
         prim_path="/World/fanuc_crx10ial",
         # Taught clear L pose with the physically attached RG2 facing down.
-        folded_joints=[-0.198880, 1.576076, 29.560686, 3.273147, -115.857480, -5.257805],
+        folded_joints=[
+            -0.198880,
+            1.576076,
+            29.560686,
+            3.273147,
+            -115.857480,
+            -5.257805,
+        ],
         shoulder_offset_metres=0.0,
         # J1 minus the taught TCP's XY heading (-18.676133 degrees).
         base_face_offset_degrees=18.477253,
@@ -169,7 +176,11 @@ ROBOT_CONFIGS = {
 def bridge_request(method, path, *, params=None, body=None):
     """Send one request to the local Isaac Sim bridge and decode its JSON."""
     response = requests.request(
-        method, BASE_URL + path, params=params, json=body, timeout=REQUEST_TIMEOUT_SECONDS
+        method,
+        BASE_URL + path,
+        params=params,
+        json=body,
+        timeout=REQUEST_TIMEOUT_SECONDS,
     )
     response.raise_for_status()
     return response.json() if response.content else None
@@ -293,7 +304,7 @@ def get_motion_target(
     tree: tftree.TransformTree,
     robot_config: RobotConfig,
     grasp_frame: str,
-    approach: float,
+    hover_frame: str,
     label: str,
 ) -> dict | None:
     """Build the robot motion target for one named TF grasp frame.
@@ -302,8 +313,7 @@ def get_motion_target(
         tree (tftree.TransformTree): Static machine-tending frame tree.
         robot_config (RobotConfig): Selected robot's motion calibration.
         grasp_frame (str): Named downward-facing grasp frame in the tree.
-        approach (float): Hover distance along the object's positive Z axis,
-            in metres.
+        hover_frame (str): Named pre-contact frame above the grasp frame.
         label (str): Human-readable target name used in the startup output.
 
     Returns:
@@ -314,30 +324,8 @@ def get_motion_target(
     Raises:
         ValueError: If a frame is missing or a transform is invalid.
     """
-    robot_base_T_grasp = tree.lookup_transform("robot_base", grasp_frame)
-
-    # The grasp frame's Z axis faces down, so negative local Z moves the TCP up
-    # and away from the object without changing its orientation.
-    grasp_T_hover = tfutils.pose_to_transformation_matrix(
-        [0.0, 0.0, -approach, 0.0, 0.0, 0.0],
-        rot_type="deg",
-    )
-    robot_base_T_hover = robot_base_T_grasp @ grasp_T_hover
-
-    grasp_pose = [
-        float(value)
-        for value in tfutils.transformation_matrix_to_pose(
-            robot_base_T_grasp,
-            rot_type="deg",
-        )
-    ]
-    hover_pose = [
-        float(value)
-        for value in tfutils.transformation_matrix_to_pose(
-            robot_base_T_hover,
-            rot_type="deg",
-        )
-    ]
+    grasp_pose = tree.lookup_transform("robot_base", grasp_frame, rot_type="deg")
+    hover_pose = tree.lookup_transform("robot_base", hover_frame, rot_type="deg")
 
     # The complete Cartesian grasp orientation comes from TF. Only the folded
     # clearance pose below is robot-specific: its first joint turns the folded
@@ -359,7 +347,9 @@ def get_motion_target(
         ],
     )
     if flange > robot_config.maximum_reach_metres:
-        print(f"{heading}  OUT OF REACH at {reach:.3f} m -- {flange:.3f} m past the flange's limit")
+        print(
+            f"{heading}  OUT OF REACH at {reach:.3f} m -- {flange:.3f} m past the flange's limit"
+        )
         return None
 
     # The folded shape, with only the base turned to the target. The few degrees
@@ -636,7 +626,7 @@ def main() -> None:
                 tree,
                 robot_config,
                 CNC_GRASP_FRAME,
-                CNC_APPROACH_HEIGHT,
+                CNC_PRE_FRAME,
                 "machine",
             )
 
@@ -649,7 +639,7 @@ def main() -> None:
                         tree,
                         robot_config,
                         f"{PICK_GRASP_FRAME_PREFIX}_{pick_x_index}_{pick_y_index}",
-                        APPROACH_HEIGHT,
+                        f"{PICK_PRE_FRAME_PREFIX}_{pick_x_index}_{pick_y_index}",
                         f"part {index + 1}",
                     )
                 )
@@ -660,7 +650,7 @@ def main() -> None:
                         tree,
                         robot_config,
                         f"{PLACE_GRASP_FRAME_PREFIX}_{place_x_index}_{place_y_index}",
-                        APPROACH_HEIGHT,
+                        f"{PLACE_PRE_FRAME_PREFIX}_{place_x_index}_{place_y_index}",
                         f"slot {index + 1}",
                     )
                 )
